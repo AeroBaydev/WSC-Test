@@ -2,9 +2,11 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import Image from "next/image"
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { isSignedIn, user } = useUser()
 
   const navItems = ["About", "Categories", "Stages", "Register", "Contact"]
 
@@ -28,7 +30,7 @@ export default function Navbar() {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <motion.a
                 key={item}
@@ -39,14 +41,66 @@ export default function Navbar() {
                 {item}
               </motion.a>
             ))}
+
+            <div className="ml-4 flex items-center">
+              {isSignedIn ? (
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600 hidden lg:block">Welcome, {user?.firstName || "User"}</span>
+                  <UserButton
+                    appearance={{
+                      elements: {
+                        avatarBox:
+                          "w-10 h-10 rounded-full border-2 border-orange-500 hover:border-orange-600 transition-colors",
+                        userButtonPopoverCard: "shadow-lg border border-gray-200",
+                        userButtonPopoverActionButton: "hover:bg-orange-50 text-gray-700",
+                        userButtonPopoverActionButtonText: "text-gray-700",
+                        userButtonPopoverFooter: "hidden",
+                      },
+                    }}
+                  />
+                </div>
+              ) : (
+                <SignInButton mode="modal">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-sm"
+                  >
+                    Sign In
+                  </motion.button>
+                </SignInButton>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-gray-700 hover:text-orange-500">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+          <div className="md:hidden flex items-center space-x-3">
+            {isSignedIn ? (
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-8 h-8 rounded-full border-2 border-orange-500",
+                    userButtonPopoverCard: "shadow-lg border border-gray-200",
+                  },
+                }}
+              />
+            ) : (
+              <SignInButton mode="modal">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors"
+                >
+                  Sign In
+                </motion.button>
+              </SignInButton>
+            )}
+
+            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-700 hover:text-orange-500">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -66,6 +120,12 @@ export default function Navbar() {
                 {item}
               </a>
             ))}
+
+            {isSignedIn && (
+              <div className="border-t border-gray-200 mt-3 pt-3">
+                <div className="text-sm text-gray-600">Signed in as {user?.firstName || "User"}</div>
+              </div>
+            )}
           </motion.div>
         )}
       </div>

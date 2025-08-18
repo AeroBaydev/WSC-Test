@@ -1,53 +1,53 @@
-"use client";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+"use client"
+import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
 
 export default function Register() {
-  const { user } = useUser();
-  const [isRegistered, setIsRegistered] = useState(false);
+  const { user } = useUser()
+  const [isRegistered, setIsRegistered] = useState(false)
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     username: "",
     schoolName: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
   useEffect(() => {
     // Check if user data exists in DB (optional, for demo just skip)
     if (user) {
       // You can fetch from /api/save-user?userId=user.id to check
-      setIsRegistered(false); // Assume not registered for demo
+      setIsRegistered(false) // Assume not registered for demo
     }
-  }, [user]);
+  }, [user])
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+    e.preventDefault()
+    setLoading(true)
+    setError("")
     try {
       const res = await fetch("/api/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
-      });
-      const data = await res.json();
+      })
+      const data = await res.json()
       if (data.success) {
-        setIsRegistered(true);
+        setIsRegistered(true)
       } else {
-        setError(data.error || "Registration failed");
+        setError(data.error || "Registration failed")
       }
     } catch (err) {
-      setError("Something went wrong");
+      setError("Something went wrong")
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   const pricingTiers = [
     {
@@ -122,179 +122,135 @@ export default function Register() {
       prizes: "Up to ₹17,000",
       formLink: "#",
     },
-  ];
+  ]
 
   return (
     <section id="register" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SignedOut>
-          <div className="text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8">Sign In Required</h2>
-            <SignInButton>
-              <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">Sign In</button>
-            </SignInButton>
-          </div>
-        </SignedOut>
-        <SignedIn>
-          {!isRegistered ? (
-            <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg p-8 border border-orange-200 mb-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Complete Your Registration</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                  <input type="text" name="firstName" value={form.firstName} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                  <input type="text" name="lastName" value={form.lastName} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                  <input type="text" name="username" value={form.username} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">School Name</label>
-                  <input type="text" name="schoolName" value={form.schoolName} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                </div>
-                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-                <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-700 hover:opacity-90 transition-opacity text-sm text-center">
-                  {loading ? "Registering..." : "Submit"}
-                </button>
-              </form>
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8">Register Now</h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Choose your category and compete for exciting cash prizes
-              </p>
-              <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
-                <p className="text-orange-700 font-semibold">📅 Registration Deadline: 30th August 2025 (Tentative)</p>
-              </div>
-            </motion.div>
-          )}
-          {isRegistered && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {pricingTiers.map((tier, index) => (
-                <motion.div
-                  key={tier.title}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05, y: -10 }}
-                  className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
-                    tier.popular ? "ring-2 ring-orange-500" : ""
-                  }`}
-                >
-                  {tier.popular && (
-                    <div className="absolute top-0 left-0 right-0 orange-accent text-white text-center py-2 text-sm font-semibold">
-                      Most Popular
-                    </div>
-                  )}
-                  <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
-                    <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
-                    <div className="mb-4">
-                      <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
-                      {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
-                    </div>
-                    <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
-                    <div className="mb-6">
-                      <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
-                        <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
-                      </div>
-                    </div>
-                    <ul className="space-y-2 mb-6">
-                      {tier.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start text-gray-600 text-xs">
-                          <svg
-                            className="w-4 h-4 text-orange-500 mr-2 mt-0.5 flex-shrink-0"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <motion.a
-                      href={tier.formLink}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                    >
-                      Register Now
-                    </motion.a>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mt-16 text-center"
+            className="text-center max-w-4xl mx-auto"
           >
-            {/* Enhanced Prize Pool Section */}
-            <div className="relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-2xl"></div>
-              <div className="relative orange-accent rounded-2xl p-8 md:p-12 card-shadow-lg border-4 border-orange-200">
-                <motion.div
-                  initial={{ scale: 0.8 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="mb-6"
-                >
-                  <div className="text-4xl md:text-6xl mb-4">💰</div>
-                  <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">Total Prize Pool</h3>
-                </motion.div>
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="bg-white/20 rounded-xl p-6 md:p-8 backdrop-blur-sm border border-white/30 mb-6"
-                >
-                  <p className="text-white text-xl md:text-2xl mb-2">
-                    Up to <span className="font-bold text-3xl md:text-5xl text-yellow-300">₹1-Lakh!</span>
-                  </p>
-                  <p className="text-orange-100 text-base md:text-lg">in cash prizes across all categories!</p>
-                </motion.div>
-                <div className="grid md:grid-cols-3 gap-4 text-white">
-                  <motion.div whileHover={{ scale: 1.05 }} className="bg-white/10 rounded-lg p-4">
-                    <div className="text-2xl mb-2">🏆</div>
-                    <p className="font-semibold text-sm">Certificates & Trophies</p>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} className="bg-white/10 rounded-lg p-4">
-                    <div className="text-2xl mb-2">🌍</div>
-                    <p className="font-semibold text-sm">International Opportunities</p>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} className="bg-white/10 rounded-lg p-4">
-                    <div className="text-2xl mb-2">🎓</div>
-                    <p className="font-semibold text-sm">Expert Mentorship</p>
-                  </motion.div>
+            {/* Hero Section */}
+            <div className="mb-12">
+              <motion.div
+                initial={{ scale: 0.8 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-6xl md:text-8xl mb-6"
+              >
+                🏆
+              </motion.div>
+              <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Join the Ultimate
+                <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                  {" "}
+                  Competition
+                </span>
+              </h2>
+              <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+                Compete with the brightest minds across India and win up to{" "}
+                <span className="font-bold text-orange-600">₹1 Lakh</span> in cash prizes!
+              </p>
+            </div>
+
+            {/* Benefits Grid */}
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200"
+              >
+                <div className="text-4xl mb-4">💰</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Massive Prize Pool</h3>
+                <p className="text-gray-600">Win up to ₹1 Lakh in cash prizes across 4 exciting categories</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200"
+              >
+                <div className="text-4xl mb-4">🌟</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Skill Development</h3>
+                <p className="text-gray-600">
+                  Enhance your STEAM, robotics, and research skills with expert mentorship
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200"
+              >
+                <div className="text-4xl mb-4">🎓</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Recognition</h3>
+                <p className="text-gray-600">Get certificates, trophies, and international opportunities</p>
+              </motion.div>
+            </div>
+
+            {/* Competition Categories Preview */}
+            <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-8 text-white mb-12">
+              <h3 className="text-2xl md:text-3xl font-bold mb-6">4 Exciting Categories</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                  <div className="font-bold">IDEA IGNITE</div>
+                  <div className="text-orange-100">Research Competition</div>
+                  <div className="text-yellow-300 font-bold">₹3,000 Prize</div>
+                </div>
+                <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                  <div className="font-bold">MYSTERY MAKERS</div>
+                  <div className="text-orange-100">STEAM Challenges</div>
+                  <div className="text-yellow-300 font-bold">₹8,000 Prize</div>
+                </div>
+                <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm border-2 border-yellow-300">
+                  <div className="font-bold">TECH FOR GOOD</div>
+                  <div className="text-orange-100">Robotics</div>
+                  <div className="text-yellow-300 font-bold">₹11,000 Prize</div>
+                </div>
+                <div className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                  <div className="font-bold">TECH THROTTLE</div>
+                  <div className="text-orange-100">RC Cars & BattleBots</div>
+                  <div className="text-yellow-300 font-bold">₹17,000 Prize</div>
                 </div>
               </div>
             </div>
+
+            {/* Call to Action */}
+            <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Compete?</h3>
+              <p className="text-gray-600 mb-6 text-lg">
+                Sign in to unlock your registration and choose your competition category
+              </p>
+              <SignInButton mode="modal">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full font-semibold text-lg px-8 py-4 transition-all duration-300 shadow-lg hover:shadow-xl"
+                >
+                  🚀 Sign In to Register
+                </motion.button>
+              </SignInButton>
+              <p className="text-sm text-gray-500 mt-4">
+                Registration closes on <span className="font-semibold text-orange-600">30th August 2025</span>
+              </p>
+            </div>
           </motion.div>
-        </SignedIn>
+        </SignedOut>
+
+        <SignedIn></SignedIn>
       </div>
     </section>
-  );
+  )
 }
