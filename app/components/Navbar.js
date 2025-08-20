@@ -3,12 +3,29 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import Image from "next/image"
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs"
+import { useRouter, usePathname } from "next/navigation"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isMoreOpen, setIsMoreOpen] = useState(false)
   const { isSignedIn, user } = useUser()
+  const router = useRouter()
+  const pathname = usePathname()
 
   const navItems = ["About", "Categories", "Stages", "Register", "Contact"]
+
+  const handleNavigation = (item) => {
+    const section = item.toLowerCase()
+    if (pathname === "/") {
+      // If on main page, scroll to section
+      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" })
+    } else {
+      // If on other page, navigate to main page with anchor
+      router.push(`/#${section}`)
+    }
+    setIsOpen(false)
+    setIsMoreOpen(false)
+  }
 
   return (
     <motion.nav
@@ -18,7 +35,11 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-3">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="flex items-center space-x-3 cursor-pointer"
+            onClick={() => router.push("/")}
+          >
             <Image
               src="/images/wsc-logo.png"
               alt="World Skill Challenge Logo"
@@ -32,15 +53,55 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
-              <motion.a
+              <motion.button
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                onClick={() => handleNavigation(item)}
                 whileHover={{ scale: 1.05 }}
                 className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 {item}
-              </motion.a>
+              </motion.button>
             ))}
+
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                onClick={() => setIsMoreOpen(!isMoreOpen)}
+                className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center"
+              >
+                More
+                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </motion.button>
+
+              {isMoreOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                >
+                  <a
+                    href="https://workdrive.zoho.in/folder/1nsamfc18e91dad8f439fafa11477539db613"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                    onClick={() => setIsMoreOpen(false)}
+                  >
+                    Guidelines
+                  </a>
+                  <button
+                    onClick={() => {
+                      router.push("/updates")
+                      setIsMoreOpen(false)
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                  >
+                    Updates
+                  </button>
+                </motion.div>
+              )}
+            </div>
 
             <div className="ml-4 flex items-center">
               {isSignedIn ? (
@@ -111,15 +172,36 @@ export default function Navbar() {
             className="md:hidden bg-white rounded-lg mt-2 p-4 shadow-lg border border-gray-100"
           >
             {navItems.map((item) => (
-              <a
+              <button
                 key={item}
-                href={`#${item.toLowerCase()}`}
-                className="block text-gray-700 hover:text-orange-500 py-2 text-base font-medium"
-                onClick={() => setIsOpen(false)}
+                onClick={() => handleNavigation(item)}
+                className="block w-full text-left text-gray-700 hover:text-orange-500 py-2 text-base font-medium"
               >
                 {item}
-              </a>
+              </button>
             ))}
+
+            <div className="border-t border-gray-200 mt-3 pt-3">
+              <div className="text-sm font-medium text-gray-900 mb-2">More</div>
+              <a
+                href="https://workdrive.zoho.in/folder/1nsamfc18e91dad8f439fafa11477539db613"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-gray-700 hover:text-orange-500 py-1 text-sm"
+                onClick={() => setIsOpen(false)}
+              >
+                Guidelines
+              </a>
+              <button
+                onClick={() => {
+                  router.push("/updates")
+                  setIsOpen(false)
+                }}
+                className="block w-full text-left text-gray-700 hover:text-orange-500 py-1 text-sm"
+              >
+                Updates
+              </button>
+            </div>
 
             {isSignedIn && (
               <div className="border-t border-gray-200 mt-3 pt-3">

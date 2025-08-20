@@ -67,8 +67,8 @@ export default function Register() {
     {
       title: "IDEA IGNITE",
       subtitle: "Research-Based",
-      price: "₹299",
-      gst: "+ GST",
+      price: "₹399",
+      gst: "Including GST",
       description: "Individual competition for research enthusiasts",
       features: [
         "Individual participation",
@@ -79,14 +79,14 @@ export default function Register() {
       ],
       color: "from-orange-400 to-orange-600",
       popular: false,
-      prizes: "Up to ₹3,000",
+      prizes: "Revealing Soon",
       formLink: "#",
     },
     {
       title: "MYSTERY MAKERS",
       subtitle: "STEAM + Kit-Based",
-      price: "₹1,199",
-      gst: "+ GST",
+      price: "₹1,499",
+      gst: "Including GST",
       description: "Team-based STEAM challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -97,14 +97,14 @@ export default function Register() {
       ],
       color: "from-orange-500 to-orange-700",
       popular: false,
-      prizes: "Up to ₹8,000",
+      prizes: "Revealing Soon",
       formLink: "#",
     },
     {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
-      price: "₹1,499",
-      gst: "",
+      price: "₹1,999",
+      gst: "Including GST",
       description: "Technology for mankind's betterment",
       features: [
         "3 Students + 1 Mentor team",
@@ -115,14 +115,14 @@ export default function Register() {
       ],
       color: "from-orange-600 to-red-500",
       popular: true,
-      prizes: "Up to ₹11,000",
+      prizes: "Revealing Soon",
       formLink: "#",
     },
     {
       title: "TECH THROTTLE",
       subtitle: "RC Cars + BattleBots",
-      price: "₹2,999",
-      gst: "",
+      price: "₹3,599",
+      gst: "Including GST",
       description: "Ultimate gaming competition",
       features: [
         "3 Students + 1 Mentor team",
@@ -133,7 +133,7 @@ export default function Register() {
       ],
       color: "from-red-500 to-orange-600",
       popular: false,
-      prizes: "Up to ₹17,000",
+      prizes: "Revealing Soon",
       formLink: "#",
     },
   ]
@@ -469,7 +469,7 @@ export default function Register() {
                     }`}
                   >
                     {tier.popular && (
-                      <div className="absolute top-0 left-0 right-0 orange-accent text-white text-center py-2 text-sm font-semibold">
+                      <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
                         Most Popular
                       </div>
                     )}
@@ -516,7 +516,7 @@ export default function Register() {
                 {/* Enhanced Prize Pool Section */}
                 <div className="relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-2xl"></div>
-                  <div className="relative orange-accent rounded-2xl p-8 md:p-12 card-shadow-lg border-4 border-orange-200">
+                  <div className="relative bg-white rounded-2xl p-8 md:p-12 shadow-lg border-4 border-orange-200">
                     <motion.div
                       initial={{ scale: 0.8 }}
                       whileInView={{ scale: 1 }}
@@ -525,7 +525,7 @@ export default function Register() {
                       className="mb-6"
                     >
                       <div className="text-4xl md:text-6xl mb-4">💰</div>
-                      <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">Total Prize Pool</h3>
+                      <h3 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4">Total Prize Pool</h3>
                     </motion.div>
 
                     <motion.div
@@ -533,26 +533,26 @@ export default function Register() {
                       whileInView={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.8, delay: 0.2 }}
                       viewport={{ once: true }}
-                      className="bg-white/20 rounded-xl p-6 md:p-8 backdrop-blur-sm border border-white/30 mb-6"
+                      className="bg-orange-50 border border-orange-200 rounded-lg p-6 md:p-8 shadow-lg mb-6"
                     >
-                      <p className="text-white text-xl md:text-2xl mb-2">
-                        Up to <span className="font-bold text-3xl md:text-5xl text-yellow-300">₹1-Lakh!</span>
+                      <p className="text-gray-900 text-xl md:text-2xl mb-2">
+                        Up to <span className="font-bold text-3xl md:text-5xl text-orange-700">₹1-Lakh!</span>
                       </p>
-                      <p className="text-orange-100 text-base md:text-lg">in cash prizes across all categories!</p>
+                      <p className="text-gray-600 text-base md:text-lg">in cash prizes across all categories!</p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-3 gap-4 text-white">
-                      <motion.div whileHover={{ scale: 1.05 }} className="bg-white/10 rounded-lg p-4">
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <motion.div whileHover={{ scale: 1.05 }} className="bg-orange-50 rounded-lg p-4">
                         <div className="text-2xl mb-2">🏆</div>
-                        <p className="font-semibold text-sm">Certificates & Trophies</p>
+                        <p className="font-semibold text-gray-900 text-sm">Certificates & Trophies</p>
                       </motion.div>
-                      <motion.div whileHover={{ scale: 1.05 }} className="bg-white/10 rounded-lg p-4">
+                      <motion.div whileHover={{ scale: 1.05 }} className="bg-orange-50 rounded-lg p-4">
                         <div className="text-2xl mb-2">🌍</div>
-                        <p className="font-semibold text-sm">International Opportunities</p>
+                        <p className="font-semibold text-gray-900 text-sm">International Opportunities</p>
                       </motion.div>
-                      <motion.div whileHover={{ scale: 1.05 }} className="bg-white/10 rounded-lg p-4">
+                      <motion.div whileHover={{ scale: 1.05 }} className="bg-orange-50 rounded-lg p-4">
                         <div className="text-2xl mb-2">🎓</div>
-                        <p className="font-semibold text-sm">Expert Mentorship</p>
+                        <p className="font-semibold text-gray-900 text-sm">Expert Mentorship</p>
                       </motion.div>
                     </div>
                   </div>
