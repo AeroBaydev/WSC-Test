@@ -1,5 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export default function About() {
   const ageCategories = [
@@ -21,6 +22,33 @@ export default function About() {
     "E-Certificates of Participation & Achievement – official recognition of your skills",
     "Digital Badges – shareable on LinkedIn, resumes, and portfolios",
     "Exclusive Community Access – join a vibrant network of peers and mentors via dedicated WhatsApp groups",
+  ]
+
+  const sponsors = [
+    {
+      name: "STEM Educational Research",
+      logo: "/images/stemed-logo.png",
+      width: 140,
+      height: 50,
+    },
+    {
+      name: "stu.org",
+      logo: null,
+      width: 120,
+      height: 50,
+    },
+    {
+      name: "Partner 3",
+      logo: null,
+      width: 120,
+      height: 50,
+    },
+    {
+      name: "Partner 4",
+      logo: null,
+      width: 120,
+      height: 50,
+    },
   ]
 
   return (
@@ -162,7 +190,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
           viewport={{ once: true }}
-          className="bg-white rounded-lg p-8 card-shadow"
+          className="bg-white rounded-lg p-8 card-shadow mb-16"
         >
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8">Incentives of WSC</h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -181,6 +209,41 @@ export default function About() {
                   </svg>
                 </div>
                 <p className="text-gray-700 leading-relaxed">{incentive}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="bg-white rounded-lg p-8 card-shadow"
+        >
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8">Sponsored by</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+            {sponsors.map((sponsor, index) => (
+              <motion.div
+                key={sponsor.name}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center justify-center p-4 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                {sponsor.logo ? (
+                  <Image
+                    src={sponsor.logo || "/placeholder.svg"}
+                    alt={`${sponsor.name} Logo`}
+                    width={sponsor.width}
+                    height={sponsor.height}
+                    className="object-contain"
+                  />
+                ) : (
+                  <div className="text-orange-500 font-bold text-lg text-center">{sponsor.name}</div>
+                )}
               </motion.div>
             ))}
           </div>

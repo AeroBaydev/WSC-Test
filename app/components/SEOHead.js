@@ -24,8 +24,6 @@ export default function SEOHead() {
       <meta property="og:type" content="website" />
       <meta property="og:locale" content="en_IN" />
 
-      {/* Article Tags */}
-      <meta property="article:author" content="AeroBay" />
       <meta property="article:publisher" content="World Skill Challenge" />
 
       {/* Additional Twitter Tags */}

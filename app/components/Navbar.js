@@ -40,13 +40,15 @@ export default function Navbar() {
             className="flex items-center space-x-3 cursor-pointer"
             onClick={() => router.push("/")}
           >
-            <Image
-              src="/images/wsc-logo.png"
-              alt="World Skill Challenge Logo"
-              width={60}
-              height={60}
-              className="object-contain"
-            />
+            <div className="bg-orange-500 p-2 rounded-lg">
+              <Image
+                src="/images/wsc-logo.png"
+                alt="World Skill Challenge Logo"
+                width={60}
+                height={60}
+                className="object-contain bg-white rounded-md"
+              />
+            </div>
             <div className="text-xl font-bold text-gray-900">World Skill Challenge</div>
           </motion.div>
 
@@ -98,6 +100,15 @@ export default function Navbar() {
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
                   >
                     Updates
+                  </button>
+                  <button
+                    onClick={() => {
+                      router.push("/faq")
+                      setIsMoreOpen(false)
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                  >
+                    FAQ
                   </button>
                 </motion.div>
               )}
@@ -200,6 +211,15 @@ export default function Navbar() {
                 className="block w-full text-left text-gray-700 hover:text-orange-500 py-1 text-sm"
               >
                 Updates
+              </button>
+              <button
+                onClick={() => {
+                  router.push("/faq")
+                  setIsOpen(false)
+                }}
+                className="block w-full text-left text-gray-700 hover:text-orange-500 py-1 text-sm"
+              >
+                FAQ
               </button>
             </div>
 

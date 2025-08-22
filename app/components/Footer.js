@@ -96,21 +96,15 @@ export default function Footer() {
               <div className="flex items-center space-x-6">
                 <motion.div whileHover={{ scale: 1.1 }}>
                   <Image
-                    src="/images/aerobay-logo.png"
-                    alt="AeroBay Logo"
-                    width={120}
-                    height={40}
-                    className="object-contain"
-                  />
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.1 }}>
-                  <Image
                     src="/images/stemed-logo.png"
                     alt="STEM Educational Research Logo"
                     width={120}
                     height={40}
                     className="object-contain"
                   />
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.1 }}>
+                  <div className="text-orange-500 font-bold text-lg">stu.org</div>
                 </motion.div>
               </div>
             </div>
