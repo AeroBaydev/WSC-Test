@@ -113,7 +113,7 @@ export default function FAQ() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => (window.location.href = "#contact")}
+            onClick={() => (window.location.href = "/#contact")}
             className="bg-white text-orange-500 px-8 py-3 rounded-lg font-semibold hover:bg-orange-50 transition-colors"
           >
             Contact Us

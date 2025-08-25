@@ -40,7 +40,7 @@ export default function Navbar() {
             className="flex items-center space-x-3 cursor-pointer"
             onClick={() => router.push("/")}
           >
-            <div className="bg-orange-500 p-2 rounded-lg">
+            <div className="bg-orange-500 p-1 rounded-lg">
               <Image
                 src="/images/wsc-logo.png"
                 alt="World Skill Challenge Logo"
@@ -84,7 +84,7 @@ export default function Navbar() {
                   className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
                 >
                   <a
-                    href="https://workdrive.zoho.in/folder/1nsamfc18e91dad8f439fafa11477539db613"
+                    href="https://workdrive.zohopublic.in/file/1nsam983e1059f38d4032871e335440d67f76"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"

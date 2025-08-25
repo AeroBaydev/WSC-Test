@@ -104,7 +104,13 @@ export default function Footer() {
                   />
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.1 }}>
-                  <div className="text-orange-500 font-bold text-lg">stu.org</div>
+                  <Image
+                    src="/images/NSDC.png"
+                    alt="NSDC Logo"
+                    width={120}
+                    height={40}
+                    className="object-contain"
+                  />
                 </motion.div>
               </div>
             </div>
