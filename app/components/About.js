@@ -37,18 +37,18 @@ export default function About() {
       width: 120,
       height: 50,
     },
-    // {
-    //   name: "Partner 3",
-    //   logo: null,
-    //   width: 120,
-    //   height: 50,
-    // },
-    // {
-    //   name: "Partner 4",
-    //   logo: null,
-    //   width: 120,
-    //   height: 50,
-    // },
+    {
+      name: "Aero Modellers Association of India",
+      logo: "/images/amai.jpg",
+      width: 120,
+      height: 50,
+    },
+    {
+      name: "Skill India",
+      logo: "/images/skill india.png",
+      width: 120,
+      height: 50,
+    },
   ]
 
   return (
