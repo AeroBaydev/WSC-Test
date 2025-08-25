@@ -10,9 +10,9 @@ export default function Categories() {
         "Dive into research! Study and explore advancements in science. Submit a video explaining your research idea, findings, and relevance.",
       icon: "🔬",
       color: "from-orange-400 to-orange-600",
-      fee: "₹299 + GST",
+      fee: "₹399 includin GST",
       team: "Individual",
-      prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
+      // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
     },
     {
       name: "MYSTERY MAKERS",
@@ -21,9 +21,9 @@ export default function Categories() {
         "Two exciting challenges: Kit-Based Challenge with mystery kits and D&T Popsicle Bridge Challenge. Complete challenges and explain STEAM principles.",
       icon: "🧩",
       color: "from-orange-500 to-orange-700",
-      fee: "₹1,199 + GST",
+      fee: "₹1,499 including GST",
       team: "3 Students + 1 Mentor",
-      prizes: ["1st: ₹8,000", "2nd: ₹5,000", "3rd: ₹3,000"],
+      // prizes: ["1st: ₹8,000", "2nd: ₹5,000", "3rd: ₹3,000"],
     },
     {
       name: "TECH FOR GOOD",
@@ -32,9 +32,9 @@ export default function Categories() {
         "Theme: 'Using Technology for the Betterment of Mankind'. Create meaningful tech solutions and present your robotics project.",
       icon: "🤖",
       color: "from-orange-600 to-red-500",
-      fee: "₹1,499",
+      fee: "₹1,999 including GST",
       team: "3 Students + 1 Mentor",
-      prizes: ["1st: ₹11,000", "2nd: ₹7,000", "3rd: ₹4,000"],
+      // prizes: ["1st: ₹11,000", "2nd: ₹7,000", "3rd: ₹4,000"],
       addon: "Robotics Kit: ₹2,500 + GST (optional)",
     },
     {
@@ -44,9 +44,9 @@ export default function Categories() {
         "Race. Smash. Survive. Bring your own RC car and BattleBot! Compete in RC car hurdles and BattleBot showdowns.",
       icon: "🏎️",
       color: "from-red-500 to-orange-600",
-      fee: "₹2,999",
+      fee: "₹3,599 including GST",
       team: "3 Students + 1 Mentor",
-      prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
+      // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Dimensions and weight rules will be provided",
     },
   ]
@@ -111,13 +111,20 @@ export default function Categories() {
                   )}
                 </div>
 
+                {/* Prize Money section commented out
                 <div className="border-t border-gray-200 pt-4">
                   <h5 className="text-gray-900 font-semibold mb-2 text-sm">Prize Money:</h5>
                   <div className="grid grid-cols-3 gap-2">
                     {category.prizes.map((prize, prizeIndex) => (
                       <div key={prizeIndex} className="text-center">
                         <div
-                          className={`text-xs font-bold ${prizeIndex === 0 ? "text-yellow-600" : prizeIndex === 1 ? "text-gray-600" : "text-orange-600"}`}
+                          className={`text-xs font-bold ${
+                            prizeIndex === 0
+                              ? "text-yellow-600"
+                              : prizeIndex === 1
+                              ? "text-gray-600"
+                              : "text-orange-600"
+                          }`}
                         >
                           {prize}
                         </div>
@@ -125,6 +132,7 @@ export default function Categories() {
                     ))}
                   </div>
                 </div>
+                */}
               </div>
             </motion.div>
           ))}
