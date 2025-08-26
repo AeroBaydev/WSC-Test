@@ -10,7 +10,7 @@ export default function Categories() {
         "Dive into research! Study and explore advancements in science. Submit a video explaining your research idea, findings, and relevance.",
       icon: "🔬",
       color: "from-orange-400 to-orange-600",
-      fee: "₹399 includin GST",
+      fee: "₹399 including GST",
       team: "Individual",
       // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
     },
