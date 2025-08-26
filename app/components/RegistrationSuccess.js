@@ -92,7 +92,7 @@ export default function Register() {
             Choose your category and compete for exciting cash prizes
           </p>
           <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
-            <p className="text-orange-700 font-semibold">📅 Registration Deadline: 30th August 2025 (Tentative)</p>
+            <p className="text-orange-700 font-semibold">📅 Registration Deadline: 7th September 2025</p>
           </div>
         </motion.div>
 
