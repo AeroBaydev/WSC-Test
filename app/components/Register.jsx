@@ -249,7 +249,7 @@ export default function Register() {
                 </motion.button>
               </SignInButton>
               <p className="text-sm text-gray-500 mt-4">
-                Registration closes on <span className="font-semibold text-orange-600">30th August 2025</span>
+                Registration closes on <span className="font-semibold text-orange-600">7th September 2025</span>
               </p>
             </div>
           </motion.div>
@@ -450,7 +450,7 @@ export default function Register() {
                 </p>
                 <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
                   <p className="text-orange-700 font-semibold">
-                    📅 Registration Deadline: 30th August 2025 (Tentative)
+                    📅 Registration Deadline: 7th September 2025
                   </p>
                 </div>
               </motion.div>
