@@ -51,12 +51,12 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://world-skill-challenge.vercel.app/#organization",
+      "@id": "https://worldskillchallenge.com/#organization",
       name: "World Skill Challenge",
-      url: "https://world-skill-challenge.vercel.app",
+      url: "https://worldskillchallenge.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://world-skill-challenge.vercel.app/images/wsc-logo.png",
+        url: "https://worldskillchallenge.com/images/wsc-logo.png",
         width: 512,
         height: 512,
       },
@@ -69,7 +69,7 @@ const structuredData = {
     },
     {
       "@type": "Event",
-      "@id": "https://world-skill-challenge.vercel.app/#event",
+      "@id": "https://worldskillchallenge.com/#event",
       name: "World Skill Challenge 2025",
       description:
         "Crafting Champions of Tomorrow. A national and international skill hunt for students across age groups.",
@@ -96,7 +96,7 @@ const structuredData = {
         },
       ],
       organizer: {
-        "@id": "https://world-skill-challenge.vercel.app/#organization",
+        "@id": "https://worldskillchallenge.com/#organization",
       },
       offers: [
         {
@@ -105,7 +105,7 @@ const structuredData = {
           price: "399",
           priceCurrency: "INR",
           description: "Research-Based Individual Competition",
-          url: "https://world-skill-challenge.vercel.app/#register",
+          url: "https://worldskillchallenge.com/#register",
         },
         {
           "@type": "Offer",
@@ -113,7 +113,7 @@ const structuredData = {
           price: "1499",
           priceCurrency: "INR",
           description: "STEAM + Kit-Based Team Competition",
-          url: "https://world-skill-challenge.vercel.app/#register",
+          url: "https://worldskillchallenge.com/#register",
         },
         {
           "@type": "Offer",
@@ -121,7 +121,7 @@ const structuredData = {
           price: "1999",
           priceCurrency: "INR",
           description: "Robotics Team Competition",
-          url: "https://world-skill-challenge.vercel.app/#register",
+          url: "https://worldskillchallenge.com/#register",
         },
         {
           "@type": "Offer",
@@ -129,31 +129,31 @@ const structuredData = {
           price: "3599",
           priceCurrency: "INR",
           description: "Gaming - RC Cars + BattleBots",
-          url: "https://world-skill-challenge.vercel.app/#register",
+          url: "https://worldskillchallenge.com/#register",
         },
       ],
       audience: {
         "@type": "EducationalAudience",
         educationalRole: "student",
       },
-      image: "https://world-skill-challenge.vercel.app/images/wsc-logo.png",
-      url: "https://world-skill-challenge.vercel.app",
+      image: "https://worldskillchallenge.com/images/wsc-logo.png",
+      url: "https://worldskillchallenge.com",
     },
     {
       "@type": "WebSite",
-      "@id": "https://world-skill-challenge.vercel.app/#website",
-      url: "https://world-skill-challenge.vercel.app",
+      "@id": "https://worldskillchallenge.com/#website",
+      url: "https://worldskillchallenge.com",
       name: "World Skill Challenge 2025",
       description: "National & International Skill Hunt for Young Innovators",
       publisher: {
-        "@id": "https://world-skill-challenge.vercel.app/#organization",
+        "@id": "https://worldskillchallenge.com/#organization",
       },
       potentialAction: [
         {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: "https://world-skill-challenge.vercel.app/?s={search_term_string}",
+            urlTemplate: "https://worldskillchallenge.com/?s={search_term_string}",
           },
           "query-input": "required name=search_term_string",
         },

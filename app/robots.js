@@ -5,6 +5,6 @@ export default function robots() {
       allow: "/",
       disallow: ["/api/", "/admin/"],
     },
-    sitemap: "https://world-skill-challenge.vercel.app/sitemap.xml",
+    sitemap: "https://worldskillchallenge.com/sitemap.xml",
   }
 }

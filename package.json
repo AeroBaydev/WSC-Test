@@ -1,7 +1,10 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "world-skill-challenge",
+  "version": "1.0.0",
   "private": true,
+  "description": "World Skill Challenge 2025 - National & International Competition for Young Innovators",
+  "author": "World Skill Challenge",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -52,9 +55,9 @@
     "mongoose": "^8.17.2",
     "next": "14.2.25",
     "next-themes": "^0.4.4",
-    "react": "^19",
+    "react": "^18.3.1",
     "react-day-picker": "9.8.0",
-    "react-dom": "^19",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.1",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.0",
@@ -71,5 +74,23 @@
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "typescript": "5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/worldskillchallenge/world-skill-challenge-2025"
+  },
+  "keywords": [
+    "world-skill-challenge",
+    "student-competition",
+    "robotics",
+    "innovation",
+    "nextjs",
+    "react",
+    "mongodb",
+    "clerk"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

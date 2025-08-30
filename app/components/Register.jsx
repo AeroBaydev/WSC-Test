@@ -15,6 +15,7 @@ export default function Register() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [userCategories, setUserCategories] = useState([])
 
   useEffect(() => {
     const checkRegistration = async () => {
@@ -26,6 +27,15 @@ export default function Register() {
           const data = await res.json()
           if (data.exists) {
             setIsRegistered(true)
+          }
+
+          // Fetch user's registered categories
+          const categoriesRes = await fetch("/api/mark-registered", {
+            method: "GET",
+          })
+          const categoriesData = await categoriesRes.json()
+          if (categoriesData.success) {
+            setUserCategories(categoriesData.categories)
           }
         } catch (err) {
           console.error("Error checking registration:", err)
@@ -137,6 +147,34 @@ export default function Register() {
       formLink: "#",
     },
   ]
+
+  // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
+  const categoryFormBaseUrls = {
+    "IDEA IGNITE": "https://forms.zoho.com/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "MYSTERY MAKERS": "https://forms.zoho.n/aviotronaerospaceprivatelimite/form/IDEAIGNITE1"  ,
+    "TECH FOR GOOD": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "TECH THROTTLE": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+  }
+
+  // Build Zoho form link with Clerk user params
+  const buildZohoFormUrl = (categoryTitle) => {
+    const baseUrl = categoryFormBaseUrls[categoryTitle]
+    if (!baseUrl || !user) return "#"
+    try {
+      const url = new URL(baseUrl)
+      url.searchParams.set("clerkUserId", user.id)
+      url.searchParams.set("email", user.primaryEmailAddress?.emailAddress || "")
+      url.searchParams.set("category", categoryTitle)
+      return url.toString()
+    } catch (e) {
+      return "#"
+    }
+  }
+
+  // Check if user is already registered in a category
+  const isRegisteredInCategory = (categoryTitle) => {
+    return userCategories.some(cat => cat.category === categoryTitle)
+  }
 
   return (
     <section id="register" className="py-20 bg-white">
@@ -405,17 +443,26 @@ export default function Register() {
                             </li>
                           ))}
                         </ul>
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
-                            tier.popular
-                              ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl"
-                              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                          }`}
-                        >
-                          Register for {tier.title}
-                        </motion.button>
+                        {isRegisteredInCategory(tier.title) ? (
+                          <div className="w-full py-4 rounded-xl font-semibold text-lg bg-green-50 text-green-700 border border-green-200 text-center">
+                            ✓ Already Registered
+                          </div>
+                        ) : (
+                          <motion.a
+                            href={buildZohoFormUrl(tier.title)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className={`block w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
+                              tier.popular
+                                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl"
+                                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                            }`}
+                          >
+                            Register for {tier.title}
+                          </motion.a>
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -493,14 +540,22 @@ export default function Register() {
                         </div>
                       </div>
 
-                      <motion.a
-                        href={tier.formLink}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                      >
-                        Register Now
-                      </motion.a>
+                      {isRegisteredInCategory(tier.title) ? (
+                        <div className="block w-full py-3 px-4 rounded-lg font-semibold text-gray-600 bg-gray-100 text-sm text-center">
+                          ✓ Already Registered
+                        </div>
+                      ) : (
+                        <motion.a
+                          href={buildZohoFormUrl(tier.title)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                        >
+                          Register Now
+                        </motion.a>
+                      )}
                     </div>
                   </motion.div>
                 ))}
