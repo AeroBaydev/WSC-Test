@@ -177,8 +177,9 @@ export default function Register() {
     console.log('User category registrations:', userCategories);
     const isRegistered = userCategories.some(reg => {
       const matches = reg.category === categoryTitle;
-      console.log(`Comparing: "${reg.category}" === "${categoryTitle}" = ${matches}`);
-      return matches;
+      const isFullyRegistered = matches && (reg.paymentStatus === 'success' || reg.paymentStatus === 'completed');
+      console.log(`Comparing: "${reg.category}" === "${categoryTitle}" = ${matches}, Payment: ${reg.paymentStatus}, Fully Registered: ${isFullyRegistered}`);
+      return isFullyRegistered;
     });
     console.log('Is registered:', isRegistered);
     return isRegistered;

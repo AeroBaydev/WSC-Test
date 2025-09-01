@@ -5,40 +5,49 @@ import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 
 export async function POST(request) {
   try {
-    // 1. Verify Zoho signature
-    const signature = request.headers.get('x-zoho-signature');
+    // 1. Get the webhook secret from header (Zoho sends this)
+    const webhookSecret = request.headers.get('x-zoho-webhook-secret');
     const body = await request.text();
     
-    if (!signature || !process.env.ZOHO_WEBHOOK_SECRET) {
-      console.error('Missing signature or webhook secret');
+    console.log('Webhook headers:', Object.fromEntries(request.headers.entries()));
+    console.log('Webhook body:', body);
+    
+    // 2. Check if webhook secret matches (simple validation)
+    if (!webhookSecret || !process.env.ZOHO_WEBHOOK_SECRET) {
+      console.error('Missing webhook secret header or environment variable');
+      console.error('Header received:', webhookSecret);
+      console.error('Environment variable:', process.env.ZOHO_WEBHOOK_SECRET);
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Verify signature
-    const expectedSignature = crypto
-      .createHmac('sha256', process.env.ZOHO_WEBHOOK_SECRET)
-      .update(body)
-      .digest('hex');
-
-    if (signature !== expectedSignature) {
-      console.error('Invalid signature');
-      console.error('Expected:', expectedSignature);
-      console.error('Received:', signature);
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
+    if (webhookSecret !== process.env.ZOHO_WEBHOOK_SECRET) {
+      console.error('Webhook secret mismatch');
+      console.error('Expected:', process.env.ZOHO_WEBHOOK_SECRET);
+      console.error('Received:', webhookSecret);
+      return NextResponse.json({ error: 'Invalid webhook secret' }, { status: 401 });
     }
 
-    // 2. Parse JSON payload
-    const payload = JSON.parse(body);
+    // 3. Parse JSON payload
+    let payload;
+    try {
+      payload = JSON.parse(body);
+    } catch (e) {
+      console.error('Failed to parse JSON:', e);
+      return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    }
+    
     console.log('Zoho webhook payload:', payload);
 
-    // 3. Extract required fields from Zoho's field structure
-    // Map your Zoho form fields to the data you need
-    const email = payload.Field_6 || payload.Field_16; // Email field
-    const clerkUserId = payload.Field_5 || payload.Field_7 || payload.Field_8; // Clerk User ID (hidden field)
-    const category = payload.Field_5 || payload.Field_7 || payload.Field_8; // Category (hidden field)
-    const paymentStatus = payload.Field_10; // Payment status
-    const paymentAmount = payload.Field_9; // Payment amount
-    const transactionId = payload.Field_12; // Transaction ID
+    // 4. Extract required fields from Zoho's field structure
+    // Based on your Zoho form field aliases: email, clerkUserId, category
+    const email = payload.email || payload.Email; // Email field
+    const clerkUserId = payload.clerkUserId || payload.clerkUserld; // Clerk User ID (note: you had a typo in Zoho)
+    const category = payload.category || payload.Category; // Category field
+    
+    // For payment fields - these are CRITICAL for determining successful registration
+    const paymentStatus = payload.paymentStatus || payload.PaymentStatus || payload.payment_status || 'pending';
+    const paymentAmount = payload.paymentAmount || payload.PaymentAmount || payload.payment_amount || '0';
+    const transactionId = payload.transactionId || payload.TransactionID || payload.transaction_id || `webhook_${Date.now()}`;
     
     console.log('Extracted data:', {
       email,
@@ -49,15 +58,15 @@ export async function POST(request) {
       transactionId
     });
     
-    if (!email || !clerkUserId || !category || !paymentStatus) {
-      console.error('Missing required fields:', { email, clerkUserId, category, paymentStatus });
+    if (!email || !clerkUserId || !category) {
+      console.error('Missing required fields:', { email, clerkUserId, category });
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 4. Connect to MongoDB
+    // 5. Connect to MongoDB
     await dbConnect();
 
-    // 5. Check if user is already registered in this category
+    // 6. Check if user is already registered in this category
     const existingRegistration = await CategoryRegistration.findOne({
       clerkUserId: clerkUserId,
       category: category
@@ -65,23 +74,37 @@ export async function POST(request) {
 
     if (existingRegistration) {
       console.log('User already registered in category:', category);
-      // Update payment status if it changed
+      
+      // Only allow re-registration if payment failed previously
+      if (existingRegistration.paymentStatus === 'success' || existingRegistration.paymentStatus === 'completed') {
+        console.log('User already successfully registered and paid - cannot re-register');
+        return NextResponse.json({ 
+          success: false, 
+          message: 'Already successfully registered in this category',
+          category: category,
+          paymentStatus: existingRegistration.paymentStatus
+        });
+      }
+      
+      // Update payment status if it changed (e.g., from pending to success)
       if (existingRegistration.paymentStatus !== paymentStatus) {
         existingRegistration.paymentStatus = paymentStatus;
         existingRegistration.paymentAmount = paymentAmount;
         existingRegistration.transactionId = transactionId;
         await existingRegistration.save();
-        console.log('Updated payment status for existing category:', category);
+        console.log('Updated payment status for existing category:', category, 'from', existingRegistration.paymentStatus, 'to', paymentStatus);
       }
+      
       return NextResponse.json({ 
-        success: false, 
-        message: 'Already registered in this category',
+        success: true, 
+        message: 'Payment status updated for existing registration',
         category: category,
-        paymentStatus: paymentStatus
+        paymentStatus: paymentStatus,
+        registrationId: existingRegistration._id
       });
     }
 
-    // 6. Create new category registration
+    // 7. Create new category registration
     const newRegistration = await CategoryRegistration.create({
       clerkUserId,
       email,
