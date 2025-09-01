@@ -13,6 +13,7 @@ export async function POST(req) {
   }
 
   const { firstName, lastName, username, schoolName } = body
+  const email = clerkUser.primaryEmailAddress?.emailAddress
 
   try {
     const existingUser = await User.findOne({ userId: clerkUser.id })
@@ -27,6 +28,7 @@ export async function POST(req) {
       lastName,
       username,
       schoolName,
+      email
     })
     return NextResponse.json({ success: true, user })
   } catch (error) {
