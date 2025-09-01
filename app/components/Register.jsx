@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
 
 export default function Register() {
@@ -35,7 +35,7 @@ export default function Register() {
           })
           const categoriesData = await categoriesRes.json()
           if (categoriesData.success) {
-            setUserCategories(categoriesData.registrations)
+            setUserCategories(categoriesData.registrations || [])
           }
         } catch (err) {
           console.error("Error checking registration:", err)
@@ -150,7 +150,8 @@ export default function Register() {
 
   // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
-    "IDEA IGNITE": "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1/formperma/yuklwYd2IfosCywtkVgrQaHZuGAPdA1AaVUaTuoCmT8",
+    "IDEA IGNITE":
+      "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1/formperma/yuklwYd2IfosCywtkVgrQaHZuGAPdA1AaVUaTuoCmT8",
     "MYSTERY MAKERS": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
     "TECH FOR GOOD": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
     "TECH THROTTLE": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
@@ -171,18 +172,44 @@ export default function Register() {
     }
   }
 
-  // Check if user is already registered in a category
+  // Harden normalization: trim, normalize separators, expand synonyms
+  const normalizeStatus = (status) => {
+    if (!status) return "pending"
+    const s = String(status).trim().toLowerCase().replace(/[_-]+/g, " ")
+    if (
+      ["success", "successful", "completed", "complete", "paid", "payment success", "payment completed"].includes(s)
+    ) {
+      return "registered"
+    }
+    if (["pending", "processing", "initiated", "in progress"].includes(s)) {
+      return "pending"
+    }
+    if (["failed", "failure", "canceled", "cancelled", "declined"].includes(s)) {
+      return "failed"
+    }
+    return "pending"
+  }
+
+  // Derive normalized statuses once to ensure UI never uses raw values accidentally
+  const normalizedCategories = useMemo(() => {
+    return (userCategories || []).map((r) => ({
+      ...r,
+      normalizedStatus: normalizeStatus(r?.paymentStatus),
+    }))
+  }, [userCategories])
+
+  const getCategoryStatus = (categoryTitle) => {
+    // Read from normalizedCategories first, fallback to raw
+    const reg =
+      normalizedCategories.find((r) => r?.category === categoryTitle) ||
+      userCategories.find((r) => r?.category === categoryTitle)
+    if (!reg) return "not-registered"
+    return reg.normalizedStatus ?? normalizeStatus(reg.paymentStatus)
+  }
+
+  // Kept for backwards compatibility
   const isRegisteredInCategory = (categoryTitle) => {
-    console.log('Checking registration for category:', categoryTitle);
-    console.log('User category registrations:', userCategories);
-    const isRegistered = userCategories.some(reg => {
-      const matches = reg.category === categoryTitle;
-      const isFullyRegistered = matches && (reg.paymentStatus === 'success' || reg.paymentStatus === 'completed');
-      console.log(`Comparing: "${reg.category}" === "${categoryTitle}" = ${matches}, Payment: ${reg.paymentStatus}, Fully Registered: ${isFullyRegistered}`);
-      return isFullyRegistered;
-    });
-    console.log('Is registered:', isRegistered);
-    return isRegistered;
+    return getCategoryStatus(categoryTitle) === "registered"
   }
 
   return (
@@ -341,19 +368,21 @@ export default function Register() {
               {/* Registration form for signed-in users */}
               <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Complete Your Profile</h3>
-                
+
                 {!isRegistered && (
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
                     <div className="flex items-center">
                       <div className="text-2xl mr-3">📝</div>
                       <div>
                         <p className="text-orange-800 font-semibold">Step 1: Complete Your Profile</p>
-                        <p className="text-orange-700 text-sm">Fill out the form below to unlock access to competition categories and registration forms.</p>
+                        <p className="text-orange-700 text-sm">
+                          Fill out the form below to unlock access to competition categories and registration forms.
+                        </p>
                       </div>
                     </div>
                   </div>
                 )}
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -427,34 +456,147 @@ export default function Register() {
               {/* Competition categories for signed-in users */}
               <div className="mb-12">
                 <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">Choose Your Competition Category</h3>
-                
+
                 {isRegistered && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
-                    <div className="flex items-center">
-                      <div className="text-2xl mr-3">✅</div>
-                      <div>
-                        <p className="text-green-800 font-semibold">Profile Registration Complete!</p>
-                        <p className="text-green-700 text-sm">You can now choose your competition category and proceed with registration.</p>
+                  <div className="max-w-4xl mx-auto mb-8">
+                    <div className="bg-white border border-gray-200 rounded-xl p-4">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">Your Registration Status</h4>
+                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                        {pricingTiers.map((tier) => {
+                          const status = getCategoryStatus(tier.title)
+                          const chip =
+                            status === "registered"
+                              ? {
+                                  bg: "bg-green-50",
+                                  border: "border-green-200",
+                                  text: "text-green-700",
+                                  label: "Registered ✓",
+                                }
+                              : status === "pending"
+                                ? {
+                                    bg: "bg-yellow-50",
+                                    border: "border-yellow-200",
+                                    text: "text-yellow-700",
+                                    label: "Pending ⏳",
+                                  }
+                                : status === "failed"
+                                  ? {
+                                      bg: "bg-red-50",
+                                      border: "border-red-200",
+                                      text: "text-red-700",
+                                      label: "Payment Failed",
+                                    }
+                                  : {
+                                      bg: "bg-gray-50",
+                                      border: "border-gray-200",
+                                      text: "text-gray-700",
+                                      label: "Not Registered",
+                                    }
+
+                          return (
+                            <div
+                              key={tier.title}
+                              className={`flex items-center justify-between rounded-lg ${chip.bg} border ${chip.border} px-3 py-2`}
+                              aria-live="polite"
+                            >
+                              <span className="text-sm font-medium text-gray-900">{tier.title}</span>
+                              <span className={`text-xs font-semibold ${chip.text}`}>{chip.label}</span>
+                            </div>
+                          )
+                        })}
                       </div>
                     </div>
                   </div>
                 )}
-                
-                {!isRegistered ? (
+
+                {isRegistered ? (
+                  // Show actual registration categories when user has completed registration
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    {pricingTiers.map((tier, index) => {
+                      const status = getCategoryStatus(tier.title)
+                      const isRegistered = status === "registered"
+                      const isPending = status === "pending"
+                      const isFailed = status === "failed"
+
+                      return (
+                        <motion.div
+                          key={tier.title}
+                          initial={{ opacity: 0, y: 50 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: index * 0.1 }}
+                          viewport={{ once: true }}
+                          whileHover={{ scale: 1.05, y: -10 }}
+                          className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
+                            tier.popular ? "ring-2 ring-orange-500" : ""
+                          }`}
+                        >
+                          {tier.popular && (
+                            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                              🔥 MOST POPULAR
+                            </div>
+                          )}
+
+                          <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
+
+                          <div className="p-6">
+                            <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
+                            <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
+
+                            <div className="mb-4">
+                              <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
+                              {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
+                            </div>
+
+                            <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
+
+                            <div className="mb-6">
+                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
+                                <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                              </div>
+                            </div>
+
+                            {isRegistered ? (
+                              <div className="block w-full py-3 px-4 rounded-lg font-semibold text-green-700 bg-green-50 border border-green-200 text-sm text-center">
+                                ✓ Already Registered
+                              </div>
+                            ) : isPending ? (
+                              <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
+                                ⏳ Payment Pending - Check your email
+                              </div>
+                            ) : (
+                              <motion.a
+                                href={buildZohoFormUrl(tier.title)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                                aria-label={`Register for ${tier.title}`}
+                              >
+                                {isFailed ? "Retry Registration" : "Register Now"}
+                              </motion.a>
+                            )}
+                          </div>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                ) : (
                   // Show preview categories when user hasn't completed registration
                   <div className="text-center py-12">
                     <div className="text-6xl mb-6">🔒</div>
                     <h4 className="text-2xl font-bold text-gray-900 mb-4">Complete Your Registration First</h4>
                     <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-                      Please complete your profile information above to unlock access to competition categories and registration forms.
+                      Please complete your profile information above to unlock access to competition categories and
+                      registration forms.
                     </p>
-                    
+
                     {/* Preview of categories (non-clickable) */}
                     <div className="grid lg:grid-cols-2 gap-8 opacity-60">
                       {pricingTiers.map((tier, index) => (
                         <motion.div
                           key={tier.title}
-                          initial={{ opacity: 0, y: 30 }}
+                          initial={{ opacity: 0, y: 50 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, delay: index * 0.1 }}
                           viewport={{ once: true }}
@@ -465,7 +607,9 @@ export default function Register() {
                               🔥 MOST POPULAR
                             </div>
                           )}
-                          <div className={`bg-gradient-to-r ${tier.color} p-6 text-white ${tier.popular ? "pt-12" : ""}`}>
+                          <div
+                            className={`bg-gradient-to-r ${tier.color} p-6 text-white ${tier.popular ? "pt-12" : ""}`}
+                          >
                             <h4 className="text-2xl font-bold mb-2">{tier.title}</h4>
                             <p className="text-lg opacity-90 mb-4">{tier.subtitle}</p>
                             <div className="flex items-baseline mb-2">
@@ -493,70 +637,6 @@ export default function Register() {
                         </motion.div>
                       ))}
                     </div>
-                  </div>
-                ) : (
-                  // Show actual registration categories when user has completed registration
-                  <div className="grid lg:grid-cols-2 gap-8">
-                    {pricingTiers.map((tier, index) => (
-                      <motion.div
-                        key={tier.title}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className={`relative bg-white rounded-2xl shadow-xl overflow-hidden border-2 ${
-                          tier.popular ? "border-orange-500" : "border-gray-200"
-                        } hover:shadow-2xl transition-all duration-300`}
-                      >
-                        {tier.popular && (
-                          <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
-                            🔥 MOST POPULAR
-                          </div>
-                        )}
-                        <div className={`bg-gradient-to-r ${tier.color} p-6 text-white ${tier.popular ? "pt-12" : ""}`}>
-                          <h4 className="text-2xl font-bold mb-2">{tier.title}</h4>
-                          <p className="text-lg opacity-90 mb-4">{tier.subtitle}</p>
-                          <div className="flex items-baseline mb-2">
-                            <span className="text-4xl font-bold">{tier.price}</span>
-                            {tier.gst && <span className="text-lg ml-2 opacity-75">{tier.gst}</span>}
-                          </div>
-                          <div className="bg-white/20 rounded-lg px-3 py-1 inline-block">
-                            <span className="text-yellow-300 font-bold">Prize: {tier.prizes}</span>
-                          </div>
-                        </div>
-                        <div className="p-6">
-                          <p className="text-gray-600 mb-6">{tier.description}</p>
-                          <ul className="space-y-3 mb-8">
-                            {tier.features.map((feature, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <span className="text-orange-500 mr-3 mt-1">✓</span>
-                                <span className="text-gray-700">{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                          {isRegisteredInCategory(tier.title) ? (
-                            <div className="w-full py-4 rounded-xl font-semibold text-lg bg-green-50 text-green-700 border border-green-200 text-center">
-                              ✓ Already Registered
-                            </div>
-                          ) : (
-                            <motion.a
-                              href={buildZohoFormUrl(tier.title)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              className={`block w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
-                                tier.popular
-                                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl"
-                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                              }`}
-                            >
-                              Register for {tier.title}
-                            </motion.a>
-                          )}
-                        </div>
-                      </motion.div>
-                    ))}
                   </div>
                 )}
               </div>
@@ -588,69 +668,79 @@ export default function Register() {
                   Choose your category and compete for exciting cash prizes
                 </p>
                 <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <p className="text-orange-700 font-semibold">
-                    📅 Registration Deadline: 7th September 2025
-                  </p>
+                  <p className="text-orange-700 font-semibold">📅 Registration Deadline: 7th September 2025</p>
                 </div>
               </motion.div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {pricingTiers.map((tier, index) => (
-                  <motion.div
-                    key={tier.title}
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    whileHover={{ scale: 1.05, y: -10 }}
-                    className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
-                      tier.popular ? "ring-2 ring-orange-500" : ""
-                    }`}
-                  >
-                    {tier.popular && (
-                      <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
-                        Most Popular
-                      </div>
-                    )}
+                {pricingTiers.map((tier, index) => {
+                  const status = getCategoryStatus(tier.title)
+                  const isRegistered = status === "registered"
+                  const isPending = status === "pending"
+                  const isFailed = status === "failed"
 
-                    <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
-
-                    <div className="p-6">
-                      <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
-                      <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
-
-                      <div className="mb-4">
-                        <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
-                        {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
-                      </div>
-
-                      <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
-
-                      <div className="mb-6">
-                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
-                          <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                  return (
+                    <motion.div
+                      key={tier.title}
+                      initial={{ opacity: 0, y: 50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      whileHover={{ scale: 1.05, y: -10 }}
+                      className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
+                        tier.popular ? "ring-2 ring-orange-500" : ""
+                      }`}
+                    >
+                      {tier.popular && (
+                        <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                          Most Popular
                         </div>
-                      </div>
-
-                      {isRegisteredInCategory(tier.title) ? (
-                        <div className="block w-full py-3 px-4 rounded-lg font-semibold text-gray-600 bg-gray-100 text-sm text-center">
-                          ✓ Already Registered
-                        </div>
-                      ) : (
-                        <motion.a
-                          href={buildZohoFormUrl(tier.title)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                        >
-                          Register Now
-                        </motion.a>
                       )}
-                    </div>
-                  </motion.div>
-                ))}
+
+                      <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
+
+                      <div className="p-6">
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
+                        <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
+
+                        <div className="mb-4">
+                          <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
+                          {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
+                        </div>
+
+                        <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
+
+                        <div className="mb-6">
+                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
+                            <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                          </div>
+                        </div>
+
+                        {isRegistered ? (
+                          <div className="block w-full py-3 px-4 rounded-lg font-semibold text-green-700 bg-green-50 border border-green-200 text-sm text-center">
+                            ✓ Already Registered
+                          </div>
+                        ) : isPending ? (
+                          <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
+                            ⏳ Payment Pending - Check your email
+                          </div>
+                        ) : (
+                          <motion.a
+                            href={buildZohoFormUrl(tier.title)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                            aria-label={`Register for ${tier.title}`}
+                          >
+                            {isFailed ? "Retry Registration" : "Register Now"}
+                          </motion.a>
+                        )}
+                      </div>
+                    </motion.div>
+                  )
+                })}
               </div>
 
               <motion.div
