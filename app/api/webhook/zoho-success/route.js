@@ -48,6 +48,8 @@ export async function POST(request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    console.log('Found user:', { userId: clerkUserId, currentCategories: user.categories });
+
     // Check if user is already registered in this category
     const existingCategory = user.categories.find(
       (cat) => cat.category === category
@@ -55,28 +57,43 @@ export async function POST(request) {
 
     if (existingCategory) {
       console.log('User already registered in category:', category);
+      // Update payment status if it changed
+      if (existingCategory.paymentStatus !== Payment_Status) {
+        existingCategory.paymentStatus = Payment_Status || 'pending';
+        await user.save();
+        console.log('Updated payment status for existing category:', category);
+      }
       return NextResponse.json({ 
         success: false, 
-        message: 'Already registered in this category' 
+        message: 'Already registered in this category',
+        category: category,
+        paymentStatus: Payment_Status
       });
     }
 
     // Add new category registration
-    user.categories.push({
+    const newCategory = {
       category,
       paymentStatus: Payment_Status || 'pending',
       registeredAt: new Date()
-    });
-
+    };
+    
+    user.categories.push(newCategory);
     await user.save();
 
     console.log('Successfully registered user in category:', {
       userId: clerkUserId,
       category,
-      paymentStatus: Payment_Status
+      paymentStatus: Payment_Status,
+      newCategories: user.categories
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Successfully registered in category',
+      category: category,
+      paymentStatus: Payment_Status
+    });
 
   } catch (error) {
     console.error('Webhook error:', error);

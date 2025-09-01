@@ -173,7 +173,15 @@ export default function Register() {
 
   // Check if user is already registered in a category
   const isRegisteredInCategory = (categoryTitle) => {
-    return userCategories.some(cat => cat.category === categoryTitle)
+    console.log('Checking registration for category:', categoryTitle);
+    console.log('User categories:', userCategories);
+    const isRegistered = userCategories.some(cat => {
+      const matches = cat.category === categoryTitle;
+      console.log(`Comparing: "${cat.category}" === "${categoryTitle}" = ${matches}`);
+      return matches;
+    });
+    console.log('Is registered:', isRegistered);
+    return isRegistered;
   }
 
   return (
@@ -332,6 +340,19 @@ export default function Register() {
               {/* Registration form for signed-in users */}
               <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Complete Your Profile</h3>
+                
+                {!isRegistered && (
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                    <div className="flex items-center">
+                      <div className="text-2xl mr-3">📝</div>
+                      <div>
+                        <p className="text-orange-800 font-semibold">Step 1: Complete Your Profile</p>
+                        <p className="text-orange-700 text-sm">Fill out the form below to unlock access to competition categories and registration forms.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -405,68 +426,138 @@ export default function Register() {
               {/* Competition categories for signed-in users */}
               <div className="mb-12">
                 <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">Choose Your Competition Category</h3>
-                <div className="grid lg:grid-cols-2 gap-8">
-                  {pricingTiers.map((tier, index) => (
-                    <motion.div
-                      key={tier.title}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className={`relative bg-white rounded-2xl shadow-xl overflow-hidden border-2 ${
-                        tier.popular ? "border-orange-500" : "border-gray-200"
-                      } hover:shadow-2xl transition-all duration-300`}
-                    >
-                      {tier.popular && (
-                        <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
-                          🔥 MOST POPULAR
-                        </div>
-                      )}
-                      <div className={`bg-gradient-to-r ${tier.color} p-6 text-white ${tier.popular ? "pt-12" : ""}`}>
-                        <h4 className="text-2xl font-bold mb-2">{tier.title}</h4>
-                        <p className="text-lg opacity-90 mb-4">{tier.subtitle}</p>
-                        <div className="flex items-baseline mb-2">
-                          <span className="text-4xl font-bold">{tier.price}</span>
-                          {tier.gst && <span className="text-lg ml-2 opacity-75">{tier.gst}</span>}
-                        </div>
-                        <div className="bg-white/20 rounded-lg px-3 py-1 inline-block">
-                          <span className="text-yellow-300 font-bold">Prize: {tier.prizes}</span>
-                        </div>
+                
+                {isRegistered && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
+                    <div className="flex items-center">
+                      <div className="text-2xl mr-3">✅</div>
+                      <div>
+                        <p className="text-green-800 font-semibold">Profile Registration Complete!</p>
+                        <p className="text-green-700 text-sm">You can now choose your competition category and proceed with registration.</p>
                       </div>
-                      <div className="p-6">
-                        <p className="text-gray-600 mb-6">{tier.description}</p>
-                        <ul className="space-y-3 mb-8">
-                          {tier.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start">
-                              <span className="text-orange-500 mr-3 mt-1">✓</span>
-                              <span className="text-gray-700">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        {isRegisteredInCategory(tier.title) ? (
-                          <div className="w-full py-4 rounded-xl font-semibold text-lg bg-green-50 text-green-700 border border-green-200 text-center">
-                            ✓ Already Registered
+                    </div>
+                  </div>
+                )}
+                
+                {!isRegistered ? (
+                  // Show preview categories when user hasn't completed registration
+                  <div className="text-center py-12">
+                    <div className="text-6xl mb-6">🔒</div>
+                    <h4 className="text-2xl font-bold text-gray-900 mb-4">Complete Your Registration First</h4>
+                    <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+                      Please complete your profile information above to unlock access to competition categories and registration forms.
+                    </p>
+                    
+                    {/* Preview of categories (non-clickable) */}
+                    <div className="grid lg:grid-cols-2 gap-8 opacity-60">
+                      {pricingTiers.map((tier, index) => (
+                        <motion.div
+                          key={tier.title}
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: index * 0.1 }}
+                          viewport={{ once: true }}
+                          className={`relative bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-gray-200`}
+                        >
+                          {tier.popular && (
+                            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                              🔥 MOST POPULAR
+                            </div>
+                          )}
+                          <div className={`bg-gradient-to-r ${tier.color} p-6 text-white ${tier.popular ? "pt-12" : ""}`}>
+                            <h4 className="text-2xl font-bold mb-2">{tier.title}</h4>
+                            <p className="text-lg opacity-90 mb-4">{tier.subtitle}</p>
+                            <div className="flex items-baseline mb-2">
+                              <span className="text-4xl font-bold">{tier.price}</span>
+                              {tier.gst && <span className="text-lg ml-2 opacity-75">{tier.gst}</span>}
+                            </div>
+                            <div className="bg-white/20 rounded-lg px-3 py-1 inline-block">
+                              <span className="text-yellow-300 font-bold">Prize: {tier.prizes}</span>
+                            </div>
                           </div>
-                        ) : (
-                          <motion.a
-                            href={buildZohoFormUrl(tier.title)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className={`block w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
-                              tier.popular
-                                ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl"
-                                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                            }`}
-                          >
-                            Register for {tier.title}
-                          </motion.a>
+                          <div className="p-6">
+                            <p className="text-gray-600 mb-6">{tier.description}</p>
+                            <ul className="space-y-3 mb-8">
+                              {tier.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-start">
+                                  <span className="text-orange-500 mr-3 mt-1">✓</span>
+                                  <span className="text-gray-700">{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <div className="w-full py-4 rounded-xl font-semibold text-lg bg-gray-100 text-gray-500 border border-gray-200 text-center cursor-not-allowed">
+                              🔒 Complete Registration to Unlock
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  // Show actual registration categories when user has completed registration
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    {pricingTiers.map((tier, index) => (
+                      <motion.div
+                        key={tier.title}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        viewport={{ once: true }}
+                        className={`relative bg-white rounded-2xl shadow-xl overflow-hidden border-2 ${
+                          tier.popular ? "border-orange-500" : "border-gray-200"
+                        } hover:shadow-2xl transition-all duration-300`}
+                      >
+                        {tier.popular && (
+                          <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                            🔥 MOST POPULAR
+                          </div>
                         )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                        <div className={`bg-gradient-to-r ${tier.color} p-6 text-white ${tier.popular ? "pt-12" : ""}`}>
+                          <h4 className="text-2xl font-bold mb-2">{tier.title}</h4>
+                          <p className="text-lg opacity-90 mb-4">{tier.subtitle}</p>
+                          <div className="flex items-baseline mb-2">
+                            <span className="text-4xl font-bold">{tier.price}</span>
+                            {tier.gst && <span className="text-lg ml-2 opacity-75">{tier.gst}</span>}
+                          </div>
+                          <div className="bg-white/20 rounded-lg px-3 py-1 inline-block">
+                            <span className="text-yellow-300 font-bold">Prize: {tier.prizes}</span>
+                          </div>
+                        </div>
+                        <div className="p-6">
+                          <p className="text-gray-600 mb-6">{tier.description}</p>
+                          <ul className="space-y-3 mb-8">
+                            {tier.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start">
+                                <span className="text-orange-500 mr-3 mt-1">✓</span>
+                                <span className="text-gray-700">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          {isRegisteredInCategory(tier.title) ? (
+                            <div className="w-full py-4 rounded-xl font-semibold text-lg bg-green-50 text-green-700 border border-green-200 text-center">
+                              ✓ Already Registered
+                            </div>
+                          ) : (
+                            <motion.a
+                              href={buildZohoFormUrl(tier.title)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              className={`block w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
+                                tier.popular
+                                  ? "bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg hover:shadow-xl"
+                                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                              }`}
+                            >
+                              Register for {tier.title}
+                            </motion.a>
+                          )}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           ) : (
