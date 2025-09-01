@@ -150,7 +150,7 @@ export default function Register() {
 
   // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
-    "IDEA IGNITE": "https://forms.zoho.com/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "IDEA IGNITE": "https://zfrmz.in/SvuP1S8KLWoXfDLtmTvK",
     "MYSTERY MAKERS": "https://forms.zoho.n/aviotronaerospaceprivatelimite/form/IDEAIGNITE1"  ,
     "TECH FOR GOOD": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
     "TECH THROTTLE": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
