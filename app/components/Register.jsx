@@ -29,13 +29,13 @@ export default function Register() {
             setIsRegistered(true)
           }
 
-          // Fetch user's registered categories
-          const categoriesRes = await fetch("/api/mark-registered", {
+          // Fetch user's category registrations from the new API
+          const categoriesRes = await fetch("/api/check-category-registration", {
             method: "GET",
           })
           const categoriesData = await categoriesRes.json()
           if (categoriesData.success) {
-            setUserCategories(categoriesData.categories)
+            setUserCategories(categoriesData.registrations)
           }
         } catch (err) {
           console.error("Error checking registration:", err)
@@ -150,8 +150,8 @@ export default function Register() {
 
   // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
-    "IDEA IGNITE": "https://zfrmz.in/SvuP1S8KLWoXfDLtmTvK",
-    "MYSTERY MAKERS": "https://forms.zoho.n/aviotronaerospaceprivatelimite/form/IDEAIGNITE1"  ,
+    "IDEA IGNITE": "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1/formperma/yuklwYd2IfosCywtkVgrQaHZuGAPdA1AaVUaTuoCmT8",
+    "MYSTERY MAKERS": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
     "TECH FOR GOOD": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
     "TECH THROTTLE": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
   }
@@ -174,10 +174,10 @@ export default function Register() {
   // Check if user is already registered in a category
   const isRegisteredInCategory = (categoryTitle) => {
     console.log('Checking registration for category:', categoryTitle);
-    console.log('User categories:', userCategories);
-    const isRegistered = userCategories.some(cat => {
-      const matches = cat.category === categoryTitle;
-      console.log(`Comparing: "${cat.category}" === "${categoryTitle}" = ${matches}`);
+    console.log('User category registrations:', userCategories);
+    const isRegistered = userCategories.some(reg => {
+      const matches = reg.category === categoryTitle;
+      console.log(`Comparing: "${reg.category}" === "${categoryTitle}" = ${matches}`);
       return matches;
     });
     console.log('Is registered:', isRegistered);
