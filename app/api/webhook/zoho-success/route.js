@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 
@@ -32,24 +31,15 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
     }
 
-    // 4. Normalize keys → lowercase + replace spaces with underscores
-    const normalizedPayload = {};
-    for (const [key, value] of Object.entries(payload)) {
-      normalizedPayload[key.toLowerCase().replace(/\s+/g, '_')] = value;
-    }
+    console.log('Parsed payload:', payload);
 
-    console.log('Normalized payload:', normalizedPayload);
-
-    // 5. Extract required fields
-    const email = normalizedPayload.email;
-    const clerkUserId = normalizedPayload.clerkuserid;
-    const category = normalizedPayload.category;
-
-    // Payment fields (safe defaults if missing)
-    const paymentStatus = normalizedPayload.payment_status || 'pending';
-    const paymentAmount = normalizedPayload.payment_amount || '0';
-    const transactionId =
-      normalizedPayload.transaction_id || `webhook_${Date.now()}`;
+    // 4. Extract Zoho fields directly
+    const email = payload.Field_6;
+    const clerkUserId = payload.Field_7;
+    const category = payload.Field_8;
+    const paymentAmount = payload.Field_9 || '0';
+    const paymentStatus = payload.Field_10 || 'pending';
+    const transactionId = payload.transaction_id || `webhook_${Date.now()}`;
 
     console.log('Extracted data:', {
       email,
@@ -65,10 +55,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // 6. Connect to MongoDB
+    // 5. Connect to MongoDB
     await dbConnect();
 
-    // 7. Check if user is already registered in this category
+    // 6. Check if user is already registered in this category
     const existingRegistration = await CategoryRegistration.findOne({
       clerkUserId,
       category,
@@ -112,7 +102,7 @@ export async function POST(request) {
       });
     }
 
-    // 8. Create new category registration
+    // 7. Create new category registration
     const newRegistration = await CategoryRegistration.create({
       clerkUserId,
       email,
@@ -120,7 +110,7 @@ export async function POST(request) {
       paymentStatus,
       paymentAmount,
       transactionId,
-      zohoFormData: normalizedPayload, // Store normalized form data
+      zohoFormData: payload, // Store raw Zoho data
     });
 
     console.log('Successfully registered user:', {
