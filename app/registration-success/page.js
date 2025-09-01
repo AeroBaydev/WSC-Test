@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { motion } from 'framer-motion'
 
-export default function RegistrationSuccess() {
+function RegistrationSuccessContent() {
   const searchParams = useSearchParams()
   const { user } = useUser()
   const [status, setStatus] = useState('loading')
@@ -173,5 +173,25 @@ export default function RegistrationSuccess() {
         )}
       </motion.div>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
+        <div className="text-6xl mb-6">⏳</div>
+        <h1 className="text-2xl font-bold mb-4 text-blue-600">Loading...</h1>
+        <p className="text-gray-600 mb-8">Please wait while we prepare your registration details.</p>
+      </div>
+    </div>
+  )
+}
+
+export default function RegistrationSuccess() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <RegistrationSuccessContent />
+    </Suspense>
   )
 }
