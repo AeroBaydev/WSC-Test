@@ -74,7 +74,7 @@ export default function Footer() {
             <div className="space-y-2 text-sm text-gray-600">
               <p>📧 worldskillchallenge@gmail.com</p>
               <p>📞 +91 9266300825</p>
-              <p>📅 Registration: 7th September 2025</p>
+              <p>📅 Registration: 30th September 2025</p>
             </div>
           </motion.div>
         </div>
