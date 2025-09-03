@@ -5,6 +5,10 @@ import { useSearchParams } from "next/navigation"
 import { useUser } from "@clerk/nextjs"
 import { motion } from "framer-motion"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+export const fetchCache = "force-no-store"
+
 function RegistrationSuccessContent() {
   const searchParams = useSearchParams()
   const { user } = useUser()
