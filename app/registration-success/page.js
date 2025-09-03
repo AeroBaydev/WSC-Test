@@ -1,59 +1,52 @@
 "use client"
 
-import { useEffect, useState, Suspense } from "react"
-import { useSearchParams } from "next/navigation"
-import { useUser } from "@clerk/nextjs"
-import { motion } from "framer-motion"
-
-export const dynamic = "force-dynamic"
-export const revalidate = 0
-export const fetchCache = "force-no-store"
+import { useEffect, useState, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
+import { motion } from 'framer-motion'
 
 function RegistrationSuccessContent() {
   const searchParams = useSearchParams()
   const { user } = useUser()
-  const [status, setStatus] = useState("loading")
-  const [message, setMessage] = useState("")
+  const [status, setStatus] = useState('loading')
+  const [message, setMessage] = useState('')
 
-  const clerkUserId = searchParams.get("clerkUserId")
-  const category = searchParams.get("category")
+  const clerkUserId = searchParams.get('clerkUserId')
+  const category = searchParams.get('category')
 
   useEffect(() => {
     const confirmRegistration = async () => {
       if (!clerkUserId || !category) {
-        setStatus("error")
-        setMessage("Missing registration information")
+        setStatus('error')
+        setMessage('Missing registration information')
         return
       }
 
       try {
-        const payload = {
-          clerkUserId: String(clerkUserId),
-          category: String(category),
-        }
-        console.log("[v0] Registration success confirm payload:", payload)
-
-        const response = await fetch("/api/mark-registered", {
-          method: "POST",
+        const response = await fetch('/api/mark-registered', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            clerkUserId,
+            category,
+          }),
         })
 
         const data = await response.json()
 
         if (data.success) {
-          setStatus("success")
-          setMessage("Registration confirmed successfully!")
+          setStatus('success')
+          setMessage('Registration confirmed successfully!')
         } else {
-          setStatus("already-registered")
-          setMessage(data.message || "Already registered in this category")
+          setStatus('already-registered')
+          setMessage(data.message || 'Already registered in this category')
         }
       } catch (error) {
-        console.error("Error confirming registration:", error)
-        setStatus("error")
-        setMessage("Failed to confirm registration. Please contact support.")
+        console.error('Error confirming registration:', error)
+        setStatus('error')
+        setMessage('Failed to confirm registration. Please contact support.')
       }
     }
 
@@ -62,40 +55,40 @@ function RegistrationSuccessContent() {
 
   const getStatusContent = () => {
     switch (status) {
-      case "loading":
+      case 'loading':
         return {
-          icon: "⏳",
-          title: "Confirming Registration...",
-          description: "Please wait while we confirm your registration.",
-          color: "text-blue-600",
+          icon: '⏳',
+          title: 'Confirming Registration...',
+          description: 'Please wait while we confirm your registration.',
+          color: 'text-blue-600'
         }
-      case "success":
+      case 'success':
         return {
-          icon: "🎉",
-          title: "Registration Successful!",
+          icon: '🎉',
+          title: 'Registration Successful!',
           description: `You have been successfully registered for ${category}. Check your email for further instructions.`,
-          color: "text-green-600",
+          color: 'text-green-600'
         }
-      case "already-registered":
+      case 'already-registered':
         return {
-          icon: "ℹ️",
-          title: "Already Registered",
+          icon: 'ℹ️',
+          title: 'Already Registered',
           description: `You are already registered for ${category}.`,
-          color: "text-orange-600",
+          color: 'text-orange-600'
         }
-      case "error":
+      case 'error':
         return {
-          icon: "❌",
-          title: "Registration Error",
-          description: message || "Something went wrong. Please try again or contact support.",
-          color: "text-red-600",
+          icon: '❌',
+          title: 'Registration Error',
+          description: message || 'Something went wrong. Please try again or contact support.',
+          color: 'text-red-600'
         }
       default:
         return {
-          icon: "❓",
-          title: "Unknown Status",
-          description: "Please contact support.",
-          color: "text-gray-600",
+          icon: '❓',
+          title: 'Unknown Status',
+          description: 'Please contact support.',
+          color: 'text-gray-600'
         }
     }
   }
@@ -119,11 +112,15 @@ function RegistrationSuccessContent() {
           {statusContent.icon}
         </motion.div>
 
-        <h1 className={`text-2xl font-bold mb-4 ${statusContent.color}`}>{statusContent.title}</h1>
+        <h1 className={`text-2xl font-bold mb-4 ${statusContent.color}`}>
+          {statusContent.title}
+        </h1>
 
-        <p className="text-gray-600 mb-8 leading-relaxed">{statusContent.description}</p>
+        <p className="text-gray-600 mb-8 leading-relaxed">
+          {statusContent.description}
+        </p>
 
-        {status === "success" && (
+        {status === 'success' && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -159,7 +156,7 @@ function RegistrationSuccessContent() {
           </motion.a>
         </div>
 
-        {status === "error" && (
+        {status === 'error' && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -167,7 +164,7 @@ function RegistrationSuccessContent() {
             className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg"
           >
             <p className="text-red-700 text-sm">
-              If you continue to experience issues, please contact our support team at{" "}
+              If you continue to experience issues, please contact our support team at{' '}
               <a href="mailto:worldskillchallenge@gmail.com" className="underline">
                 worldskillchallenge@gmail.com
               </a>

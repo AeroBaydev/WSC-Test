@@ -51,52 +51,15 @@ export default function Register() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  function ensureSerializable(input, path = "root") {
-    try {
-      // Primitive fast-path
-      if (input === null || typeof input === "string" || typeof input === "number" || typeof input === "boolean") {
-        return input
-      }
-      // Arrays
-      if (Array.isArray(input)) {
-        return input.map((v, i) => ensureSerializable(v, `${path}[${i}]`))
-      }
-      // Dates
-      if (input instanceof Date) return input.toISOString()
-      // Objects
-      if (typeof input === "object") {
-        const out = {}
-        for (const [k, v] of Object.entries(input)) {
-          if (typeof v === "function") {
-            console.warn("[v0] Stripping function from payload at:", `${path}.${k}`)
-            continue
-          }
-          if (typeof v === "undefined") continue
-          out[k] = ensureSerializable(v, `${path}.${k}`)
-        }
-        return out
-      }
-      // Fallback: stringify-able types like BigInt unsupported
-      console.warn("[v0] Non-serializable value encountered at:", path, "type:", typeof input)
-      return String(input)
-    } catch (e) {
-      console.error("[v0] ensureSerializable error at:", path, e)
-      return null
-    }
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
     setError("")
     try {
-      const safeBody = ensureSerializable(form)
-      console.log("[v0] Register submit payload:", safeBody)
-
       const res = await fetch("/api/save-user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(safeBody),
+        body: JSON.stringify(form),
       })
       const data = await res.json()
       if (data.success) {
@@ -105,7 +68,6 @@ export default function Register() {
         setError(data.error || "Registration failed")
       }
     } catch (err) {
-      console.error("[v0] Registration submit error:", err)
       setError("Something went wrong")
     }
     setLoading(false)
@@ -190,9 +152,9 @@ export default function Register() {
   const categoryFormBaseUrls = {
     "IDEA IGNITE":
       "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1/formperma/yuklwYd2IfosCywtkVgrQaHZuGAPdA1AaVUaTuoCmT8",
-    "MYSTERY MAKERS": "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
-    "TECH FOR GOOD": "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
-    "TECH THROTTLE": "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "MYSTERY MAKERS": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "TECH FOR GOOD": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "TECH THROTTLE": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
   }
 
   // Build Zoho form link with Clerk user params
