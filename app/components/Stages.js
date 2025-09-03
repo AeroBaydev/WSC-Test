@@ -18,7 +18,7 @@ export default function Stages() {
         "Present your projects live at regional centers. Showcase your innovations and compete with local teams.",
       icon: "🏆",
       color: "bg-orange-600",
-      date: "7th & 8th October 2025 (Tentative)",
+      date: "7th & 8th November 2025 (Tentative)",
     },
     {
       stage: "Stage 3",
