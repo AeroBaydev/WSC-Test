@@ -150,11 +150,10 @@ export default function Register() {
 
   // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
-    "IDEA IGNITE":
-      "https://forms.zohopublic.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1/formperma/yuklwYd2IfosCywtkVgrQaHZuGAPdA1AaVUaTuoCmT8",
-    "MYSTERY MAKERS": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
-    "TECH FOR GOOD": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
-    "TECH THROTTLE": "https://forms.zoho.in/aviotronaerospaceprivatelimite/form/IDEAIGNITE1",
+    "IDEA IGNITE":"",
+    "MYSTERY MAKERS": "",
+    "TECH FOR GOOD": "",
+    "TECH THROTTLE": "",
   }
 
   // Build Zoho form link with Clerk user params

@@ -72,7 +72,7 @@ export default function Footer() {
           >
             <h4 className="text-lg font-semibold mb-4 text-orange-500">Contact Info</h4>
             <div className="space-y-2 text-sm text-gray-600">
-              <p>📧 worldskillchallenge@gmail.com</p>
+              <p>📧 info@worldskillchallenge.com</p>
               <p>📞 +91 9266300825</p>
               <p>📅 Registration: 30th September 2025</p>
             </div>
