@@ -12,6 +12,37 @@ export default function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState("")
+  const [errorMessage, setErrorMessage] = useState("") // capture server error
+
+  function ensureSerializable(input, path = "root") {
+    try {
+      if (input === null || typeof input === "string" || typeof input === "number" || typeof input === "boolean") {
+        return input
+      }
+      if (Array.isArray(input)) {
+        return input.map((v, i) => ensureSerializable(v, `${path}[${i}]`))
+      }
+      if (input instanceof Date) return input.toISOString()
+      if (typeof input === "object") {
+        const out = {}
+        for (const [k, v] of Object.entries(input)) {
+          if (typeof v === "function") {
+            console.warn("[v0] Stripping function from contact payload at:", `${path}.${k}`)
+            continue
+          }
+          if (typeof v === "undefined") continue
+          out[k] = ensureSerializable(v, `${path}.${k}`)
+        }
+        return out
+      }
+      console.warn("[v0] Non-serializable in contact payload at:", path, "type:", typeof input)
+      return String(input)
+    } catch (e) {
+      console.error("[v0] ensureSerializable(contact) error at:", path, e)
+      return null
+    }
+  }
+  // </CHANGE>
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -22,30 +53,30 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
     setSubmitStatus("")
+    setErrorMessage("") // clear previous error
 
     try {
+      const safeBody = ensureSerializable(formData)
+      console.log("[v0] Contact submit payload:", safeBody)
+
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(safeBody),
       })
+      const data = await response.json().catch(() => ({})) // safely parse
 
       if (response.ok) {
         setSubmitStatus("success")
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-        })
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
       } else {
         setSubmitStatus("error")
+        setErrorMessage(data?.error || "Failed to send message.")
       }
     } catch (error) {
+      console.error("[v0] Contact submit error:", error)
       setSubmitStatus("error")
+      setErrorMessage("Network error. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -93,7 +124,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-semibold">Email</h4>
-                  <p className="text-gray-600 text-sm md:text-base">worldskillchallenge@gmail.com</p>
+                  <p className="text-gray-600 text-sm md:text-base">info@worldskillchallenge.com</p>
                 </div>
               </motion.div>
 
@@ -122,7 +153,7 @@ export default function Contact() {
               <h4 className="text-xl font-bold text-gray-900 mb-4">Important Dates</h4>
               <div className="space-y-3">
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <p className="text-orange-700 font-semibold text-sm">📅 Registration: 30th September 2025</p>
+                  <p className="text-orange-700 font-semibold text-sm">📅 Registration: 7th September 2025</p>
                 </div>
                 <div className="bg-orange-100 border border-orange-300 rounded-lg p-3">
                   <p className="text-orange-800 font-semibold text-sm">
@@ -235,7 +266,7 @@ export default function Contact() {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg text-center"
                   >
-                    Sorry, there was an error sending your message. Please try again.
+                    {errorMessage || "Sorry, there was an error sending your message. Please try again."}
                   </motion.div>
                 )}
 
