@@ -35,7 +35,7 @@ export default function Categories() {
       fee: "₹1,999 including GST",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹11,000", "2nd: ₹7,000", "3rd: ₹4,000"],
-      addon: "Robotics Kit: ₹2,500 + GST (optional)",
+      addon: "Robotics Kit: ₹2,999 Including GST (optional)",
     },
     {
       name: "TECH THROTTLE",

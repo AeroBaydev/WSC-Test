@@ -153,11 +153,11 @@ export default function Contact() {
               <h4 className="text-xl font-bold text-gray-900 mb-4">Important Dates</h4>
               <div className="space-y-3">
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <p className="text-orange-700 font-semibold text-sm">📅 Registration: 7th September 2025</p>
+                  <p className="text-orange-700 font-semibold text-sm">📅 Registration: 4th October 2025</p>
                 </div>
                 <div className="bg-orange-100 border border-orange-300 rounded-lg p-3">
                   <p className="text-orange-800 font-semibold text-sm">
-                    📅 Regional Rounds: 30th September 2025 (Tentative)
+                    📅 Regional Rounds: 7th & 8th November 2025 (Tentative)
                   </p>
                 </div>
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">

@@ -150,7 +150,7 @@ export default function Register() {
 
   // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
-    "IDEA IGNITE":"",
+    "IDEA IGNITE":"https://zfrmz.in/SvuP1S8KLWoXfDLtmTvK",
     "MYSTERY MAKERS": "",
     "TECH FOR GOOD": "",
     "TECH THROTTLE": "",
@@ -322,7 +322,7 @@ export default function Register() {
                 </motion.button>
               </SignInButton>
               <p className="text-sm text-gray-500 mt-4">
-                Registration closes on <span className="font-semibold text-orange-600">7th September 2025</span>
+                Registration closes on <span className="font-semibold text-orange-600">4th October 2025</span>
               </p>
             </div>
           </motion.div>
@@ -667,7 +667,7 @@ export default function Register() {
                   Choose your category and compete for exciting cash prizes
                 </p>
                 <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <p className="text-orange-700 font-semibold">📅 Registration Deadline: 7th September 2025</p>
+                  <p className="text-orange-700 font-semibold">📅 Registration Deadline: 4th October 2025</p>
                 </div>
               </motion.div>
 
