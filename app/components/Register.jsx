@@ -78,7 +78,6 @@ export default function Register() {
       title: "IDEA IGNITE",
       subtitle: "Research-Based",
       price: "₹399",
-      gst: "Including GST",
       description: "Individual competition for research enthusiasts",
       features: [
         "Individual participation",
@@ -96,7 +95,6 @@ export default function Register() {
       title: "MYSTERY MAKERS",
       subtitle: "STEAM + Kit-Based",
       price: "₹1,499",
-      gst: "Including GST",
       description: "Team-based STEAM challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -114,7 +112,6 @@ export default function Register() {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
       price: "₹1,999",
-      gst: "Including GST",
       description: "Technology for mankind's betterment",
       features: [
         "3 Students + 1 Mentor team",
@@ -132,7 +129,6 @@ export default function Register() {
       title: "TECH THROTTLE",
       subtitle: "RC Cars + BattleBots",
       price: "₹3,599",
-      gst: "Including GST",
       description: "Ultimate gaming competition",
       features: [
         "3 Students + 1 Mentor team",
@@ -150,10 +146,10 @@ export default function Register() {
 
   // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
-    "IDEA IGNITE":"",
-    "MYSTERY MAKERS": "",
-    "TECH FOR GOOD": "",
-    "TECH THROTTLE": "",
+    "IDEA IGNITE": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
+    "MYSTERY MAKERS": "https://zfrmz.in/N2uZa2uydmyoLnNTJ7eB",
+    "TECH FOR GOOD": "https://zfrmz.in/x2bBTpLfQ5aQn7cUdtWQ",
+    "TECH THROTTLE": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
   }
 
   // Build Zoho form link with Clerk user params

@@ -7,7 +7,6 @@ export default function Register() {
       title: "IDEA IGNITE",
       subtitle: "Research-Based",
       price: "₹299",
-      gst: "+ GST",
       description: "Individual competition for research enthusiasts",
       features: [
         "Individual participation",
@@ -25,7 +24,6 @@ export default function Register() {
       title: "MYSTERY MAKERS",
       subtitle: "STEAM + Kit-Based",
       price: "₹1,199",
-      gst: "+ GST",
       description: "Team-based STEAM challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -43,7 +41,6 @@ export default function Register() {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
       price: "₹1,499",
-      gst: "",
       description: "Technology for mankind's betterment",
       features: [
         "3 Students + 1 Mentor team",
@@ -61,7 +58,6 @@ export default function Register() {
       title: "TECH THROTTLE",
       subtitle: "RC Cars + BattleBots",
       price: "₹2,999",
-      gst: "",
       description: "Ultimate gaming competition",
       features: [
         "3 Students + 1 Mentor team",

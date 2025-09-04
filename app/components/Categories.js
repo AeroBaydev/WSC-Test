@@ -10,7 +10,8 @@ export default function Categories() {
         "Dive into research! Study and explore advancements in science. Submit a video explaining your research idea, findings, and relevance.",
       icon: "🔬",
       color: "from-orange-400 to-orange-600",
-      fee: "₹399 including GST",
+      fee2: "₹699",
+      fee1: "₹399 ",
       team: "Individual",
       // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
     },
@@ -21,7 +22,8 @@ export default function Categories() {
         "Two exciting challenges: Kit-Based Challenge with mystery kits and D&T Popsicle Bridge Challenge. Complete challenges and explain STEAM principles.",
       icon: "🧩",
       color: "from-orange-500 to-orange-700",
-      fee: "₹1,499 including GST",
+      fee2: "₹1,899",
+      fee1: "₹1,499 ",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹8,000", "2nd: ₹5,000", "3rd: ₹3,000"],
     },
@@ -32,7 +34,8 @@ export default function Categories() {
         "Theme: 'Using Technology for the Betterment of Mankind'. Create meaningful tech solutions and present your robotics project.",
       icon: "🤖",
       color: "from-orange-600 to-red-500",
-      fee: "₹1,999 including GST",
+      fee2: "₹2,299",
+      fee1: "₹1,999 ",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹11,000", "2nd: ₹7,000", "3rd: ₹4,000"],
       addon: "Robotics Kit: ₹2,999 Including GST (optional)",
@@ -44,7 +47,8 @@ export default function Categories() {
         "Race. Smash. Survive. Bring your own RC car and BattleBot! Compete in RC car hurdles and BattleBot showdowns.",
       icon: "🏎️",
       color: "from-red-500 to-orange-600",
-      fee: "₹3,599 including GST",
+      fee2: "₹5,999",
+      fee1: "₹3,599 ",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Dimensions and weight rules will be provided",
@@ -96,8 +100,12 @@ export default function Categories() {
                     <span className="text-gray-900 font-semibold text-sm">{category.team}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">Fee:</span>
-                    <span className="text-orange-600 font-bold">{category.fee}</span>
+                    <span className="text-gray-500 text-sm">General Fee:</span>
+                    <span className="text-orange-600 font-bold">{category.fee2}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-500 text-sm">Supporting Partner Fee:</span>
+                    <span className="text-orange-600 font-bold">{category.fee1}</span>
                   </div>
                   {category.addon && (
                     <div className="text-xs text-orange-700 bg-orange-50 p-2 rounded border border-orange-200">
