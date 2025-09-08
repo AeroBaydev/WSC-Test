@@ -7,7 +7,6 @@ import Stages from "./components/Stages"
 import Register from "./components/Register"
 import Contact from "./components/Contact"
 import Footer from "./components/Footer"
-import CursorFollower from "./components/CursorFollower"
 
 export default function Home() {
   return (
@@ -20,7 +19,7 @@ export default function Home() {
       <Register />
       <Contact />
       <Footer />
-      {/* <CursorFollower /> */}
+      {/* CursorFollower component was removed */}
     </div>
   )
 }
