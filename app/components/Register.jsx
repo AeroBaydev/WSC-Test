@@ -78,6 +78,7 @@ export default function Register() {
       title: "IDEA IGNITE",
       subtitle: "Research-Based",
       price: "₹399",
+      price1: "₹699",
       description: "Individual competition for research enthusiasts",
       features: [
         "Individual participation",
@@ -95,6 +96,7 @@ export default function Register() {
       title: "MYSTERY MAKERS",
       subtitle: "STEAM + Kit-Based",
       price: "₹1,499",
+      price1: "₹1,899",
       description: "Team-based STEAM challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -112,6 +114,7 @@ export default function Register() {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
       price: "₹1,999",
+      price1: "₹2,299",
       description: "Technology for mankind's betterment",
       features: [
         "3 Students + 1 Mentor team",
@@ -129,6 +132,7 @@ export default function Register() {
       title: "TECH THROTTLE",
       subtitle: "RC Cars + BattleBots",
       price: "₹3,599",
+      price1: "₹5,999",
       description: "Ultimate gaming competition",
       features: [
         "3 Students + 1 Mentor team",
@@ -289,9 +293,14 @@ export default function Register() {
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                 {pricingTiers.map((tier, index) => (
                   <div key={tier.title} className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                    <div className="font-bold">{tier.title}</div>
-                    <div className="text-orange-100">{tier.subtitle}</div>
-                    <div className="text-yellow-300 font-bold">{tier.price}</div>
+                    <div className="font-bold">{tier.title}</div><br></br>
+                    {/* <div className="text-orange-100">{tier.subtitle}</div> */}
+                    <div> General Fees :
+                      <div className="text-yellow-300 font-bold">{tier.price1}</div>
+                    </div>
+                    <div> Supporting Partner Fees:
+                      <div className="text-yellow-300 font-bold">{tier.price}</div>
+                    </div>
                     <SignInButton mode="modal">
                       <button className="mt-2 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1 rounded transition-all">
                         Sign in to Register

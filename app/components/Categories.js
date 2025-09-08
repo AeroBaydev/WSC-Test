@@ -1,7 +1,10 @@
 "use client"
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 export default function Categories() {
+  const [showDetailsModal, setShowDetailsModal] = useState(false)
+
   const categories = [
     {
       name: "IDEA IGNITE",
@@ -54,6 +57,83 @@ export default function Categories() {
       note: "Dimensions and weight rules will be provided",
     },
   ]
+
+  const detailedGuidelines = {
+  "IDEA IGNITE": {
+    title: "IDEA IGNITE (Research-Based)",
+    details: [
+      "• Participation: Individual only.",
+      "• Objective: Students research real-life problems and propose innovative, practical solutions.",
+      "• Submission Process:",
+      "  ◦ Upload a research report on the WSC website.",
+      "  ◦ Report should include problem statement, background research, proposed solution, feasibility, and impact.",
+      "• Regional Round:",
+      "  ◦ Live 4–5 min presentation of the research findings.",
+      "  ◦ Must explain scientific logic, data used, and real-world impact.",
+      "• Evaluation: Based on innovation, depth of research, clarity, and communication.",
+      "• Pro Tip: Use simple visuals, real-world examples, and cite credible sources."
+    ]
+  },
+
+  
+  "TECH FOR GOOD": {
+    title: "TECH FOR GOOD (Robotics Competition)",
+    details: [
+      "• Team: 3 students + 1 mentor.",
+      "• Theme: 'Using Technology for the Betterment of Mankind'.",
+      "• Objective: Create meaningful tech solutions and present your robotics project.",
+      "• Submission Requirements:",
+      "  ◦ Working robotics prototype",
+      "  ◦ Technical documentation",
+      "  ◦ Presentation explaining real-world impact",
+      "• Evaluation: Innovation, technical execution, social impact, and presentation quality.",
+      "• Optional Robotics Kit available for ₹2,999 (Including GST)"
+    ]
+  },
+  "A": {
+    "title": "MYSTERY MAKERS",
+    "subtitle": "(A) Kit-Based Challenge",
+    "details": [
+      "Team: 3 students + 1 mentor.",
+      "On-the-Spot Challenge Flow:",
+      "1. Teams receive an unknown STEAM kit.",
+      "2. 20 minutes – Analyze and plan how to use the kit.",
+      "3. 30 minutes – Build the model.",
+      "4. 10 minutes – Present the working model, explaining the scientific/STEAM principles involved.",
+      "Judging Criteria:",
+      "1. Creativity in approach",
+      "2. Accuracy and completeness of build",
+      "3. Scientific explanation during presentation",
+      "4. Teamwork and time management"
+    ]
+  },
+  "B": {
+    "title": "MYSTERY MAKERS",
+    "subtitle": "(B) Popsicle Bridge Challenge",
+    "details": [
+      "Task: Construct a bridge using only popsicle sticks.",
+      "Judging Criteria:",
+      "1. Bridge tested for maximum weight load.",
+      "2. Additional marks for design aesthetics and explanation of engineering principles (load distribution, symmetry, balance).",
+      "Winner: Bridge with the highest load capacity and strongest explanation."
+    ]
+  },
+  "TECH THROTTLE": {
+    title: "TECH THROTTLE (Gaming - RC Cars + BattleBots)",
+    details: [
+      "• Team: 3 students + 1 mentor.",
+      "• Competition Format: Race. Smash. Survive.",
+      "• Requirements:",
+      "  ◦ Bring your own RC car and BattleBot",
+      "  ◦ Must comply with dimension and weight specifications",
+      "• Events:",
+      "  ◦ RC car hurdle races",
+      "  ◦ BattleBot combat competitions",
+      "• Evaluation: Performance, design innovation, and strategic gameplay.",
+      "• Note: Detailed dimensions and weight rules will be provided upon registration."
+    ]
+  }
+}
 
   return (
     <section id="categories" className="py-20 bg-white">
@@ -145,6 +225,60 @@ export default function Categories() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <button
+            onClick={() => setShowDetailsModal(true)}
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-orange-600 hover:to-red-600 transform hover:scale-105 transition-all duration-300 shadow-lg"
+          >
+            More Details
+          </button>
+        </motion.div>
+
+        {showDetailsModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-xl max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl"
+            >
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-gray-900">Detailed Category Guidelines</h2>
+                <button
+                  onClick={() => setShowDetailsModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+                >
+                  ×
+                </button>
+              </div>
+
+              <div className="p-6 space-y-8">
+                {Object.entries(detailedGuidelines).map(([key, guideline]) => (
+                  <div key={key} className="border-b border-gray-200 pb-6 last:border-b-0">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{guideline.title}</h3>
+                    {guideline.subtitle && (
+                      <h4 className="text-lg font-semibold text-orange-500 mb-3">{guideline.subtitle}</h4>
+                    )}
+                    <div className="space-y-2">
+                      {guideline.details.map((detail, index) => (
+                        <p key={index} className="text-gray-700 leading-relaxed">
+                          {detail}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
       </div>
     </section>
   )
