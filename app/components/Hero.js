@@ -59,7 +59,7 @@ export default function Hero() {
               transition={{ duration: 1, delay: 0.6 }}
             >
               A national and international skill hunt for students across age groups, blending innovation, teamwork, and
-              real-world problem solving. Compete in 4 exciting categories with cash prizes up to ₹1-Lakh!
+              real-world problem solving. Compete in exciting categories with cash prizes up to ₹1-Lakh!
             </motion.p>
 
             <motion.div
@@ -77,7 +77,7 @@ export default function Hero() {
                 Register Now
               </motion.a>
               <motion.a
-                href="#categories"
+                href="#experiencex"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"

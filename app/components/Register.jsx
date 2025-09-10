@@ -7,6 +7,7 @@ export default function Register() {
   const { user } = useUser()
   const [isRegistered, setIsRegistered] = useState(false)
   const [checkingRegistration, setCheckingRegistration] = useState(true)
+  const [selectedEventType, setSelectedEventType] = useState("WSC") // Added state for event type selection
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -75,10 +76,27 @@ export default function Register() {
 
   const pricingTiers = [
     {
+      title: "STARS & BEYOND",
+      subtitle: "Quiz-Based Competition",
+      price: "₹299",
+      description: "Individual competition for quiz enthusiasts",
+      features: [
+        "Individual participation",
+        "Online quiz for Stage 1",
+        "Regional presentation opportunity",
+        "Quiz mentorship",
+        "Certificate of participation",
+      ],
+      color: "from-orange-400 to-orange-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "WSC",
+    },
+    {
       title: "IDEA IGNITE",
-      subtitle: "Research-Based",
+      subtitle: "Research-Based Competition",
       price: "₹399",
-      price1: "₹699",
       description: "Individual competition for research enthusiasts",
       features: [
         "Individual participation",
@@ -91,12 +109,12 @@ export default function Register() {
       popular: false,
       prizes: "Revealing Soon",
       formLink: "#",
+      eventType: "WSC",
     },
     {
       title: "MYSTERY MAKERS",
-      subtitle: "STEAM + Kit-Based",
+      subtitle: "Design and thinking Competition",
       price: "₹1,499",
-      price1: "₹1,899",
       description: "Team-based STEAM challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -109,12 +127,12 @@ export default function Register() {
       popular: false,
       prizes: "Revealing Soon",
       formLink: "#",
+      eventType: "WSC",
     },
     {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
       price: "₹1,999",
-      price1: "₹2,299",
       description: "Technology for mankind's betterment",
       features: [
         "3 Students + 1 Mentor team",
@@ -127,36 +145,188 @@ export default function Register() {
       popular: true,
       prizes: "Revealing Soon",
       formLink: "#",
+      eventType: "WSC",
     },
     {
-      title: "TECH THROTTLE",
-      subtitle: "RC Cars + BattleBots",
+      title: "TECH THROTTLE -> RC CAR",
+      subtitle: "Gaming - RC Cars",
       price: "₹3,599",
-      price1: "₹5,999",
-      description: "Ultimate gaming competition",
+      description: "Race. Smash. Survive. Bring your own RC car! Compete in RC car hurdles.",
       features: [
         "3 Students + 1 Mentor team",
         "RC Car racing with hurdles",
-        "BattleBot combat arena",
         "Bring your own equipment",
-        "Competitive gaming experience",
+        "Dimensions and weight rules provided",
+        "Competitive racing experience",
       ],
       color: "from-red-500 to-orange-600",
       popular: false,
       prizes: "Revealing Soon",
       formLink: "#",
+      eventType: "WSC",
+    },
+    {
+      title: "TECH THROTTLE -> BATTLEBOT",
+      subtitle: "Gaming - BattleBots",
+      price: "₹3,599",
+      description: "Race. Smash. Survive. Bring your own BattleBot! Compete in BattleBot showdowns.",
+      features: [
+        "3 Students + 1 Mentor team",
+        "BattleBot combat arena",
+        "Bring your own equipment",
+        "Dimensions and weight rules provided",
+        "Combat competition experience",
+      ],
+      color: "from-red-500 to-orange-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "WSC",
+    },
+    {
+      title: "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION",
+      subtitle: "Gaming - BattleBots: Football Edition",
+      price: "₹3,599",
+      description: "Race. Smash. Survive. Bring your own BattleBot! Compete in football-style BattleBot matches.",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Football-style BattleBot arena",
+        "Bring your own equipment",
+        "Dimensions and weight rules provided",
+        "Strategic football gameplay",
+      ],
+      color: "from-red-500 to-orange-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "WSC",
+    },
+    {
+      title: "Wing-shot Championship",
+      subtitle: "Primary",
+      price: "₹1,499",
+      description: "Build and launch gliders with precision",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Foam board construction",
+        "Distance-based judging",
+        "Build quality assessment",
+        "Workshop training included",
+      ],
+      color: "from-orange-400 to-red-500",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "SoarFest",
+    },
+    {
+      title: "RocketMania",
+      subtitle: "Primary",
+      price: "₹1,499",
+      description: "Build and launch rockets to new heights",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Multiple rocket types",
+        "Height-based competition",
+        "Safety protocols training",
+        "Materials guidance provided",
+      ],
+      color: "from-orange-500 to-red-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "SoarFest",
+    },
+    {
+      title: "DroneX Kids",
+      subtitle: "Primary",
+      price: "₹1,499",
+      description: "Master drone flying with precision challenges",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Drones provided at venue",
+        "Flying challenges & spot landing",
+        "Control precision testing",
+        "Teamwork and strategy focus",
+      ],
+      color: "from-red-500 to-orange-500",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "SoarFest",
+    },
+    {
+      title: "Wing Warriors",
+      subtitle: "Junior & Senior (Grade 6-12)",
+      price: "₹2,499",
+      description: "Design and build your own RC aircraft",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Complete plane construction",
+        "Design innovation focus",
+        "Flight performance testing",
+        "Technical documentation required",
+      ],
+      color: "from-orange-500 to-red-600",
+      popular: true,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "SoarFest",
+    },
+    {
+      title: "Throttle Titans",
+      subtitle: "Junior & Senior (Grade 6-12)",
+      price: "₹2,499",
+      description: "Master RC plane control and precision",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Identical planes provided",
+        "Control and smoothness judging",
+        "Precision maneuver challenges",
+        "Safety protocol adherence",
+      ],
+      color: "from-red-500 to-orange-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "SoarFest",
+    },
+    {
+      title: "DroneX",
+      subtitle: "Junior & Senior (Grade 6-12)",
+      price: "₹3,599",
+      description: "Build and fly custom drones",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Complete drone construction",
+        "Performance challenges",
+        "Innovation and build quality",
+        "Technical presentation required",
+      ],
+      color: "from-orange-600 to-red-500",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "SoarFest",
     },
   ]
 
-  // Map each category to its Zoho Form base URL (replace placeholders with real URLs)
   const categoryFormBaseUrls = {
+    "STARS & BEYOND": "https://zfrmz.in/uceTMsCZhDwKLXaBgRFp",
     "IDEA IGNITE": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
     "MYSTERY MAKERS": "https://zfrmz.in/N2uZa2uydmyoLnNTJ7eB",
     "TECH FOR GOOD": "https://zfrmz.in/x2bBTpLfQ5aQn7cUdtWQ",
-    "TECH THROTTLE": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
+    "TECH THROTTLE -> RC CAR": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
+    "TECH THROTTLE -> BATTLEBOT": "https://zfrmz.in/Rz5KfK3i7ERghE0qiXCS",
+    "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "https://zfrmz.in/3p1wjytUNng82z29zsfp",
+    "Wing-shot Championship": "https://zfrmz.in/8r1qtBCU6nTf4PtgmKNc",
+    "RocketMania": "https://zfrmz.in/wdUv9AqpQ1E5jkEQYldV",
+    "DroneX Kids": "https://zfrmz.in/3bKeY8w0GkXZGOKoh3iU",
+    "Wing Warriors": "https://zfrmz.in/AbvURV2DGcL1QlVx1yHo",
+    "Throttle Titans": "https://zfrmz.in/UQFJ4SIZwTjDjRu7lnmW",
+    "DroneX": "https://zfrmz.in/PxfxhCE9pqvCQwZgSzlj    ",
   }
 
-  // Build Zoho form link with Clerk user params
   const buildZohoFormUrl = (categoryTitle) => {
     const baseUrl = categoryFormBaseUrls[categoryTitle]
     if (!baseUrl || !user) return "#"
@@ -171,7 +341,6 @@ export default function Register() {
     }
   }
 
-  // Harden normalization: trim, normalize separators, expand synonyms
   const normalizeStatus = (status) => {
     if (!status) return "pending"
     const s = String(status).trim().toLowerCase().replace(/[_-]+/g, " ")
@@ -189,7 +358,6 @@ export default function Register() {
     return "pending"
   }
 
-  // Derive normalized statuses once to ensure UI never uses raw values accidentally
   const normalizedCategories = useMemo(() => {
     return (userCategories || []).map((r) => ({
       ...r,
@@ -198,7 +366,6 @@ export default function Register() {
   }, [userCategories])
 
   const getCategoryStatus = (categoryTitle) => {
-    // Read from normalizedCategories first, fallback to raw
     const reg =
       normalizedCategories.find((r) => r?.category === categoryTitle) ||
       userCategories.find((r) => r?.category === categoryTitle)
@@ -206,7 +373,6 @@ export default function Register() {
     return reg.normalizedStatus ?? normalizeStatus(reg.paymentStatus)
   }
 
-  // Kept for backwards compatibility
   const isRegisteredInCategory = (categoryTitle) => {
     return getCategoryStatus(categoryTitle) === "registered"
   }
@@ -222,7 +388,6 @@ export default function Register() {
             viewport={{ once: true }}
             className="text-center max-w-4xl mx-auto"
           >
-            {/* Hero Section */}
             <div className="mb-12">
               <motion.div
                 initial={{ scale: 0.8 }}
@@ -246,7 +411,6 @@ export default function Register() {
               </p>
             </div>
 
-            {/* Benefits Grid */}
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -257,7 +421,7 @@ export default function Register() {
               >
                 <div className="text-4xl mb-4">💰</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Massive Prize Pool</h3>
-                <p className="text-gray-600">Win up to ₹1 Lakh in cash prizes across 4 exciting categories</p>
+                <p className="text-gray-600">Win up to ₹1 Lakh in cash prizes across multiple exciting categories</p>
               </motion.div>
 
               <motion.div
@@ -270,7 +434,7 @@ export default function Register() {
                 <div className="text-4xl mb-4">🌟</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Skill Development</h3>
                 <p className="text-gray-600">
-                  Enhance your STEAM, robotics, and research skills with expert mentorship
+                  Enhance your STEAM, robotics, research, and aeromodelling skills with expert mentorship
                 </p>
               </motion.div>
 
@@ -287,35 +451,60 @@ export default function Register() {
               </motion.div>
             </div>
 
-            {/* Competition Categories Preview */}
             <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-8 text-white mb-12">
-              <h3 className="text-2xl md:text-3xl font-bold mb-6">4 Exciting Categories</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                {pricingTiers.map((tier, index) => (
-                  <div key={tier.title} className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
-                    <div className="font-bold">{tier.title}</div><br></br>
-                    {/* <div className="text-orange-100">{tier.subtitle}</div> */}
-                    <div> General Fees :
-                      <div className="text-yellow-300 font-bold">{tier.price1}</div>
-                    </div>
-                    <div> Supporting Partner Fees:
+              <h3 className="text-2xl md:text-3xl font-bold mb-6">Two Amazing Events</h3>
+
+              {/* Event Type Tabs */}
+              <div className="flex justify-center mb-6">
+                <div className="bg-white/20 rounded-lg p-1 inline-flex">
+                  <button
+                    onClick={() => setSelectedEventType("WSC")}
+                    className={`px-4 py-2 rounded-md font-semibold transition-all text-sm ${
+                      selectedEventType === "WSC"
+                        ? "bg-white text-orange-600 shadow-sm"
+                        : "text-white hover:bg-white/10"
+                    }`}
+                  >
+                    ExperienceX
+                  </button>
+                  <button
+                    onClick={() => setSelectedEventType("SoarFest")}
+                    className={`px-4 py-2 rounded-md font-semibold transition-all text-sm ${
+                      selectedEventType === "SoarFest"
+                        ? "bg-white text-blue-600 shadow-sm"
+                        : "text-white hover:bg-white/10"
+                    }`}
+                  >
+                    SoarFest 2025
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                {pricingTiers
+                  .filter((tier) => tier.eventType === selectedEventType)
+                  .map((tier, index) => (
+                    <div key={tier.title} className="bg-white/20 rounded-lg p-4 backdrop-blur-sm">
+                      <div className="font-bold">{tier.title}</div>
+                      <div className={selectedEventType === "WSC" ? "text-orange-100" : "text-blue-100"}>
+                        {tier.subtitle}
+                      </div>
                       <div className="text-yellow-300 font-bold">{tier.price}</div>
+                      <SignInButton mode="modal">
+                        <button className="mt-2 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1 rounded transition-all">
+                          Sign in to Register
+                        </button>
+                      </SignInButton>
                     </div>
-                    <SignInButton mode="modal">
-                      <button className="mt-2 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1 rounded transition-all">
-                        Sign in to Register
-                      </button>
-                    </SignInButton>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 
-            {/* Call to Action */}
             <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Compete?</h3>
               <p className="text-gray-600 mb-6 text-lg">
-                Sign in to unlock your registration and choose your competition category
+                Sign in to unlock your registration and choose from World Skill Challenge (STEAM/Robotics) or SoarFest
+                (Aeromodelling) competitions
               </p>
               <SignInButton mode="modal">
                 <motion.button
@@ -347,7 +536,6 @@ export default function Register() {
               viewport={{ once: true }}
               className="max-w-4xl mx-auto"
             >
-              {/* Welcome message for signed-in users */}
               <div className="text-center mb-12">
                 <motion.div
                   initial={{ scale: 0.8 }}
@@ -369,7 +557,6 @@ export default function Register() {
                 </p>
               </div>
 
-              {/* Registration form for signed-in users */}
               <div className="bg-white rounded-2xl shadow-xl p-8 mb-12 border border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Complete Your Profile</h3>
 
@@ -457,9 +644,52 @@ export default function Register() {
                 </form>
               </div>
 
-              {/* Competition categories for signed-in users */}
               <div className="mb-12">
-                <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">Choose Your Competition Category</h3>
+                <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">Choose Your Competition</h3>
+
+                {/* Event Type Tabs */}
+                <div className="flex justify-center mb-8">
+                  <div className="bg-gray-100 rounded-lg p-1 inline-flex">
+                    <button
+                      onClick={() => setSelectedEventType("WSC")}
+                      className={`px-6 py-3 rounded-md font-semibold transition-all ${
+                        selectedEventType === "WSC"
+                          ? "bg-white text-orange-600 shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      ExperienceX
+                    </button>
+                    <button
+                      onClick={() => setSelectedEventType("SoarFest")}
+                      className={`px-6 py-3 rounded-md font-semibold transition-all ${
+                        selectedEventType === "SoarFest"
+                          ? "bg-white text-blue-600 shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      SoarFest 2025
+                    </button>
+                  </div>
+                </div>
+
+                <div className="text-center mb-8">
+                  {selectedEventType === "WSC" ? (
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 max-w-2xl mx-auto">
+                      <h4 className="font-bold text-orange-900 mb-2">ExperienceX</h4>
+                      <p className="text-orange-800 text-sm">
+                        STEAM, Robotics, Research & Gaming competitions for future innovators
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
+                      <h4 className="font-bold text-blue-900 mb-2">SoarFest 2025</h4>
+                      <p className="text-blue-800 text-sm">
+                        National Aeromodelling Competition - Gliders, Rockets, Drones & RC Planes
+                      </p>
+                    </div>
+                  )}
+                </div>
 
                 {isRegistered && (
                   <div className="max-w-4xl mx-auto mb-8">
@@ -514,79 +744,79 @@ export default function Register() {
                 )}
 
                 {isRegistered ? (
-                  // Show actual registration categories when user has completed registration
                   <div className="grid lg:grid-cols-2 gap-8">
-                    {pricingTiers.map((tier, index) => {
-                      const status = getCategoryStatus(tier.title)
-                      const isRegistered = status === "registered"
-                      const isPending = status === "pending"
-                      const isFailed = status === "failed"
+                    {pricingTiers
+                      .filter((tier) => tier.eventType === selectedEventType)
+                      .map((tier, index) => {
+                        const status = getCategoryStatus(tier.title)
+                        const isRegistered = status === "registered"
+                        const isPending = status === "pending"
+                        const isFailed = status === "failed"
 
-                      return (
-                        <motion.div
-                          key={tier.title}
-                          initial={{ opacity: 0, y: 50 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: index * 0.1 }}
-                          viewport={{ once: true }}
-                          whileHover={{ scale: 1.05, y: -10 }}
-                          className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
-                            tier.popular ? "ring-2 ring-orange-500" : ""
-                          }`}
-                        >
-                          {tier.popular && (
-                            <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
-                              🔥 MOST POPULAR
-                            </div>
-                          )}
-
-                          <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
-
-                          <div className="p-6">
-                            <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
-                            <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
-
-                            <div className="mb-4">
-                              <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
-                              {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
-                            </div>
-
-                            <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
-
-                            <div className="mb-6">
-                              <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
-                                <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                        return (
+                          <motion.div
+                            key={tier.title}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                            viewport={{ once: true }}
+                            whileHover={{ scale: 1.05, y: -10 }}
+                            className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
+                              tier.popular ? "ring-2 ring-orange-500" : ""
+                            }`}
+                          >
+                            {tier.popular && (
+                              <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                                🔥 MOST POPULAR
                               </div>
-                            </div>
-
-                            {isRegistered ? (
-                              <div className="block w-full py-3 px-4 rounded-lg font-semibold text-green-700 bg-green-50 border border-green-200 text-sm text-center">
-                                ✓ Already Registered
-                              </div>
-                            ) : isPending ? (
-                              <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
-                                ⏳ Payment Pending - Check your email
-                              </div>
-                            ) : (
-                              <motion.a
-                                href={buildZohoFormUrl(tier.title)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                                aria-label={`Register for ${tier.title}`}
-                              >
-                                {isFailed ? "Retry Registration" : "Register Now"}
-                              </motion.a>
                             )}
-                          </div>
-                        </motion.div>
-                      )
-                    })}
+
+                            <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
+
+                            <div className="p-6">
+                              <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
+                              <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
+
+                              <div className="mb-4">
+                                <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
+                                {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
+                              </div>
+
+                              <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
+
+                              <div className="mb-6">
+                                <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
+                                  <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                                </div>
+                              </div>
+
+                              {isRegistered ? (
+                                <div className="block w-full py-3 px-4 rounded-lg font-semibold text-green-700 bg-green-50 border border-green-200 text-sm text-center">
+                                  ✓ Already Registered
+                                </div>
+                              ) : isPending ? (
+                                <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
+                                  ⏳ Payment Pending - Check your email
+                                </div>
+                              ) : (
+                                <motion.a
+                                  href={buildZohoFormUrl(tier.title)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                                  aria-label={`Register for ${tier.title}`}
+                                >
+                                  {isFailed ? "Retry Registration" : "Register Now"}
+                                </motion.a>
+                              )}
+                            </div>
+                          </motion.div>
+                        )
+                      })}
                   </div>
                 ) : (
-                  // Show preview categories when user hasn't completed registration
                   <div className="text-center py-12">
                     <div className="text-6xl mb-6">🔒</div>
                     <h4 className="text-2xl font-bold text-gray-900 mb-4">Complete Your Registration First</h4>
@@ -595,8 +825,7 @@ export default function Register() {
                       registration forms.
                     </p>
 
-                    {/* Preview of categories (non-clickable) */}
-                    <div className="grid lg:grid-cols-2 gap-8 opacity-60">
+                    <div className="grid lg:grid-cols-3 gap-8 opacity-60 min-h-40 sm:min-h-60 lg:min-h-80">
                       {pricingTiers.map((tier, index) => (
                         <motion.div
                           key={tier.title}
@@ -669,82 +898,110 @@ export default function Register() {
                 </h2>
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Register Now</h3>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Choose your category and compete for exciting cash prizes
+                  Choose your category from World Skill Challenge or SoarFest and compete for exciting cash prizes
                 </p>
                 <div className="mt-6 bg-orange-50 border border-orange-200 rounded-lg p-4">
                   <p className="text-orange-700 font-semibold">📅 Registration Deadline: 4th October 2025</p>
                 </div>
               </motion.div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {pricingTiers.map((tier, index) => {
-                  const status = getCategoryStatus(tier.title)
-                  const isRegistered = status === "registered"
-                  const isPending = status === "pending"
-                  const isFailed = status === "failed"
+              {/* Event Type Tabs */}
+              <div className="flex justify-center mb-8">
+                <div className="bg-gray-100 rounded-lg p-1 inline-flex">
+                  <button
+                    onClick={() => setSelectedEventType("WSC")}
+                    className={`px-6 py-3 rounded-md font-semibold transition-all ${
+                      selectedEventType === "WSC"
+                        ? "bg-white text-orange-600 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    ExperienceX
+                  </button>
+                  <button
+                    onClick={() => setSelectedEventType("SoarFest")}
+                    className={`px-6 py-3 rounded-md font-semibold transition-all ${
+                      selectedEventType === "SoarFest"
+                        ? "bg-white text-blue-600 shadow-sm"
+                        : "text-gray-600 hover:text-gray-900"
+                    }`}
+                  >
+                    SoarFest 2025
+                  </button>
+                </div>
+              </div>
 
-                  return (
-                    <motion.div
-                      key={tier.title}
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      whileHover={{ scale: 1.05, y: -10 }}
-                      className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
-                        tier.popular ? "ring-2 ring-orange-500" : ""
-                      }`}
-                    >
-                      {tier.popular && (
-                        <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
-                          Most Popular
-                        </div>
-                      )}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {pricingTiers
+                  .filter((tier) => tier.eventType === selectedEventType)
+                  .map((tier, index) => {
+                    const status = getCategoryStatus(tier.title)
+                    const isRegistered = status === "registered"
+                    const isPending = status === "pending"
+                    const isFailed = status === "failed"
 
-                      <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
-
-                      <div className="p-6">
-                        <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
-                        <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
-
-                        <div className="mb-4">
-                          <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
-                          {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
-                        </div>
-
-                        <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
-
-                        <div className="mb-6">
-                          <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
-                            <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                    return (
+                      <motion.div
+                        key={tier.title}
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        viewport={{ once: true }}
+                        whileHover={{ scale: 1.05, y: -10 }}
+                        className={`relative bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 ${
+                          tier.popular ? "ring-2 ring-orange-500" : ""
+                        }`}
+                      >
+                        {tier.popular && (
+                          <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-semibold">
+                            Most Popular
                           </div>
-                        </div>
-
-                        {isRegistered ? (
-                          <div className="block w-full py-3 px-4 rounded-lg font-semibold text-green-700 bg-green-50 border border-green-200 text-sm text-center">
-                            ✓ Already Registered
-                          </div>
-                        ) : isPending ? (
-                          <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
-                            ⏳ Payment Pending - Check your email
-                          </div>
-                        ) : (
-                          <motion.a
-                            href={buildZohoFormUrl(tier.title)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                            aria-label={`Register for ${tier.title}`}
-                          >
-                            {isFailed ? "Retry Registration" : "Register Now"}
-                          </motion.a>
                         )}
-                      </div>
-                    </motion.div>
-                  )
-                })}
+
+                        <div className={`h-2 bg-gradient-to-r ${tier.color}`}></div>
+
+                        <div className="p-6">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{tier.title}</h3>
+                          <p className="text-sm text-orange-500 mb-4">{tier.subtitle}</p>
+
+                          <div className="mb-4">
+                            <span className="text-2xl md:text-3xl font-bold text-gray-900">{tier.price}</span>
+                            {tier.gst && <span className="text-gray-500 ml-1 text-sm">{tier.gst}</span>}
+                          </div>
+
+                          <p className="text-gray-600 mb-4 text-sm">{tier.description}</p>
+
+                          <div className="mb-6">
+                            <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 text-center">
+                              <p className="text-orange-700 font-bold text-sm">Prize Money: {tier.prizes}</p>
+                            </div>
+                          </div>
+
+                          {isRegistered ? (
+                            <div className="block w-full py-3 px-4 rounded-lg font-semibold text-green-700 bg-green-50 border border-green-200 text-sm text-center">
+                              ✓ Already Registered
+                            </div>
+                          ) : isPending ? (
+                            <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
+                              ⏳ Payment Pending - Check your email
+                            </div>
+                          ) : (
+                            <motion.a
+                              href={buildZohoFormUrl(tier.title)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                              aria-label={`Register for ${tier.title}`}
+                            >
+                              {isFailed ? "Retry Registration" : "Register Now"}
+                            </motion.a>
+                          )}
+                        </div>
+                      </motion.div>
+                    )
+                  })}
               </div>
 
               <motion.div
@@ -754,7 +1011,6 @@ export default function Register() {
                 viewport={{ once: true }}
                 className="mt-16 text-center"
               >
-                {/* Enhanced Prize Pool Section */}
                 <div className="relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-2xl"></div>
                   <div className="relative bg-white rounded-2xl p-8 md:p-12 shadow-lg border-4 border-orange-200">

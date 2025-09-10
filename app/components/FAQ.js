@@ -12,7 +12,7 @@ export default function FAQ() {
     },
     {
       question: "Are team sizes fixed?",
-      answer: "Yes. 3 students + 1 mentor per team (except IDEA IGNITE, which is individual).",
+      answer: "Minimum 2 students + 1 mentor per team (except STARS & BEYOND and IDEA IGNITE, which is individual).",
     },
     {
       question: "Do I need prior robotics/coding experience?",
@@ -20,7 +20,7 @@ export default function FAQ() {
     },
     {
       question: "What is the language of submission?",
-      answer: "English preferred, but explanations can be bilingual (English + regional language).",
+      answer: "English.",
     },
     {
       question: "Can mentors help during the event?",
@@ -28,7 +28,7 @@ export default function FAQ() {
     },
     {
       question: "Will equipment be provided?",
-      answer: "Kits provided only for mystery kit rounds. For others, teams must bring their own.",
+      answer: "Materials will be provided only in Mystery Makers category. For others, teams must bring their own.",
     },
     {
       question: "What safety measures apply to BattleBots?",

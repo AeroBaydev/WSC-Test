@@ -12,15 +12,20 @@ export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
 
-  const navItems = ["About", "Categories", "Stages", "Register", "Contact"]
+  const navItems = [
+    { label: "About", anchor: "about" },
+    { label: "ExperienceX", anchor: "experiencex" },
+    { label: "SoarFest", anchor: "soarfest" },
+    { label: "Stages", anchor: "stages" },
+    { label: "Register", anchor: "register" },
+    { label: "Contact", anchor: "contact" },
+  ]
 
   const handleNavigation = (item) => {
-    const section = item.toLowerCase()
+    const section = item.anchor
     if (pathname === "/") {
-      // If on main page, scroll to section
       document.getElementById(section)?.scrollIntoView({ behavior: "smooth" })
     } else {
-      // If on other page, navigate to main page with anchor
       router.push(`/#${section}`)
     }
     setIsOpen(false)
@@ -56,12 +61,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <motion.button
-                key={item}
+                key={item.label}
                 onClick={() => handleNavigation(item)}
                 whileHover={{ scale: 1.05 }}
                 className="text-gray-700 hover:text-orange-500 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                {item}
+                {item.label}
               </motion.button>
             ))}
 
@@ -83,7 +88,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
                 >
-                  <a
+                  {/* <a
                     href="https://workdrive.zohopublic.in/file/1nsam983e1059f38d4032871e335440d67f76"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -91,7 +96,7 @@ export default function Navbar() {
                     onClick={() => setIsMoreOpen(false)}
                   >
                     Guidelines
-                  </a>
+                  </a> */}
                   <button
                     onClick={() => {
                       router.push("/updates")
@@ -184,11 +189,11 @@ export default function Navbar() {
           >
             {navItems.map((item) => (
               <button
-                key={item}
+                key={item.label}
                 onClick={() => handleNavigation(item)}
                 className="block w-full text-left text-gray-700 hover:text-orange-500 py-2 text-base font-medium"
               >
-                {item}
+                {item.label}
               </button>
             ))}
 

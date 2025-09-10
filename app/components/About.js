@@ -4,6 +4,7 @@ import Image from "next/image"
 
 export default function About() {
   const ageCategories = [
+    { name: "Primary", range: "Classes 3 to 5", color: "bg-orange-500" },
     { name: "Junior", range: "Classes 6 to 8", color: "bg-orange-500" },
     { name: "Senior", range: "Classes 9 to 12", color: "bg-orange-600" },
   ]
@@ -63,9 +64,7 @@ export default function About() {
         >
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8">About the Challenge</h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            World Skill Challenge 2025 is designed to nurture young minds through innovation, teamwork, and real-world
-            problem solving. From research-based competitions to hands-on robotics and gaming challenges, we provide a
-            platform for students to showcase their talents and compete at national and international levels.
+           World Skill Challenge 2025 is the biggest platform for young innovators, designed to ignite creativity, teamwork, and real-world problem-solving. Bringing together the brightest minds, it features a diverse range of competitions – from research-based challenges to STEAM innovation, hands-on robotics, RC car, battle bots, gaming, aeromodelling, and drone flying. Students get the opportunity to showcase their talent, push boundaries of innovation, and compete at national and international levels, making it a true celebration of skills, science, and future-ready learning.
           </p>
         </motion.div>
 
@@ -137,7 +136,7 @@ export default function About() {
           className="mb-16"
         >
           <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">Age Categories</h3>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {ageCategories.map((category, index) => (
               <motion.div
                 key={category.name}
@@ -221,7 +220,7 @@ export default function About() {
           viewport={{ once: true }}
           className="bg-white rounded-lg p-8 card-shadow"
         >
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8">Sponsored by</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8">Ecosystem Partner</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
             {sponsors.map((sponsor, index) => (
               <motion.div

@@ -1,7 +1,8 @@
 import Navbar from "./components/Navbar"
 import Hero from "./components/Hero"
 import About from "./components/About"
-import Categories from "./components/Categories"
+import ExperienceX from "./components/ExperienceX"
+import SoarFest from "./components/SoarFest"
 import Stages from "./components/Stages"
 import Register from "./components/Register"
 import Contact from "./components/Contact"
@@ -148,7 +149,10 @@ export default function Home() {
         <Navbar />
         <Hero />
         <About />
-        <Categories />
+        <section id="experiencex">
+          <ExperienceX />
+        </section>
+        <SoarFest />
         <Stages />
         <Register />
         <Contact />
