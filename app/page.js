@@ -3,6 +3,7 @@ import Hero from "./components/Hero"
 import About from "./components/About"
 import ExperienceX from "./components/ExperienceX"
 import SoarFest from "./components/SoarFest"
+// import Marketplace from "./components/MarketPlace"
 import Stages from "./components/Stages"
 import Register from "./components/Register"
 import Contact from "./components/Contact"
@@ -153,6 +154,7 @@ export default function Home() {
           <ExperienceX />
         </section>
         <SoarFest />
+        {/* <Marketplace /> */}
         <Stages />
         <Register />
         <Contact />

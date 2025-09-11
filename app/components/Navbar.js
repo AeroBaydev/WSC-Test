@@ -17,6 +17,7 @@ export default function Navbar() {
     { label: "ExperienceX", anchor: "experiencex" },
     { label: "SoarFest", anchor: "soarfest" },
     { label: "Stages", anchor: "stages" },
+    // { label: "Market Place", anchor: "MarketPlace" }, // <-- Add this line
     { label: "Register", anchor: "register" },
     { label: "Contact", anchor: "contact" },
   ]

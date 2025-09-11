@@ -91,7 +91,7 @@ export default function Categories() {
       name: "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION",
       subtitle: "Gaming - BattleBots: Football Edition",
       description:
-        "Race. Smash. Survive. Bring your own BattleBot and clash in an electrifying football showdown where only the toughest bots survive!",
+        "Build. Battle. Score. Take your BattleBot to the field and outplay rivals in a high-voltage football showdown!",
       icon: "🏎️",
       color: "from-red-500 to-orange-600",
       ageGroup: "Junior & Senior",
@@ -100,6 +100,20 @@ export default function Categories() {
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Dimensions and weight rules will be provided",
+    },
+    {
+      name: "ESPORTS SHOWDOWN",
+      subtitle: "Gaming - Esports Showdown",
+      description:
+        " Survive. Strategize. Conquer. Team up and battle it out in high-intensity virtual arenas where only the sharpest minds and fastest reflexes win!",
+      icon: "🎮",
+      color: "from-red-500 to-orange-600",
+      ageGroup: "Junior & Senior",
+      fee2: "₹3,999",
+      fee1: "₹1,999 ",
+      team: "3 Students + 1 Mentor",
+      // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
+      note: "Rules will be provided",
     },
   ];
 
@@ -160,6 +174,7 @@ export default function Categories() {
         "• RC Car Race: Obstacle track (speed, accuracy, control).",
         "• BattleBots: Combat robots (points for strikes, defense, survival).",
         "• BattleBot Football Edition: Robot football-style match.",
+        "• Esports Showdown: Team-based video game tournament.",
         "• Safety: No hazardous materials; unsafe bots disqualified.",
         "• Evaluation: Performance, durability, strategy, innovation, compliance.",
       ],
@@ -177,7 +192,7 @@ export default function Categories() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">
-            ExperienceX 2025
+            ExperienceX
           </h2>
           <p className="text-lg text-orange-600 font-semibold">
             National STEAM & ROBOTICS Competition

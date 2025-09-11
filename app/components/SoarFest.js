@@ -150,7 +150,7 @@ const detailedGuidelines = {
           className="text-center mb-16"
         >
           <div className="mb-6">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">SoarFest 2025</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2">SoarFest</h2>
             <p className="text-lg text-orange-600 font-semibold">National Aeromodelling Competition</p>
           </div>
 
@@ -243,7 +243,7 @@ const detailedGuidelines = {
           viewport={{ once: true }}
           className="mt-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-8 text-white"
         >
-          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center">What's New in SoarFest Season 2?</h3>
+          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center">What's New in SoarFest?</h3>
           <div className="max-w-4xl mx-auto">
             <div className="bg-white/20 rounded-lg p-6 backdrop-blur-sm">
             

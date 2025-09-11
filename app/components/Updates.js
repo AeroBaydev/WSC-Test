@@ -8,7 +8,7 @@ export default function Updates() {
       title: "Registration & Submission",
       date: "September-October 2025",
       description: "Open registration and project submission period",
-      status: "upcoming",
+      status: "Ongoing",
     },
     {
       phase: "Phase 2",

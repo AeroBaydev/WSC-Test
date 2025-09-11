@@ -202,6 +202,24 @@ export default function Register() {
       eventType: "WSC",
     },
     {
+      title: "ESPORTS SHOWDOWN",
+      subtitle: "Gaming - Esports Showdown",
+      price: "₹1,999",
+      description: "Survive. Strategize. Conquer. Team up and battle it out in high-intensity virtual arenas where only the sharpest minds and fastest reflexes win!",
+      features: [
+        "3 Students + 1 Mentor team",
+        "Football-style BattleBot arena",
+        "Bring your own equipment",
+        "Dimensions and weight rules provided",
+        "Strategic football gameplay",
+      ],
+      color: "from-red-500 to-orange-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "WSC",
+    },
+    {
       title: "Wing-shot Championship",
       subtitle: "Primary",
       price: "₹1,499",
@@ -319,6 +337,7 @@ export default function Register() {
     "TECH THROTTLE -> RC CAR": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
     "TECH THROTTLE -> BATTLEBOT": "https://zfrmz.in/Rz5KfK3i7ERghE0qiXCS",
     "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "https://zfrmz.in/3p1wjytUNng82z29zsfp",
+    "ESPORTS SHOWDOWN": "https://zfrmz.in/f0z9a1DWTenRjUEpvL3A",
     "Wing-shot Championship": "https://zfrmz.in/8r1qtBCU6nTf4PtgmKNc",
     "RocketMania": "https://zfrmz.in/wdUv9AqpQ1E5jkEQYldV",
     "DroneX Kids": "https://zfrmz.in/3bKeY8w0GkXZGOKoh3iU",
@@ -931,7 +950,7 @@ export default function Register() {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {pricingTiers
                   .filter((tier) => tier.eventType === selectedEventType)
                   .map((tier, index) => {
