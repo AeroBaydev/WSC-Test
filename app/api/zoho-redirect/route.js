@@ -136,6 +136,8 @@ export async function GET(request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
+      // Add timeout for Vercel free tier
+      signal: AbortSignal.timeout(8000), // 8 second timeout
     });
 
     if (!resp.ok) {
@@ -154,7 +156,26 @@ export async function GET(request) {
     return NextResponse.redirect(data.short_url);
   } catch (err) {
     console.error('zoho-redirect error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    
+    // Handle specific error types
+    if (err.name === 'AbortError') {
+      return NextResponse.json({ 
+        error: 'Payment service timeout - please try again',
+        hint: 'This may be due to Vercel free tier limitations'
+      }, { status: 504 });
+    }
+    
+    if (err.message.includes('fetch')) {
+      return NextResponse.json({ 
+        error: 'Network error connecting to payment service',
+        hint: 'Please check your internet connection and try again'
+      }, { status: 502 });
+    }
+    
+    return NextResponse.json({ 
+      error: 'Internal server error',
+      details: err.message 
+    }, { status: 500 });
   }
 }
 
