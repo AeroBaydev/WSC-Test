@@ -93,7 +93,7 @@ export async function GET(request) {
     // Create Razorpay Payment Link via REST API
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    const baseUrl = process.env.RAZORPAY_BASE_URL || 'https://api.razorpay.com/v1';
+    const baseUrl = (process.env.RAZORPAY_BASE_URL || 'https://api.razorpay.com/v1').replace(/\/payment_links$/, '');
 
     if (!keyId || !keySecret) {
       return NextResponse.json({ error: 'Razorpay credentials not configured' }, { status: 500 });
