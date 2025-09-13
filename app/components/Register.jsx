@@ -330,20 +330,20 @@ export default function Register() {
   ]
 
   const categoryFormBaseUrls = {
-    "STARS & BEYOND": "https://zfrmz.in/uceTMsCZhDwKLXaBgRFp",
-    "IDEA IGNITE": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
-    "MYSTERY MAKERS": "https://zfrmz.in/N2uZa2uydmyoLnNTJ7eB",
-    "TECH FOR GOOD": "https://zfrmz.in/x2bBTpLfQ5aQn7cUdtWQ",
-    "TECH THROTTLE -> RC CAR": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
-    "TECH THROTTLE -> BATTLEBOT": "https://zfrmz.in/Rz5KfK3i7ERghE0qiXCS",
-    "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "https://zfrmz.in/3p1wjytUNng82z29zsfp",
-    "ESPORTS SHOWDOWN": "https://zfrmz.in/f0z9a1DWTenRjUEpvL3A",
-    "Wing-shot Championship": "https://zfrmz.in/8r1qtBCU6nTf4PtgmKNc",
-    "RocketMania": "https://zfrmz.in/wdUv9AqpQ1E5jkEQYldV",
-    "DroneX Kids": "https://zfrmz.in/3bKeY8w0GkXZGOKoh3iU",
-    "Wing Warriors": "https://zfrmz.in/AbvURV2DGcL1QlVx1yHo",
-    "Throttle Titans": "https://zfrmz.in/UQFJ4SIZwTjDjRu7lnmW",
-    "DroneX": "https://zfrmz.in/PxfxhCE9pqvCQwZgSzlj    ",
+    "STARS & BEYOND": "#",
+    "IDEA IGNITE": "#",
+    "MYSTERY MAKERS": "#",
+    "TECH FOR GOOD": "#",
+    "TECH THROTTLE -> RC CAR": "#",
+    "TECH THROTTLE -> BATTLEBOT": "#",
+    "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "#",
+    "ESPORTS SHOWDOWN": "#",
+    "Wing-shot Championship": "#",
+    "RocketMania": "#",
+    "DroneX Kids": "#",
+    "Wing Warriors": "#",
+    "Throttle Titans": "#",
+    "DroneX": "#",
   }
 
   const buildZohoFormUrl = (categoryTitle) => {
