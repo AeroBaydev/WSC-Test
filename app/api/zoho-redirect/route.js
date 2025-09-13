@@ -93,13 +93,24 @@ export async function GET(request) {
     // Create Razorpay Payment Link via REST API
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    const baseUrl = (process.env.RAZORPAY_BASE_URL || 'https://api.razorpay.com/v1').replace(/\/payment_links$/, '');
+    // Ensure baseUrl is correct - remove any trailing /payment_links
+    let baseUrl = process.env.RAZORPAY_BASE_URL || 'https://api.razorpay.com/v1';
+    if (baseUrl.endsWith('/payment_links')) {
+      baseUrl = baseUrl.replace('/payment_links', '');
+    }
+    // Ensure it ends with /v1
+    if (!baseUrl.endsWith('/v1')) {
+      baseUrl = baseUrl.replace(/\/$/, '') + '/v1';
+    }
 
     if (!keyId || !keySecret) {
       return NextResponse.json({ error: 'Razorpay credentials not configured' }, { status: 500 });
     }
 
     const authHeader = 'Basic ' + Buffer.from(`${keyId}:${keySecret}`).toString('base64');
+    
+    // Debug: Log the constructed URL
+    console.log('Constructed Razorpay URL:', `${baseUrl}/payment_links`);
 
     // Build success URL with context so UI page can confirm and show success
     const successBase = process.env.RAZORPAY_SUCCESS_REDIRECT_URL || `https://worldskillchallenge.com/registration-success`;
@@ -129,7 +140,11 @@ export async function GET(request) {
       callback_method: 'get',
     };
 
-    const resp = await fetch(`${baseUrl}/payment_links`, {
+    // Construct the full URL
+    const paymentUrl = `${baseUrl}/payment_links`;
+    console.log('Making request to:', paymentUrl);
+    
+    const resp = await fetch(paymentUrl, {
       method: 'POST',
       headers: {
         'Authorization': authHeader,
