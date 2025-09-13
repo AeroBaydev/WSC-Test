@@ -114,7 +114,19 @@ export async function GET(request) {
 
     // Build success URL with context so UI page can confirm and show success
     const successBase = process.env.RAZORPAY_SUCCESS_REDIRECT_URL || `https://worldskillchallenge.com/registration-success`;
-    const successUrl = new URL(successBase);
+    
+    let successUrl;
+    try {
+      successUrl = new URL(successBase);
+    } catch (urlError) {
+      console.error('Failed to parse success URL:', successBase, urlError);
+      return NextResponse.json({ 
+        error: 'Invalid success redirect URL configuration',
+        details: `Failed to parse URL from RAZORPAY_SUCCESS_REDIRECT_URL=${successBase}`,
+        hint: 'Please check your RAZORPAY_SUCCESS_REDIRECT_URL environment variable'
+      }, { status: 500 });
+    }
+    
     successUrl.searchParams.set('clerkUserId', clerkUserId);
     successUrl.searchParams.set('category', category);
 
