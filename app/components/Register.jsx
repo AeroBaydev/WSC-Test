@@ -78,7 +78,7 @@ export default function Register() {
     {
       title: "STARS & BEYOND",
       subtitle: "Quiz-Based Competition",
-      price: "₹299",
+      price: "₹499",
       description: "Individual competition for quiz enthusiasts",
       features: [
         "Individual participation",
@@ -94,18 +94,36 @@ export default function Register() {
       eventType: "WSC",
     },
     {
-      title: "IDEA IGNITE",
-      subtitle: "Research-Based Competition",
-      price: "₹399",
-      description: "Individual competition for research enthusiasts",
+      title: "IDEA TANK",
+      subtitle: "Entrepreneur Challenge",
+      price: "₹665",
+      description: "Individual competition for aspiring entrepreneurs",
       features: [
         "Individual participation",
-        "Video submission for Stage 1",
-        "Regional presentation opportunity",
-        "Research mentorship",
+        "Business Idea Deck submission for Stage 1",
+        "Regional live pitch opportunity",
+        "Entrepreneurship guidance",
         "Certificate of participation",
       ],
-      color: "from-orange-400 to-orange-600",
+      color: "from-orange-400 to-red-600",
+      popular: false,
+      prizes: "Revealing Soon",
+      formLink: "#",
+      eventType: "WSC",
+    },
+    {
+      title: "ESPORTS SHOWDOWN",
+      subtitle: "Gaming - Esports Showdown",
+      price: "₹1,665",
+      description: "Survive. Strategize. Conquer. Team up. Virtual arenas. Sharpest minds and fastest reflexes win!",
+      features: [
+        "Individual + 1 Mentor",
+        "Football-style BattleBot arena",
+        "Bring your own equipment",
+        "Dimensions and weight rules provided",
+        "Strategic football gameplay",
+      ],
+      color: "from-red-500 to-orange-600",
       popular: false,
       prizes: "Revealing Soon",
       formLink: "#",
@@ -114,7 +132,7 @@ export default function Register() {
     {
       title: "MYSTERY MAKERS",
       subtitle: "Design and thinking Competition",
-      price: "₹1,499",
+      price: "₹2,499",
       description: "Team-based STEAM challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -132,10 +150,10 @@ export default function Register() {
     {
       title: "TECH FOR GOOD",
       subtitle: "Robotics Competition",
-      price: "₹1,999",
-      description: "Technology for mankind's betterment",
+      price: "₹3,332",
+      description: "Technology for mankind's betterment Create meaningful tech solutions and present your robotics project.",
       features: [
-        "3 Students + 1 Mentor team",
+        "4 Students + 1 Mentor team",
         "Robotics project development",
         "Optional robotics kit (₹2,500 + GST)",
         "Expert technical guidance",
@@ -150,7 +168,7 @@ export default function Register() {
     {
       title: "TECH THROTTLE -> RC CAR",
       subtitle: "Gaming - RC Cars",
-      price: "₹3,599",
+      price: "₹5,999",
       description: "Race. Smash. Survive. Bring your own RC car! Compete in RC car hurdles.",
       features: [
         "3 Students + 1 Mentor team",
@@ -168,7 +186,7 @@ export default function Register() {
     {
       title: "TECH THROTTLE -> BATTLEBOT",
       subtitle: "Gaming - BattleBots",
-      price: "₹3,599",
+      price: "₹5,999",
       description: "Race. Smash. Survive. Bring your own BattleBot! Compete in BattleBot showdowns.",
       features: [
         "3 Students + 1 Mentor team",
@@ -186,26 +204,8 @@ export default function Register() {
     {
       title: "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION",
       subtitle: "Gaming - BattleBots: Football Edition",
-      price: "₹3,599",
+      price: "₹5,999",
       description: "Race. Smash. Survive. Bring your own BattleBot! Compete in football-style BattleBot matches.",
-      features: [
-        "3 Students + 1 Mentor team",
-        "Football-style BattleBot arena",
-        "Bring your own equipment",
-        "Dimensions and weight rules provided",
-        "Strategic football gameplay",
-      ],
-      color: "from-red-500 to-orange-600",
-      popular: false,
-      prizes: "Revealing Soon",
-      formLink: "#",
-      eventType: "WSC",
-    },
-    {
-      title: "ESPORTS SHOWDOWN",
-      subtitle: "Gaming - Esports Showdown",
-      price: "₹1,999",
-      description: "Survive. Strategize. Conquer. Team up and battle it out in high-intensity virtual arenas where only the sharpest minds and fastest reflexes win!",
       features: [
         "3 Students + 1 Mentor team",
         "Football-style BattleBot arena",
@@ -222,7 +222,7 @@ export default function Register() {
     {
       title: "Wing-shot Championship",
       subtitle: "Primary",
-      price: "₹1,499",
+      price: "₹2,499",
       description: "Build and launch gliders with precision",
       features: [
         "3 Students + 1 Mentor team",
@@ -240,7 +240,7 @@ export default function Register() {
     {
       title: "RocketMania",
       subtitle: "Primary",
-      price: "₹1,499",
+      price: "₹2,499",
       description: "Build and launch rockets to new heights",
       features: [
         "3 Students + 1 Mentor team",
@@ -258,7 +258,7 @@ export default function Register() {
     {
       title: "DroneX Kids",
       subtitle: "Primary",
-      price: "₹1,499",
+      price: "₹2,499",
       description: "Master drone flying with precision challenges",
       features: [
         "3 Students + 1 Mentor team",
@@ -276,7 +276,7 @@ export default function Register() {
     {
       title: "Wing Warriors",
       subtitle: "Junior & Senior (Grade 6-12)",
-      price: "₹2,499",
+      price: "₹4,165",
       description: "Design and build your own RC aircraft",
       features: [
         "3 Students + 1 Mentor team",
@@ -294,7 +294,7 @@ export default function Register() {
     {
       title: "Throttle Titans",
       subtitle: "Junior & Senior (Grade 6-12)",
-      price: "₹2,499",
+      price: "₹4,165",
       description: "Master RC plane control and precision",
       features: [
         "3 Students + 1 Mentor team",
@@ -312,7 +312,7 @@ export default function Register() {
     {
       title: "DroneX",
       subtitle: "Junior & Senior (Grade 6-12)",
-      price: "₹3,599",
+      price: "₹5,999",
       description: "Build and fly custom drones",
       features: [
         "3 Students + 1 Mentor team",
@@ -331,7 +331,7 @@ export default function Register() {
 
   const categoryFormBaseUrls = {
     "STARS & BEYOND": "https://zfrmz.in/uceTMsCZhDwKLXaBgRFp",
-    "IDEA IGNITE": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
+    "IDEA TANK": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
     "MYSTERY MAKERS": "https://zfrmz.in/N2uZa2uydmyoLnNTJ7eB",
     "TECH FOR GOOD": "https://zfrmz.in/x2bBTpLfQ5aQn7cUdtWQ",
     "TECH THROTTLE -> RC CAR": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
@@ -343,7 +343,7 @@ export default function Register() {
     "DroneX Kids": "https://zfrmz.in/3bKeY8w0GkXZGOKoh3iU",
     "Wing Warriors": "https://zfrmz.in/AbvURV2DGcL1QlVx1yHo",
     "Throttle Titans": "https://zfrmz.in/UQFJ4SIZwTjDjRu7lnmW",
-    "DroneX": "https://zfrmz.in/PxfxhCE9pqvCQwZgSzlj    ",
+    "DroneX": "https://zfrmz.in/PxfxhCE9pqvCQwZgSzlj",
   }
 
   const buildZohoFormUrl = (categoryTitle) => {
@@ -361,20 +361,19 @@ export default function Register() {
   }
 
   const normalizeStatus = (status) => {
-    if (!status) return "pending"
+    if (!status) return "not-registered"
     const s = String(status).trim().toLowerCase().replace(/[_-]+/g, " ")
     if (
       ["success", "successful", "completed", "complete", "paid", "payment success", "payment completed"].includes(s)
     ) {
       return "registered"
     }
-    if (["pending", "processing", "initiated", "in progress"].includes(s)) {
-      return "pending"
-    }
     if (["failed", "failure", "canceled", "cancelled", "declined"].includes(s)) {
       return "failed"
     }
-    return "pending"
+    // For pending/processing/initiated - treat as not registered so user can retry
+    // Only show "pending" if there's an active payment link that's being processed
+    return "not-registered"
   }
 
   const normalizedCategories = useMemo(() => {
@@ -389,7 +388,20 @@ export default function Register() {
       normalizedCategories.find((r) => r?.category === categoryTitle) ||
       userCategories.find((r) => r?.category === categoryTitle)
     if (!reg) return "not-registered"
-    return reg.normalizedStatus ?? normalizeStatus(reg.paymentStatus)
+    
+    // Check if payment was actually completed
+    if (reg.paymentStatus === "success" || reg.paymentStatus === "completed" || reg.paymentStatus === "paid") {
+      return "registered"
+    }
+    
+    // Check if payment failed
+    if (reg.paymentStatus === "failed" || reg.paymentStatus === "cancelled") {
+      return "failed"
+    }
+    
+    // For any other status (pending, etc.), treat as not registered
+    // This allows users to retry if they closed the payment window
+    return "not-registered"
   }
 
   const isRegisteredInCategory = (categoryTitle) => {

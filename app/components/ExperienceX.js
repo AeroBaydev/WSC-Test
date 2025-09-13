@@ -15,22 +15,33 @@ export default function Categories() {
       color: "from-orange-400 to-orange-600",
       ageGroup: "Primary",
       fee2: "₹499",
-      fee1: "₹299 ",
       team: "Individual",
       // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
     },
     {
-      name: "IDEA IGNITE",
-      subtitle: "Research-Based Competition",
+      name: "IDEA TANK",
+      subtitle: "Entrepreneur Challenge",
       description:
-        "Dive into research! Study and explore advancements in science. Submit a video explaining your research idea, findings, and relevance.",
-      icon: "🔬",
+        "Think like an entrepreneur! Identify a real-world problem and pitch an innovative business solution. Submit a business idea deck covering problem, solution, business model, and impact.",
+      icon: "🚀",
       color: "from-orange-400 to-orange-600",
       ageGroup: "Junior & Senior",
-      fee2: "₹699",
-      fee1: "₹399 ",
+      fee2: "₹665",
       team: "Individual",
       // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
+    },
+    {
+      name: "ESPORTS SHOWDOWN",
+      subtitle: "Gaming - Esports Showdown",
+      description:
+        " Survive. Strategize. Conquer. Team up and battle it out in high-intensity virtual arenas where only the sharpest minds and fastest reflexes win!",
+      icon: "🎮",
+      color: "from-red-500 to-orange-600",
+      ageGroup: "Junior & Senior",
+      fee2: "₹1,665",
+      team: "Individual",
+      // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
+      note: "Rules will be provided",
     },
     {
       name: "MYSTERY MAKERS",
@@ -40,8 +51,7 @@ export default function Categories() {
       icon: "🧩",
       color: "from-orange-500 to-orange-700",
       ageGroup: "Junior & Senior",
-      fee2: "₹1,899",
-      fee1: "₹1,499 ",
+      fee2: "₹2,499",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹8,000", "2nd: ₹5,000", "3rd: ₹3,000"],
     },
@@ -53,9 +63,8 @@ export default function Categories() {
       icon: "🤖",
       color: "from-orange-600 to-red-500",
       ageGroup: "Junior & Senior",
-      fee2: "₹2,299",
-      fee1: "₹1,999 ",
-      team: "3 Students + 1 Mentor",
+      fee2: "₹3,332",
+      team: "4 Students + 1 Mentor",
       // prizes: ["1st: ₹11,000", "2nd: ₹7,000", "3rd: ₹4,000"],
       // addon: "Robotics Kit: ₹2,999 Including GST (optional)",
     },
@@ -68,7 +77,6 @@ export default function Categories() {
       color: "from-red-500 to-orange-600",
       ageGroup: "Junior & Senior",
       fee2: "₹5,999",
-      fee1: "₹3,599 ",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Dimensions and weight rules will be provided",
@@ -82,7 +90,6 @@ export default function Categories() {
       color: "from-red-500 to-orange-600",
       ageGroup: "Junior & Senior",
       fee2: "₹5,999",
-      fee1: "₹3,599 ",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Dimensions and weight rules will be provided",
@@ -96,31 +103,16 @@ export default function Categories() {
       color: "from-red-500 to-orange-600",
       ageGroup: "Junior & Senior",
       fee2: "₹5,999",
-      fee1: "₹3,599 ",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Dimensions and weight rules will be provided",
-    },
-    {
-      name: "ESPORTS SHOWDOWN",
-      subtitle: "Gaming - Esports Showdown",
-      description:
-        " Survive. Strategize. Conquer. Team up and battle it out in high-intensity virtual arenas where only the sharpest minds and fastest reflexes win!",
-      icon: "🎮",
-      color: "from-red-500 to-orange-600",
-      ageGroup: "Junior & Senior",
-      fee2: "₹3,999",
-      fee1: "₹1,999 ",
-      team: "3 Students + 1 Mentor",
-      // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
-      note: "Rules will be provided",
-    },
+    }
   ];
 
   const detailedGuidelines = {
     "STARS & BEYOND": {
       title: "STARS & BEYOND (Quiz Competition)",
-      details: [     
+      details: [
         "• Age Group: Primary",
         "• Participation: Individual",
         "• Objective: Test knowledge of astronomy and space through fun, engaging quiz rounds.",
@@ -130,16 +122,16 @@ export default function Categories() {
         "• Pro Tip: Revise basics of the solar system, constellations, astronauts, and recent space missions.",
       ],
     },
-    "IDEA IGNITE": {
-      title: "IDEA IGNITE (Research-Based)",
+    "IDEA TANK": {
+      title: "IDEA TANK (Entrepreneur Challenge)",
       details: [
         "• Age Group: Junior & Senior",
         "• Participation: Individual",
-        "• Objective: Research a real-world problem and propose an innovative, feasible solution.",
-        "• Submission: Send report on info@worldskillchallenge.com (problem, background research, solution, feasibility, impact).",
-        "• Regional Round: 4–5 min live presentation with data and logic.",
-        "• Evaluation: Innovation, research depth, clarity, communication.",
-        "• Pro Tip: Use visuals, real-world data, and credible sources.",
+        "• Objective: Identify a real-world problem and pitch an innovative business/entrepreneurial solution.",
+        "• Submission: Business Idea Deck (problem, solution, business model, impact).",
+        "• Regional Round: 4–5 min live presentation.",
+        "• Evaluation: Creativity, feasibility, market potential, communication.",
+        "• Pro Tip: Show clear value proposition, scalability, and practical implementation.",
       ],
     },
 
@@ -158,7 +150,7 @@ export default function Categories() {
       title: "TECH FOR GOOD (Robotics & Innovation)",
       details: [
         "• Age Group: Junior & Senior",
-        "• Team: 3 students + 1 mentor",
+        "• Team: 4 students + 1 mentor",
         "• Theme: Technology for the Betterment of Humankind.",
         "• Submission: Send report on info@worldskillchallenge.com (problem, design, execution, societal benefit).",
         "• Regional Round: Live demonstration of shortlisted projects.",
@@ -170,11 +162,11 @@ export default function Categories() {
       title: "TECH THROTTLE (GAMING)",
       details: [
         "• Age Group: Junior & Senior",
-        "• Team: 3 students + 1 mentor",
+        "• Team: Individual or 3 students + 1 mentor (as per category)",
         "• RC Car Race: Obstacle track (speed, accuracy, control).",
         "• BattleBots: Combat robots (points for strikes, defense, survival).",
         "• BattleBot Football Edition: Robot football-style match.",
-        "• Esports Showdown: Team-based video game tournament.",
+        "• Esports Showdown: Individual.",
         "• Safety: No hazardous materials; unsafe bots disqualified.",
         "• Evaluation: Performance, durability, strategy, innovation, compliance.",
       ],
@@ -249,17 +241,9 @@ export default function Categories() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">General Fee:</span>
+                    <span className="text-gray-500 text-sm">Fee:</span>         
                     <span className="text-orange-600 font-bold">
                       {category.fee2}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">
-                      Supporting Partner Fee:
-                    </span>
-                    <span className="text-orange-600 font-bold">
-                      {category.fee1}
                     </span>
                   </div>
                   {category.addon && (

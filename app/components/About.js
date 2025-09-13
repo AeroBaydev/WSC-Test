@@ -6,7 +6,7 @@ export default function About() {
   const ageCategories = [
     { name: "Primary", range: "Classes 3 to 5", color: "bg-orange-500" },
     { name: "Junior", range: "Classes 6 to 8", color: "bg-orange-500" },
-    { name: "Senior", range: "Classes 9 to 12", color: "bg-orange-600" },
+    { name: "Senior", range: "Classes 9 to 12", color: "bg-orange-500" },
   ]
 
   const benefits = [
@@ -34,19 +34,19 @@ export default function About() {
     },
     {
       name: "NSDC",
-      logo: "/images/NSDC.png",
+      logo: "/images/NSDCLOGO.png",
       width: 120,
       height: 50,
     },
     {
       name: "Aero Modellers Association of India",
-      logo: "/images/amai.jpg",
+      logo: "/images/AMAILOGO.png",
       width: 120,
       height: 50,
     },
     {
       name: "Skill India",
-      logo: "/images/skill india.png",
+      logo: "/images/skillindialogo.png",
       width: 120,
       height: 50,
     },
@@ -102,7 +102,7 @@ export default function About() {
               viewport={{ once: true }}
               className="bg-white rounded-lg p-8 card-shadow"
             >
-              <div className="w-16 h-16 bg-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center">
+              <div className="w-16 h-16 bg-orange-500 rounded-full mx-auto mb-6 flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -165,7 +165,7 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="orange-accent rounded-lg p-8 text-center card-shadow-lg mb-16"
+          className="bg-orange-500 rounded-lg p-8 text-center card-shadow-lg mb-16"
         >
           <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Why Join World Skill Challenge 2025?</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
@@ -176,7 +176,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white/10 rounded-lg p-4"
+                className="bg-white/10 rounded-lg p-4 flex items-center justify-center text-center"
               >
                 <p className="text-white font-semibold text-sm md:text-base">{benefit}</p>
               </motion.div>

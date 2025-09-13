@@ -15,6 +15,9 @@ function RegistrationSuccessContent() {
   const category = searchParams.get('category')
 
   useEffect(() => {
+    // Check if we're in a popup/iframe and should close automatically
+    const isInPopup = window.opener || window.parent !== window;
+    
     const confirmRegistration = async () => {
       if (!clerkUserId || !category) {
         setStatus('error')
@@ -39,6 +42,22 @@ function RegistrationSuccessContent() {
         if (data.success) {
           setStatus('success')
           setMessage('Registration confirmed successfully!')
+          
+          // If in popup, auto-close after 3 seconds
+          if (isInPopup) {
+            setTimeout(() => {
+              try {
+                if (window.opener && !window.opener.closed) {
+                  window.opener.location.href = 'https://worldskillchallenge.com/#register';
+                  window.close();
+                } else if (window.parent && window.parent !== window) {
+                  window.parent.location.href = 'https://worldskillchallenge.com/#register';
+                }
+              } catch (error) {
+                window.location.href = 'https://worldskillchallenge.com/#register';
+              }
+            }, 3000);
+          }
         } else {
           setStatus('already-registered')
           setMessage(data.message || 'Already registered in this category')
@@ -65,8 +84,8 @@ function RegistrationSuccessContent() {
       case 'success':
         return {
           icon: '🎉',
-          title: 'Registration Successful!',
-          description: `You have been successfully registered for ${category}. Check your email for further instructions.`,
+          title: 'Congratulations! Registration Complete!',
+          description: `You have successfully registered for ${category}. Welcome to World Skill Challenge 2025! Check your email for further instructions and competition details.`,
           color: 'text-green-600'
         }
       case 'already-registered':
@@ -137,23 +156,59 @@ function RegistrationSuccessContent() {
         )}
 
         <div className="space-y-4">
-          <motion.a
-            href="/#register"
+          <motion.button
+            onClick={() => {
+              // Try multiple methods to redirect parent window
+              try {
+                if (window.opener && !window.opener.closed) {
+                  // Payment was opened in popup
+                  window.opener.location.href = 'https://worldskillchallenge.com/#register';
+                  window.close();
+                } else if (window.parent && window.parent !== window) {
+                  // Payment was opened in iframe
+                  window.parent.location.href = 'https://worldskillchallenge.com/#register';
+                } else {
+                  // Fallback: redirect current window
+                  window.location.href = 'https://worldskillchallenge.com/#register';
+                }
+              } catch (error) {
+                // If all else fails, redirect current window
+                window.location.href = 'https://worldskillchallenge.com/#register';
+              }
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="block w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold py-3 px-6 transition-all duration-300"
           >
             Back to Registration
-          </motion.a>
+          </motion.button>
 
-          <motion.a
-            href="/"
+          <motion.button
+            onClick={() => {
+              // Try multiple methods to redirect parent window
+              try {
+                if (window.opener && !window.opener.closed) {
+                  // Payment was opened in popup
+                  window.opener.location.href = 'https://worldskillchallenge.com/';
+                  window.close();
+                } else if (window.parent && window.parent !== window) {
+                  // Payment was opened in iframe
+                  window.parent.location.href = 'https://worldskillchallenge.com/';
+                } else {
+                  // Fallback: redirect current window
+                  window.location.href = 'https://worldskillchallenge.com/';
+                }
+              } catch (error) {
+                // If all else fails, redirect current window
+                window.location.href = 'https://worldskillchallenge.com/';
+              }
+            }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold py-3 px-6 transition-all duration-300"
           >
             Go to Homepage
-          </motion.a>
+          </motion.button>
         </div>
 
         {status === 'error' && (

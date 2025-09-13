@@ -8,69 +8,69 @@ export default function SoarFest() {
   const categories = [
     // Primary Categories (Up to Grade 5)
     {
-      name: "Wing-shot Championship",
+      name: "WING-SHOT CHAMPIONSHIP",
       subtitle: "Catapult Glider",
       description:
         "Soar with Gliders! Build a foam-board glider from given dimensions and test your skills. Launch for distance and precision — the farthest flyer takes the win!.",
       icon: "✈️",
       color: "from-orange-400 to-orange-600",
-      fee: "₹1,499",
+      fee: "₹2,499",
       team: "3 Students + 1 Mentor",
       ageGroup: "Primary",
     },
     {
-      name: "RocketMania",
+      name: "ROCKETMANIA",
       subtitle: "Rocketry",
       description:
         "Rocket to the Skies! Craft rockets from raw materials as per the given dimensions. Watch them soar high — the tallest launch crowns the champion!",
       icon: "🚀",
       color: "from-orange-500 to-orange-700",
-      fee: "₹1,499",
+      fee: "₹2,499",
       team: "3 Students + 1 Mentor",
       ageGroup: "Primary",
     },
     {
-      name: "DroneX Kids",
+      name: "DRONEX KIDS",
       subtitle: "Mini Drone Flying",
       description:
         "Master the Mini Drone! Take control of mini drones provided at the venue. Complete flying challenges and spot landings to prove your piloting skills!",
       icon: "🚁",
       color: "from-orange-600 to-red-500",
-      fee: "₹1,499",
+      fee: "₹2,499",
       team: "3 Students + 1 Mentor",
       ageGroup: "Primary",
     },
     // Junior & Senior Categories (Grade 6-12)
     {
-      name: "Wing Warriors",
+      name: "WING WARRIORS",
       subtitle: " RC Plane Making",
       description:
         "Rule the Skies with RC Planes! Design and build an RC plane with given dimensions and materials. The best-performing and best-designed aircraft claims the title!",
       icon: "🛩️",
       color: "from-red-500 to-orange-600",
-      fee: "₹2,499",
+      fee: "₹4,165",
       team: "3 Students + 1 Mentor",
       ageGroup: "Junior & Senior",
     },
     {
-      name: "Throttle Titans",
+      name: "THROTTLE TITANS",
       subtitle: "RC Plane Flying",
       description:
         "Conquer the Skies with RC Flying! Take charge of your RC plane and showcase your piloting skills. Precision, control, and performance will decide who rules the skies!",
       icon: "🛫",
       color: "from-orange-500 to-red-500",
-      fee: "₹2,499",
+      fee: "₹4,165",
       team: "3 Students + 1 Mentor",
       ageGroup: "Junior & Senior",
     },
     {
-      name: "DroneX",
+      name: "DRONEX",
       subtitle: "Drone Making & Flying",
       description:
         "Dare to Drone! Build your drone from scratch with the provided dimensions and materials. Prove your skills as the best-performing drone and team take the crown!",
       icon: "🚁",
       color: "from-red-500 to-orange-600",
-      fee: "₹3,599",
+      fee: "₹5,999",
       team: "3 Students + 1 Mentor",
       ageGroup: "Junior & Senior",
     },

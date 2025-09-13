@@ -12,7 +12,7 @@ export default function FAQ() {
     },
     {
       question: "Are team sizes fixed?",
-      answer: "Minimum 2 students + 1 mentor per team (except STARS & BEYOND and IDEA IGNITE, which is individual).",
+      answer: "Minimum 2 students + 1 mentor per team (except STARS & BEYOND, IDEA IGNITE and Esports Showdown which is individual).",
     },
     {
       question: "Do I need prior robotics/coding experience?",

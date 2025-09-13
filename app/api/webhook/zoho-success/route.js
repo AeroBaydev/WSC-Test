@@ -33,12 +33,12 @@ export async function POST(request) {
 
     console.log('Parsed payload:', payload);
 
-    // 4. Extract Zoho fields directly
+    // 4. Extract Zoho fields directly (do NOT treat any Zoho field as payment fields)
     const email = payload.Field_6;
     const clerkUserId = payload.Field_7;
     const category = payload.Field_8;
-    const paymentAmount = payload.Field_9 || '0';
-    const paymentStatus = payload.Field_10 || 'pending';
+    const couponFromForm = payload.Field_9; // typically coupon code in our form
+    const ageGroupOrOther = payload.Field_10; // do NOT map to payment status
     const transactionId = payload.transaction_id || `webhook_${Date.now()}`;
 
     console.log('Extracted data:', {
@@ -65,50 +65,33 @@ export async function POST(request) {
     });
 
     if (existingRegistration) {
-      console.log('User already registered in category:', category);
-
-      if (
-        existingRegistration.paymentStatus === 'success' ||
-        existingRegistration.paymentStatus === 'completed'
-      ) {
-        return NextResponse.json({
-          success: false,
-          message: 'Already successfully registered in this category',
-          category,
-          paymentStatus: existingRegistration.paymentStatus,
-        });
+      console.log('Zoho webhook: existing registration found, updating metadata only');
+      // Update email or metadata only; never touch paymentStatus/paymentAmount here
+      existingRegistration.email = email || existingRegistration.email;
+      existingRegistration.zohoFormData = payload;
+      // Optionally store coupon seen in Zoho
+      if (couponFromForm) {
+        existingRegistration.zohoFormData = {
+          ...(existingRegistration.zohoFormData || {}),
+          coupon: couponFromForm,
+        };
       }
-
-      // Update payment status if it changed
-      if (existingRegistration.paymentStatus !== paymentStatus) {
-        existingRegistration.paymentStatus = paymentStatus;
-        existingRegistration.paymentAmount = paymentAmount;
-        existingRegistration.transactionId = transactionId;
-        await existingRegistration.save();
-        console.log(
-          'Updated payment status for existing category:',
-          category,
-          'to',
-          paymentStatus
-        );
-      }
-
+      await existingRegistration.save();
       return NextResponse.json({
         success: true,
-        message: 'Payment status updated for existing registration',
+        message: 'Registration metadata synced from Zoho',
         category,
-        paymentStatus,
+        paymentStatus: existingRegistration.paymentStatus,
         registrationId: existingRegistration._id,
       });
     }
 
-    // 7. Create new category registration
+    // 7. Create new category registration (metadata only). Payment handled via Razorpay webhook.
     const newRegistration = await CategoryRegistration.create({
       clerkUserId,
       email,
       category,
-      paymentStatus,
-      paymentAmount,
+      paymentStatus: 'pending',
       transactionId,
       zohoFormData: payload, // Store raw Zoho data
     });
@@ -116,7 +99,7 @@ export async function POST(request) {
     console.log('Successfully registered user:', {
       clerkUserId,
       category,
-      paymentStatus,
+      paymentStatus: newRegistration.paymentStatus,
       registrationId: newRegistration._id,
     });
 
