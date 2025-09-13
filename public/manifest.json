@@ -1,0 +1,27 @@
+{
+  "name": "World Skill Challenge 2025",
+  "short_name": "WSC 2025",
+  "description": "National & International Skill Hunt for Young Innovators",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff6b35",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/wsc-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/images/wsc-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["education", "competition", "students"],
+  "lang": "en",
+  "dir": "ltr"
+}
