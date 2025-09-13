@@ -93,15 +93,8 @@ export async function GET(request) {
     // Create Razorpay Payment Link via REST API
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    // Ensure baseUrl is correct - remove any trailing /payment_links
-    let baseUrl = process.env.RAZORPAY_BASE_URL || 'https://api.razorpay.com/v1';
-    if (baseUrl.endsWith('/payment_links')) {
-      baseUrl = baseUrl.replace('/payment_links', '');
-    }
-    // Ensure it ends with /v1
-    if (!baseUrl.endsWith('/v1')) {
-      baseUrl = baseUrl.replace(/\/$/, '') + '/v1';
-    }
+    // Force correct baseUrl regardless of environment variable
+    const baseUrl = 'https://api.razorpay.com/v1';
 
     if (!keyId || !keySecret) {
       return NextResponse.json({ error: 'Razorpay credentials not configured' }, { status: 500 });
@@ -113,22 +106,7 @@ export async function GET(request) {
     console.log('Constructed Razorpay URL:', `${baseUrl}/payment_links`);
 
     // Build success URL with context so UI page can confirm and show success
-    const successBase = process.env.RAZORPAY_SUCCESS_REDIRECT_URL || `https://worldskillchallenge.com/registration-success`;
-    
-    let successUrl;
-    try {
-      successUrl = new URL(successBase);
-    } catch (urlError) {
-      console.error('Failed to parse success URL:', successBase, urlError);
-      return NextResponse.json({ 
-        error: 'Invalid success redirect URL configuration',
-        details: `Failed to parse URL from RAZORPAY_SUCCESS_REDIRECT_URL=${successBase}`,
-        hint: 'Please check your RAZORPAY_SUCCESS_REDIRECT_URL environment variable'
-      }, { status: 500 });
-    }
-    
-    successUrl.searchParams.set('clerkUserId', clerkUserId);
-    successUrl.searchParams.set('category', category);
+    const successUrl = `https://worldskillchallenge.com/registration-success?clerkUserId=${encodeURIComponent(clerkUserId)}&category=${encodeURIComponent(category)}`;
 
     const payload = {
       amount: finalPricePaise,
@@ -148,7 +126,7 @@ export async function GET(request) {
         coupon,
         app: 'wsc',
       },
-      callback_url: successUrl.toString(),
+      callback_url: successUrl,
       callback_method: 'get',
     };
 
