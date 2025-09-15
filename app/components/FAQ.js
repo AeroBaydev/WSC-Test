@@ -10,10 +10,10 @@ export default function FAQ() {
       question: "Can I participate in more than one category?",
       answer: "Yes, but you must register separately for each.",
     },
-    {
-      question: "Are team sizes fixed?",
-      answer: "Minimum 2 students + 1 mentor per team (except STARS & BEYOND, IDEA IGNITE and Esports Showdown which is individual).",
-    },
+    // {
+    //   question: "Are team sizes fixed?",
+    //   answer: "Minimum 2 students + 1 mentor per team (except STARS & BEYOND, IDEA IGNITE and Esports Showdown which is individual).",
+    // },
     {
       question: "Do I need prior robotics/coding experience?",
       answer: "No. Beginners can participate, especially in kit-based challenges.",
@@ -26,10 +26,10 @@ export default function FAQ() {
       question: "Can mentors help during the event?",
       answer: "Mentors can advise, but cannot directly build, code, or design.",
     },
-    {
-      question: "Will equipment be provided?",
-      answer: "Materials will be provided only in Mystery Makers category. For others, teams must bring their own.",
-    },
+    // {
+    //   question: "Will equipment be provided?",
+    //   answer: "Materials will be provided only in Mystery Makers category. For others, teams must bring their own.",
+    // },
     {
       question: "What safety measures apply to BattleBots?",
       answer: "Weight/dimension checks, no fire/explosives/hazardous blades. Referees can stop unsafe bots.",

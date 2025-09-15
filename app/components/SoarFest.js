@@ -72,7 +72,7 @@ export default function SoarFest() {
       name: "DRONEX",
       subtitle: "Drone Making & Flying",
       description:
-        "Master the Big Drone! Take control of mini drones provided at the venue. Complete flying challenges and spot landings to prove your piloting skills!",
+        "Master the Big Drone! Take control of Big drones provided at the venue. Complete flying challenges and spot landings to prove your piloting skills!",
       icon: "🚁",
       color: "from-red-500 to-orange-600",
       fee: "₹5,999",

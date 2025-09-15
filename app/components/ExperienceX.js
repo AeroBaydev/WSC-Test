@@ -179,7 +179,6 @@ export default function Categories() {
         "• RC Car Race: Obstacle track (speed, accuracy, control).",
         "• BattleBots: Combat robots (points for strikes, defense, survival).",
         "• BattleBot Football Edition: Robot football-style match.",
-        "• Esports Showdown: Individual.",
         "• Safety: No hazardous materials; unsafe bots disqualified.",
         "• Evaluation: Performance, durability, strategy, innovation, compliance.",
       ],
