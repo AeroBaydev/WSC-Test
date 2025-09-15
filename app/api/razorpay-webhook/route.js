@@ -3,6 +3,9 @@ import crypto from 'node:crypto';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 
+export const runtime = 'nodejs';
+export const preferredRegion = ['bom1'];
+
 // Razorpay sends events to this webhook. Configure the secret in dashboard.
 export async function POST(request) {
   try {
@@ -37,11 +40,8 @@ export async function POST(request) {
     let paymentLinkId = payload.payload?.payment_link?.entity?.id || entity?.payment_link_id;
     let notes = entity?.notes || {};
 
-    if (event === 'payment.captured' || event === 'payment_link.paid') {
-      paymentStatus = 'success';
-    } else if (event === 'payment.failed' || event === 'payment_link.cancelled') {
-      paymentStatus = 'failed';
-    }
+    const isSuccessEvent = (event === 'payment.captured' || event === 'payment_link.paid');
+    const isFailureEvent = (event === 'payment.failed' || event === 'payment_link.cancelled');
 
     const clerkUserId = notes.clerkUserId;
     const category = notes.category;
@@ -60,15 +60,56 @@ export async function POST(request) {
       return NextResponse.json({ ok: true });
     }
 
-    const registration = await CategoryRegistration.findOne({ clerkUserId, category });
-    if (!registration) {
-      return NextResponse.json({ ok: true });
-    }
+    // Only persist data for successful payments
+    if (isSuccessEvent) {
+      // Prefer resolving by paymentLinkId (most reliable)
+      let registration = null;
+      if (paymentLinkId) {
+        registration = await CategoryRegistration.findOne({ paymentLinkId });
+      }
 
-    registration.paymentStatus = paymentStatus;
-    registration.paymentOrderId = paymentId || registration.paymentOrderId;
-    registration.paymentLinkId = paymentLinkId || registration.paymentLinkId;
-    await registration.save();
+      // Fall back to clerkUserId + category from notes
+      if (!registration && clerkUserId && category) {
+        registration = await CategoryRegistration.findOne({ clerkUserId, category });
+      }
+
+      // Final fallback: latest initiated/pending record for this user
+      if (!registration && clerkUserId) {
+        registration = await CategoryRegistration.findOne({
+          clerkUserId,
+          paymentStatus: { $in: ['pending', 'initiated'] },
+        }).sort({ createdAt: -1 });
+      }
+
+      if (!registration) {
+        // Create a new record on success if none exists
+        registration = await CategoryRegistration.create({
+          clerkUserId: clerkUserId || 'unknown',
+          category: category || 'unknown',
+          email: notes.email || 'unknown@example.com',
+          paymentStatus: 'success',
+          paymentOrderId: paymentId,
+          paymentLinkId: paymentLinkId,
+          paymentAmount: notes.paymentAmount || undefined,
+          zohoFormData: notes.zohoFormData ? JSON.parse(notes.zohoFormData) : {},
+          registeredAt: new Date(),
+        });
+      } else {
+        registration.paymentStatus = 'success';
+        registration.paymentOrderId = paymentId || registration.paymentOrderId;
+        registration.paymentLinkId = paymentLinkId || registration.paymentLinkId;
+        registration.registeredAt = registration.registeredAt || new Date();
+        await registration.save();
+      }
+    } else if (isFailureEvent && paymentLinkId) {
+      // Optional: mark existing initiated/pending record as failed; do NOT create new
+      const reg = await CategoryRegistration.findOne({ paymentLinkId });
+      if (reg) {
+        reg.paymentStatus = 'failed';
+        reg.paymentOrderId = paymentId || reg.paymentOrderId;
+        await reg.save();
+      }
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {

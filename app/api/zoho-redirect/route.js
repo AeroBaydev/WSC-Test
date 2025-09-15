@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/dbConnect.js';
-import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 import { getBasePriceInPaise } from '@/lib/pricing.js';
 import { validateAndPriceWithCoupon } from '@/lib/coupon.js';
+
+export const runtime = 'nodejs';
+export const preferredRegion = ['bom1'];
 
 // This endpoint is the Redirect URL target from Zoho Form.
 // Expecting query params: clerkUserId, category, email, coupon (optional)
@@ -19,28 +20,7 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Missing required params' }, { status: 400 });
     }
 
-    await dbConnect();
-
-    // Fast path: if already paid for this category, short-circuit
-    const existingPaid = await CategoryRegistration.findOne({
-      clerkUserId,
-      category,
-      paymentStatus: { $in: ['success', 'completed', 'paid'] },
-    });
-    if (existingPaid) {
-      // Redirect to an "already registered" page
-      const alreadyUrl = process.env.ALREADY_REGISTERED_URL || 'https://worldskillchallenge.com/registration-success?status=already';
-      return NextResponse.redirect(alreadyUrl);
-    }
-
-    // Create or reuse a pending registration
-    let registration = await CategoryRegistration.findOne({ clerkUserId, category });
-    
-    // If there's an old pending registration that's not actually paid, clean it up
-    if (registration && registration.paymentStatus === 'pending' && !registration.paymentLinkId) {
-      await CategoryRegistration.deleteOne({ _id: registration._id });
-      registration = null;
-    }
+    // No DB writes here. Only generate a payment link and redirect.
 
     let basePricePaise;
     try {
@@ -58,37 +38,9 @@ export async function GET(request) {
       couponCode: coupon,
     });
 
-    // If a pending payment link exists and amount matches, reuse it
-    if (
-      registration &&
-      registration.paymentStatus !== 'success' &&
-      registration.paymentLinkId &&
-      registration.paymentAmount &&
-      Number(registration.paymentAmount) === finalPricePaise
-    ) {
-      const url = registration.transactionId; // we will store short_url in transactionId for convenience
-      if (url) {
-        return NextResponse.redirect(url);
-      }
-    }
+    // Always create a fresh payment link to avoid stale references
 
-    // Create/update registration document to pending
-    if (!registration) {
-      registration = await CategoryRegistration.create({
-        clerkUserId,
-        email,
-        category,
-        paymentStatus: 'pending',
-        paymentAmount: String(finalPricePaise),
-        zohoFormData: { coupon },
-      });
-    } else {
-      registration.email = email;
-      registration.paymentStatus = 'pending';
-      registration.paymentAmount = String(finalPricePaise);
-      registration.zohoFormData = { ...(registration.zohoFormData || {}), coupon };
-      await registration.save();
-    }
+    // Do not write any registration records here; webhook will persist only on success
 
     // Create Razorpay Payment Link via REST API
     const keyId = process.env.RAZORPAY_KEY_ID;
@@ -141,8 +93,8 @@ export async function GET(request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-      // Add timeout for Vercel free tier
-      signal: AbortSignal.timeout(8000), // 8 second timeout
+      // With Vercel Pro, allow more time to handle upstream latency
+      signal: AbortSignal.timeout(30000), // 30 second timeout
     });
 
     if (!resp.ok) {
@@ -152,11 +104,6 @@ export async function GET(request) {
     }
 
     const data = await resp.json();
-    // Store identifiers
-    registration.paymentLinkId = data.id; // e.g., plink_...
-    registration.transactionId = data.short_url; // store short_url for redirect convenience
-    await registration.save();
-
     // Redirect to Razorpay short_url (auto-lands in UPI flow on device)
     return NextResponse.redirect(data.short_url);
   } catch (err) {
