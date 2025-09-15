@@ -89,7 +89,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
                 >
-                  <a
+                  {/* <a
                     href="https://workdrive.zoho.in/folder/1nsamfc18e91dad8f439fafa11477539db613"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -97,7 +97,7 @@ export default function Navbar() {
                     onClick={() => setIsMoreOpen(false)}
                   >
                     Guidelines
-                  </a>
+                  </a> */}
                   <button
                     onClick={() => {
                       router.push("/updates")

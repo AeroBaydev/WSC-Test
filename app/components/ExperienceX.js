@@ -17,6 +17,7 @@ export default function Categories() {
       fee2: "₹499",
       team: "Individual",
       // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
+      note: "No materials required.",
     },
     {
       name: "IDEA TANK",
@@ -29,6 +30,7 @@ export default function Categories() {
       fee2: "₹665",
       team: "Individual",
       // prizes: ["1st: ₹3,000", "2nd: ₹1,500", "3rd: ₹1,000"],
+      note: "No materials required.",
     },
     {
       name: "ESPORTS SHOWDOWN",
@@ -39,9 +41,9 @@ export default function Categories() {
       color: "from-red-500 to-orange-600",
       ageGroup: "Junior & Senior",
       fee2: "₹1,665",
-      team: "Individual",
+      team: "4 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
-      note: "Rules will be provided",
+      note: "Students must carry their own gadgets.",
     },
     {
       name: "MYSTERY MAKERS",
@@ -54,6 +56,7 @@ export default function Categories() {
       fee2: "₹2,499",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹8,000", "2nd: ₹5,000", "3rd: ₹3,000"],
+      note: "Materials will be provided by the WSC at the time of the event.",
     },
     {
       name: "TECH FOR GOOD",
@@ -67,6 +70,7 @@ export default function Categories() {
       team: "4 Students + 1 Mentor",
       // prizes: ["1st: ₹11,000", "2nd: ₹7,000", "3rd: ₹4,000"],
       // addon: "Robotics Kit: ₹2,999 Including GST (optional)",
+      note: "Students must carry their own materials.",
     },
     {
       name: "TECH THROTTLE -> RC CAR",
@@ -79,7 +83,7 @@ export default function Categories() {
       fee2: "₹5,999",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
-      note: "Dimensions and weight rules will be provided",
+      note: "Students must carry their own materials.",
     },
     {
       name: "TECH THROTTLE -> BATTLEBOT",
@@ -92,7 +96,7 @@ export default function Categories() {
       fee2: "₹5,999",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
-      note: "Dimensions and weight rules will be provided",
+      note: "Students must carry their own materials.",
     },
     {
       name: "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION",
@@ -105,7 +109,7 @@ export default function Categories() {
       fee2: "₹5,999",
       team: "3 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
-      note: "Dimensions and weight rules will be provided",
+      note: "Students must carry their own materials.",
     }
   ];
 
@@ -134,7 +138,16 @@ export default function Categories() {
         "• Pro Tip: Show clear value proposition, scalability, and practical implementation.",
       ],
     },
-
+    "ESPORTS SHOWDOWN": {
+      title: "ESPORTS SHOWDOWN (Gaming)",
+      details: [
+        "• Age Group: Junior & Senior",
+        "• Team: 4 students + 1 mentor",
+        "• Format: Round 1 (Online) → Round 2 (Offline – Regional)",
+        "• Games: BGMI & Free Fire",
+        "• Evaluation: Teamwork, strategy, communication, gaming skills, and compliance",
+      ],
+    },
     "MYSTERY MAKERS": {
       title: "MYSTERY MAKERS (Design & Thinking)",
       details: [
@@ -193,6 +206,9 @@ export default function Categories() {
             Ignite young minds with creativity and innovation through robotics.
             Explore STEAM concepts, problem-solving, and hands-on building in
             exciting challenges.
+          </p><br />
+          <p className="text-lg text-green-600 font-semibold">
+            The detailed guidelines of all the categories will be provided on 20th September 2025.
           </p>
         </motion.div>
 
@@ -241,7 +257,7 @@ export default function Categories() {
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 text-sm">Fee:</span>         
+                    <span className="text-gray-500 text-sm">Fee:</span>
                     <span className="text-orange-600 font-bold">
                       {category.fee2}
                     </span>

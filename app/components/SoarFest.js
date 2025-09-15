@@ -11,23 +11,25 @@ export default function SoarFest() {
       name: "WING-SHOT CHAMPIONSHIP",
       subtitle: "Catapult Glider",
       description:
-        "Soar with Gliders! Build a foam-board glider from given dimensions and test your skills. Launch for distance and precision — the farthest flyer takes the win!.",
+        "Soar with Gliders! Build a balsa wood glider from material provided at the venue and test your skills. Launch for distance and precision — the farthest flyer takes the win!.",
       icon: "✈️",
       color: "from-orange-400 to-orange-600",
       fee: "₹2,499",
       team: "3 Students + 1 Mentor",
-      ageGroup: "Primary",
+      ageGroup: "Primary & Junior",
+      note: "Materials will be provided by the WSC at the time of the event.",
     },
     {
       name: "ROCKETMANIA",
       subtitle: "Rocketry",
       description:
-        "Rocket to the Skies! Craft rockets from raw materials as per the given dimensions. Watch them soar high — the tallest launch crowns the champion!",
+        "Rocket to the Skies! Craft rockets from the materials provided at the venue. Watch them soar high — the tallest launch crowns the champion!",
       icon: "🚀",
       color: "from-orange-500 to-orange-700",
       fee: "₹2,499",
       team: "3 Students + 1 Mentor",
-      ageGroup: "Primary",
+      ageGroup: "Primary & Junior",
+      note: "Materials will be provided by the WSC at the time of the event.",
     },
     {
       name: "DRONEX KIDS",
@@ -39,6 +41,7 @@ export default function SoarFest() {
       fee: "₹2,499",
       team: "3 Students + 1 Mentor",
       ageGroup: "Primary",
+      note: "Materials will be provided by the WSC at the time of the event.",
     },
     // Junior & Senior Categories (Grade 6-12)
     {
@@ -51,6 +54,7 @@ export default function SoarFest() {
       fee: "₹4,165",
       team: "3 Students + 1 Mentor",
       ageGroup: "Junior & Senior",
+      note: "Students must carry their own materials.",
     },
     {
       name: "THROTTLE TITANS",
@@ -62,17 +66,19 @@ export default function SoarFest() {
       fee: "₹4,165",
       team: "3 Students + 1 Mentor",
       ageGroup: "Junior & Senior",
+      note: "Materials will be provided by the WSC at the time of the event.",
     },
     {
       name: "DRONEX",
       subtitle: "Drone Making & Flying",
       description:
-        "Dare to Drone! Build your drone from scratch with the provided dimensions and materials. Prove your skills as the best-performing drone and team take the crown!",
+        "Master the Big Drone! Take control of mini drones provided at the venue. Complete flying challenges and spot landings to prove your piloting skills!",
       icon: "🚁",
       color: "from-red-500 to-orange-600",
       fee: "₹5,999",
       team: "3 Students + 1 Mentor",
       ageGroup: "Junior & Senior",
+      note: "Materials will be provided by the WSC at the time of the event.",
     },
   ]
 
@@ -157,6 +163,9 @@ const detailedGuidelines = {
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Ignite young minds with the thrill of flight, innovation, and hands-on making. Explore aerodynamics,
             engineering design, and flying skills through structured competitions.
+          </p><br />
+          <p className="text-lg text-green-600 font-semibold">
+            The detailed guidelines of all the categories will be provided on 20th September 2025.
           </p>
          
         </motion.div>
@@ -209,12 +218,11 @@ const detailedGuidelines = {
                     <span className="text-orange-600 font-bold">{category.fee}</span>
                   </div>
                 </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                  <p className="text-yellow-800 text-xs font-medium">
-                    📝 Note: All materials must be brought by students as per shared guidelines
-                  </p>
-                </div>
+                {category.note && (
+                    <div className="text-xs text-gray-700 bg-gray-50 p-2 rounded border border-gray-200">
+                      Note: {category.note}
+                    </div>
+                  )}
               </div>
             </motion.div>
           ))}
