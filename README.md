@@ -107,18 +107,41 @@ Create a `.env.local` in the project root:
 # MongoDB
 MONGODB_URI=your_mongodb_connection_string
 
-# Clerk
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
-CLERK_SECRET_KEY=sk_test_xxx
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_xxx
+CLERK_SECRET_KEY=sk_live_xxx
 CLERK_WEBHOOK_SECRET=optional_if_used
 
-# Zoho Webhook
+# Email Configuration (for contact form)
+EMAIL_USER=your_email@domain.com
+EMAIL_PASS=your_email_password
+SMTP_HOST=smtp.zoho.com
+SMTP_PORT=587
+SMTP_SECURE=false
+
+# Zoho Integration
 ZOHO_WEBHOOK_SECRET=your_zoho_webhook_secret
+
+# Razorpay Payment Integration
+RAZORPAY_KEY_ID=rzp_live_xxxxxxxxxxxxx
+RAZORPAY_KEY_SECRET=your_live_razorpay_secret
+RAZORPAY_BASE_URL=https://api.razorpay.com/v1
+RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
+RAZORPAY_SUCCESS_REDIRECT_URL=https://worldskillchallenge.com/registration-success
+ALREADY_REGISTERED_URL=https://worldskillchallenge.com/registration-success?status=already
+
+# Admin Configuration
+ADMIN_SEED_SECRET=your_admin_secret_key
+
+# Optional: Dynamic Coupons
+COUPONS_JSON=[{"code":"NEHA20","discountType":"percent","amount":20,"active":true}]
 ```
 
 Notes:
-- `ZOHO_WEBHOOK_SECRET` must match the secret configured in Zoho Webhook settings.
-- Clerk keys are required for local dev and production.
+- Use **live keys** (`rzp_live_`, `pk_live_`, `sk_live_`) for production
+- Use **test keys** (`rzp_test_`, `pk_test_`, `sk_test_`) for development
+- `ZOHO_WEBHOOK_SECRET` must match the secret configured in Zoho Webhook settings
+- `RAZORPAY_WEBHOOK_SECRET` must match the secret configured in Razorpay Dashboard
 
 ## 🚀 Getting Started
 
@@ -191,6 +214,64 @@ npm run lint    # Lint
 2. Import repo in Vercel
 3. Add env vars (same as `.env.local`)
 4. Deploy
+
+## 🛠 Troubleshooting & Issues Resolved
+
+### Issues Encountered During Development
+
+#### 1. **Zoho Webhook Failures (500 Internal Server Error)**
+**Problem**: Webhook returning 500 errors due to undefined variables
+**Solution**: 
+- Fixed undefined `paymentStatus` and `paymentAmount` variables in webhook code
+- Added proper error handling and logging
+- Ensured all required environment variables are set
+
+#### 2. **Payment Page Not Opening (zoho-redirect endpoint failures)**
+**Problem**: Users couldn't access Razorpay payment page
+**Root Causes & Solutions**:
+- **Missing Environment Variables**: Added all required Razorpay credentials
+- **URL Parsing Errors**: Fixed `RAZORPAY_BASE_URL` configuration issues
+- **Vercel Free Tier Limitations**: Added 8-second timeout and optimized for free tier
+- **Success URL Parsing**: Simplified URL construction to avoid parsing errors
+
+#### 3. **Environment Variable Configuration Issues**
+**Problem**: Incorrect or missing environment variables in Vercel
+**Solution**:
+- Created comprehensive environment variable documentation
+- Added validation checks for critical variables
+- Implemented fallback values and better error messages
+
+#### 4. **Database Connection Issues**
+**Problem**: MongoDB connection failures
+**Solution**:
+- Fixed connection string format
+- Added proper error handling for database operations
+- Implemented connection pooling
+
+#### 5. **Payment Flow Optimization for Vercel Free Tier**
+**Problem**: Function timeouts on free Vercel plan
+**Solution**:
+- Added 8-second timeout (under 10-second limit)
+- Optimized API calls and reduced processing time
+- Implemented efficient error handling
+
+### Key Fixes Applied
+
+1. **Hardcoded Correct URLs**: Removed dependency on potentially malformed environment variables
+2. **Simplified URL Construction**: Used direct string concatenation instead of complex URL parsing
+3. **Added Comprehensive Error Handling**: Better error messages for debugging
+4. **Optimized for Free Tier**: Ensured compatibility with Vercel free plan limitations
+5. **Fixed Webhook Code**: Resolved undefined variable issues
+
+### Payment Data Storage Issue
+
+**Current Issue**: System stores user data even for incomplete payments
+**Recommended Solution**: Modify the flow to only store data after successful payment
+
+To implement this, you would need to:
+1. Remove user data creation from `zoho-redirect` endpoint
+2. Only create user records in the Razorpay webhook when `paymentStatus: 'success'`
+3. Use temporary session storage for incomplete registrations
 
 ## 📞 Support
 

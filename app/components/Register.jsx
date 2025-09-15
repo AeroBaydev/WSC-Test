@@ -371,8 +371,8 @@ export default function Register() {
     if (["failed", "failure", "canceled", "cancelled", "declined"].includes(s)) {
       return "failed"
     }
-    // For pending/processing/initiated - treat as not registered so user can retry
-    // Only show "pending" if there's an active payment link that's being processed
+    // For initiated/pending/processing - treat as not registered so user can retry
+    // This ensures only successful payments are considered "registered"
     return "not-registered"
   }
 
