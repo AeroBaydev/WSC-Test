@@ -40,7 +40,7 @@ export default function Categories() {
       icon: "🎮",
       color: "from-red-500 to-orange-600",
       ageGroup: "Junior & Senior",
-      fee2: "₹1,665",
+      fee2: "₹2,499",
       team: "4 Students + 1 Mentor",
       // prizes: ["1st: ₹17,000", "2nd: ₹10,000", "3rd: ₹7,000"],
       note: "Students must carry their own gadgets.",

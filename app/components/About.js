@@ -10,19 +10,23 @@ export default function About() {
   ]
 
   const benefits = [
-    "National & International Recognition",
-    "Cash Prizes up to ₹1-Lakh!",
-    "Expert Mentorship & Guidance",
-    "Certificates & Trophies",
+    "Exclusive Expert-Led Workshops 🎓",
+    "Mentorship from Industry Leaders 🤝",
+    "Global Networking Opportunities 🌐",
+    "Grants & Funding Support for Top Ideas 💡"
   ]
 
   const incentives = [
-    "Access to One Premium Skill Module – gain specialized knowledge in cutting-edge areas",
-    "Tablet + ChatGPT Premium Subscription – tools to enhance learning and innovation",
-    "Opportunity to Publish in International Journals/Platforms – showcase your research globally",
-    "E-Certificates of Participation & Achievement – official recognition of your skills",
-    "Digital Badges – shareable on LinkedIn, resumes, and portfolios",
-    "Exclusive Community Access – join a vibrant network of peers and mentors via dedicated WhatsApp groups",
+    "Up to ₹1 Lakh Prize Money – Rewards for national winners",
+    "Funding for Top Ideas – Turn your innovation into reality",
+    "Global Recognition – Represent India on an international stage",
+    "Expert Mentorship – Learn directly from global leaders & innovators",
+    "Premium Learning Access – Unlock advanced skill modules & tools",
+    "Publish & Showcase – Get featured in international journals & platforms",
+    "Digital Badges & Certificates – Boost resumes, college, and career prospects",
+    "Global Networking – Connect with peers, mentors & innovators worldwide",
+    "Entrepreneurship Edge – Build problem-solving & leadership skills early",
+    "Lifelong Impact – Confidence, creativity & future-ready mindset"
   ]
 
   const sponsors = [
@@ -64,7 +68,7 @@ export default function About() {
         >
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8">About the Challenge</h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-           World Skill Challenge 2025 is the biggest platform for young innovators, designed to ignite creativity, teamwork, and real-world problem-solving. Bringing together the brightest minds, it features a diverse range of competitions – from research-based challenges to STEAM innovation, hands-on robotics, RC car, battle bots, gaming, aeromodelling, and drone flying. Students get the opportunity to showcase their talent, push boundaries of innovation, and compete at national and international levels, making it a true celebration of skills, science, and future-ready learning.
+            World Skill Challenge 2025 is the biggest platform for young innovators, designed to ignite creativity, teamwork, and real-world problem-solving. Bringing together the brightest minds, it features a diverse range of competitions – from research-based challenges to STEAM innovation, hands-on robotics, RC car, battle bots, gaming, aeromodelling, and drone flying. Students get the opportunity to showcase their talent, push boundaries of innovation, and compete at national and international levels, making it a true celebration of skills, science, and future-ready learning.
           </p>
         </motion.div>
 

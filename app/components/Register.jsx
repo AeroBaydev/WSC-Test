@@ -114,7 +114,7 @@ export default function Register() {
     {
       title: "ESPORTS SHOWDOWN",
       subtitle: "Gaming - Esports Showdown",
-      price: "₹1,665",
+      price: "₹2,499",
       description: "Survive. Strategize. Conquer. Team up. Virtual arenas. Sharpest minds and fastest reflexes win!",
       features: [
         "Individual + 1 Mentor",
