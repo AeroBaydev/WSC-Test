@@ -65,50 +65,41 @@ export async function POST(request) {
     });
 
     if (existingRegistration) {
-      console.log('Zoho webhook: existing registration found, updating metadata only');
-      // Update email or metadata only; never touch paymentStatus/paymentAmount here
-      existingRegistration.email = email || existingRegistration.email;
-      existingRegistration.zohoFormData = payload;
-      // Optionally store coupon seen in Zoho
-      if (couponFromForm) {
-        existingRegistration.zohoFormData = {
-          ...(existingRegistration.zohoFormData || {}),
-          coupon: couponFromForm,
-        };
+      // Only attach Zoho metadata for paid registrations
+      if (existingRegistration.paymentStatus === 'success') {
+        console.log('Zoho webhook: paid registration found, updating metadata only');
+        existingRegistration.email = email || existingRegistration.email;
+        existingRegistration.zohoFormData = payload;
+        if (couponFromForm) {
+          existingRegistration.zohoFormData = {
+            ...(existingRegistration.zohoFormData || {}),
+            coupon: couponFromForm,
+          };
+        }
+        await existingRegistration.save();
+        return NextResponse.json({
+          success: true,
+          message: 'Registration metadata synced from Zoho',
+          category,
+          paymentStatus: existingRegistration.paymentStatus,
+          registrationId: existingRegistration._id,
+        });
       }
-      await existingRegistration.save();
+      // If not paid yet, do nothing to avoid storing unpaid records
       return NextResponse.json({
         success: true,
-        message: 'Registration metadata synced from Zoho',
+        message: 'Ignored Zoho data for unpaid registration',
         category,
         paymentStatus: existingRegistration.paymentStatus,
         registrationId: existingRegistration._id,
       });
     }
 
-    // 7. Create new category registration (metadata only). Payment handled via Razorpay webhook.
-    const newRegistration = await CategoryRegistration.create({
-      clerkUserId,
-      email,
-      category,
-      paymentStatus: 'pending',
-      transactionId,
-      zohoFormData: payload, // Store raw Zoho data
-    });
-
-    console.log('Successfully registered user:', {
-      clerkUserId,
-      category,
-      paymentStatus: newRegistration.paymentStatus,
-      registrationId: newRegistration._id,
-    });
-
+    // Do not create any DB entry from Zoho webhook to avoid unpaid/pending records
     return NextResponse.json({
       success: true,
-      message: 'Successfully registered in category',
+      message: 'Ignored Zoho data; no paid registration found',
       category,
-      paymentStatus: newRegistration.paymentStatus,
-      registrationId: newRegistration._id,
     });
   } catch (error) {
     console.error('Webhook error:', error);
