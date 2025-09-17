@@ -363,15 +363,18 @@ export default function Register() {
   const normalizeStatus = (status) => {
     if (!status) return "not-registered"
     const s = String(status).trim().toLowerCase().replace(/[_-]+/g, " ")
-    if (
-      ["success", "successful", "completed", "complete", "paid", "payment success", "payment completed"].includes(s)
-    ) {
+    
+    // Only "success" status is considered registered
+    if (s === "success") {
       return "registered"
     }
+    
+    // Failed payments
     if (["failed", "failure", "canceled", "cancelled", "declined"].includes(s)) {
       return "failed"
     }
-    // For initiated/pending/processing - treat as not registered so user can retry
+    
+    // For any other status (pending, initiated, processing, etc.), treat as not registered
     // This ensures only successful payments are considered "registered"
     return "not-registered"
   }
@@ -389,8 +392,8 @@ export default function Register() {
       userCategories.find((r) => r?.category === categoryTitle)
     if (!reg) return "not-registered"
     
-    // Check if payment was actually completed
-    if (reg.paymentStatus === "success" || reg.paymentStatus === "completed" || reg.paymentStatus === "paid") {
+    // Only consider "success" status as registered
+    if (reg.paymentStatus === "success") {
       return "registered"
     }
     
@@ -399,8 +402,8 @@ export default function Register() {
       return "failed"
     }
     
-    // For any other status (pending, etc.), treat as not registered
-    // This allows users to retry if they closed the payment window
+    // For any other status (pending, initiated, etc.), treat as not registered
+    // This allows users to retry if they closed the payment window or payment is still processing
     return "not-registered"
   }
 

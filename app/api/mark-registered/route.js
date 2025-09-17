@@ -33,9 +33,9 @@ export async function POST(request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Check if user is already registered in this category
+    // Check if user is already registered in this category with successful payment
     const existingCategory = user.categories.find(
-      (cat) => cat.category === category
+      (cat) => cat.category === category && cat.paymentStatus === 'success'
     );
 
     if (existingCategory) {
@@ -45,10 +45,11 @@ export async function POST(request) {
       });
     }
 
-    // Add category to user's categories
+    // This API should only be called after successful payment
+    // Add category to user's categories with success status
     user.categories.push({
       category,
-      paymentStatus: 'pending',
+      paymentStatus: 'success',
       registeredAt: new Date()
     });
 

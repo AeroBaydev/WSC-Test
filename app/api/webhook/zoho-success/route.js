@@ -33,15 +33,15 @@ export async function POST(request) {
 
     console.log('Parsed payload:', payload);
 
-    // 4. Extract Zoho fields directly (do NOT treat any Zoho field as payment fields)
+    // 4. Extract Zoho fields directly
     const email = payload.Field_6;
     const clerkUserId = payload.Field_7;
     const category = payload.Field_8;
-    const couponFromForm = payload.Field_9; // typically coupon code in our form
-    const ageGroupOrOther = payload.Field_10; // do NOT map to payment status
+    const couponFromForm = payload.Field_9;
+    const ageGroupOrOther = payload.Field_10;
     const transactionId = payload.transaction_id || `webhook_${Date.now()}`;
 
-    console.log('Extracted data:', {
+    console.log('Zoho webhook received:', {
       email,
       clerkUserId,
       category,
@@ -58,47 +58,40 @@ export async function POST(request) {
     // 5. Connect to MongoDB
     await dbConnect();
 
-    // 6. Check if user is already registered in this category
+    // 6. Check if user has a successful payment for this category
     const existingRegistration = await CategoryRegistration.findOne({
       clerkUserId,
       category,
+      paymentStatus: 'success'
     });
 
     if (existingRegistration) {
-      // Only attach Zoho metadata for paid registrations
-      if (existingRegistration.paymentStatus === 'success') {
-        console.log('Zoho webhook: paid registration found, updating metadata only');
-        existingRegistration.email = email || existingRegistration.email;
-        existingRegistration.zohoFormData = payload;
-        if (couponFromForm) {
-          existingRegistration.zohoFormData = {
-            ...(existingRegistration.zohoFormData || {}),
-            coupon: couponFromForm,
-          };
-        }
-        await existingRegistration.save();
-        return NextResponse.json({
-          success: true,
-          message: 'Registration metadata synced from Zoho',
-          category,
-          paymentStatus: existingRegistration.paymentStatus,
-          registrationId: existingRegistration._id,
-        });
+      // Update Zoho metadata for successful registrations only
+      console.log('Zoho webhook: updating metadata for successful registration');
+      existingRegistration.email = email || existingRegistration.email;
+      existingRegistration.zohoFormData = payload;
+      if (couponFromForm) {
+        existingRegistration.zohoFormData = {
+          ...(existingRegistration.zohoFormData || {}),
+          coupon: couponFromForm,
+        };
       }
-      // If not paid yet, do nothing to avoid storing unpaid records
+      await existingRegistration.save();
+      
       return NextResponse.json({
         success: true,
-        message: 'Ignored Zoho data for unpaid registration',
+        message: 'Registration metadata synced from Zoho',
         category,
         paymentStatus: existingRegistration.paymentStatus,
         registrationId: existingRegistration._id,
       });
     }
 
-    // Do not create any DB entry from Zoho webhook to avoid unpaid/pending records
+    // If no successful payment found, don't store anything
+    console.log('Zoho webhook: no successful payment found, ignoring data');
     return NextResponse.json({
       success: true,
-      message: 'Ignored Zoho data; no paid registration found',
+      message: 'No successful payment found, data ignored',
       category,
     });
   } catch (error) {

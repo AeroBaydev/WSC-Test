@@ -62,53 +62,36 @@ export async function POST(request) {
 
     // Only persist data for successful payments
     if (isSuccessEvent) {
-      // Prefer resolving by paymentLinkId (most reliable)
-      let registration = null;
-      if (paymentLinkId) {
-        registration = await CategoryRegistration.findOne({ paymentLinkId });
+      // Check if user is already registered in this category (prevent duplicates)
+      const existingRegistration = await CategoryRegistration.findOne({
+        clerkUserId,
+        category,
+        paymentStatus: 'success'
+      });
+
+      if (existingRegistration) {
+        console.log('User already registered in this category:', { clerkUserId, category });
+        return NextResponse.json({ ok: true, message: 'Already registered' });
       }
 
-      // Fall back to clerkUserId + category from notes
-      if (!registration && clerkUserId && category) {
-        registration = await CategoryRegistration.findOne({ clerkUserId, category });
-      }
+      // Create new registration only for successful payments
+      const registration = await CategoryRegistration.create({
+        clerkUserId: clerkUserId || 'unknown',
+        category: category || 'unknown',
+        email: notes.email || 'unknown@example.com',
+        paymentStatus: 'success',
+        paymentOrderId: paymentId,
+        paymentLinkId: paymentLinkId,
+        paymentAmount: notes.paymentAmount || undefined,
+        zohoFormData: notes.zohoFormData ? JSON.parse(notes.zohoFormData) : {},
+        registeredAt: new Date(),
+      });
 
-      // Final fallback: latest initiated/pending record for this user
-      if (!registration && clerkUserId) {
-        registration = await CategoryRegistration.findOne({
-          clerkUserId,
-          paymentStatus: { $in: ['pending', 'initiated'] },
-        }).sort({ createdAt: -1 });
-      }
-
-      if (!registration) {
-        // Create a new record on success if none exists
-        registration = await CategoryRegistration.create({
-          clerkUserId: clerkUserId || 'unknown',
-          category: category || 'unknown',
-          email: notes.email || 'unknown@example.com',
-          paymentStatus: 'success',
-          paymentOrderId: paymentId,
-          paymentLinkId: paymentLinkId,
-          paymentAmount: notes.paymentAmount || undefined,
-          zohoFormData: notes.zohoFormData ? JSON.parse(notes.zohoFormData) : {},
-          registeredAt: new Date(),
-        });
-      } else {
-        registration.paymentStatus = 'success';
-        registration.paymentOrderId = paymentId || registration.paymentOrderId;
-        registration.paymentLinkId = paymentLinkId || registration.paymentLinkId;
-        registration.registeredAt = registration.registeredAt || new Date();
-        await registration.save();
-      }
-    } else if (isFailureEvent && paymentLinkId) {
-      // Optional: mark existing initiated/pending record as failed; do NOT create new
-      const reg = await CategoryRegistration.findOne({ paymentLinkId });
-      if (reg) {
-        reg.paymentStatus = 'failed';
-        reg.paymentOrderId = paymentId || reg.paymentOrderId;
-        await reg.save();
-      }
+      console.log('Registration created successfully:', registration._id);
+    } else if (isFailureEvent) {
+      // For failed payments, we don't store anything in database
+      // This ensures only successful payments are tracked
+      console.log('Payment failed, no database entry created:', { clerkUserId, category, event });
     }
 
     return NextResponse.json({ ok: true });
