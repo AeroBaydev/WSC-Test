@@ -52,18 +52,26 @@ export async function POST(request) {
 
     if (!email || !clerkUserId || !category) {
       console.error('Missing required fields:', { email, clerkUserId, category });
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ 
+        status: 'error',
+        error: 'Missing required fields',
+        received: { email, clerkUserId, category }
+      }, { status: 400 });
     }
 
     // 5. Connect to MongoDB
     await dbConnect();
 
     // 6. Check if user has a successful payment for this category
+    console.log('Searching for existing registration:', { clerkUserId, category });
+    
     const existingRegistration = await CategoryRegistration.findOne({
       clerkUserId,
       category,
       paymentStatus: 'success'
     });
+
+    console.log('Found existing registration:', existingRegistration ? 'YES' : 'NO');
 
     if (existingRegistration) {
       // Update Zoho metadata for successful registrations only
@@ -78,22 +86,24 @@ export async function POST(request) {
       }
       await existingRegistration.save();
       
+      console.log('Successfully updated registration metadata');
       return NextResponse.json({
-        success: true,
+        status: 'success',
         message: 'Registration metadata synced from Zoho',
         category,
         paymentStatus: existingRegistration.paymentStatus,
         registrationId: existingRegistration._id,
-      });
+      }, { status: 200 });
     }
 
     // If no successful payment found, don't store anything
     console.log('Zoho webhook: no successful payment found, ignoring data');
+    // Return 200 OK for Zoho webhook (Zoho expects 200 status for successful webhook processing)
     return NextResponse.json({
-      success: true,
-      message: 'No successful payment found, data ignored',
+      status: 'success',
+      message: 'Webhook processed successfully - no payment found',
       category,
-    });
+    }, { status: 200 });
   } catch (error) {
     console.error('Webhook error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
