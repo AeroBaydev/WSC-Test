@@ -58,7 +58,7 @@ export async function GET(request) {
     console.log('Constructed Razorpay URL:', `${baseUrl}/payment_links`);
 
     // Build success URL with context so UI page can confirm and show success
-    const successUrl = `https://worldskillchallenge.com/registration-success?clerkUserId=${encodeURIComponent(clerkUserId)}&category=${encodeURIComponent(category)}`;
+    const successUrl = `https://wsc-test.vercel.app/registration-success?clerkUserId=${encodeURIComponent(clerkUserId)}&category=${encodeURIComponent(category)}`;
 
     const payload = {
       amount: finalPricePaise,

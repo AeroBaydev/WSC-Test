@@ -27,8 +27,8 @@ export default function SEOHead() {
       <meta property="article:publisher" content="World Skill Challenge" />
 
       {/* Additional Twitter Tags */}
-      <meta name="twitter:domain" content="worldskillchallenge.com" />
-      <meta name="twitter:url" content="https://worldskillchallenge.com" />
+      <meta name="twitter:domain" content="wsc-test.vercel.app" />
+      <meta name="twitter:url" content="https://wsc-test.vercel.app" />
     </>
   )
 }

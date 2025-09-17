@@ -48,13 +48,13 @@ function RegistrationSuccessContent() {
             setTimeout(() => {
               try {
                 if (window.opener && !window.opener.closed) {
-                  window.opener.location.href = 'https://worldskillchallenge.com/#register';
+                  window.opener.location.href = 'https://wsc-test.vercel.app/#register';
                   window.close();
                 } else if (window.parent && window.parent !== window) {
-                  window.parent.location.href = 'https://worldskillchallenge.com/#register';
+                  window.parent.location.href = 'https://wsc-test.vercel.app/#register';
                 }
               } catch (error) {
-                window.location.href = 'https://worldskillchallenge.com/#register';
+                window.location.href = 'https://wsc-test.vercel.app/#register';
               }
             }, 3000);
           }
@@ -162,18 +162,18 @@ function RegistrationSuccessContent() {
               try {
                 if (window.opener && !window.opener.closed) {
                   // Payment was opened in popup
-                  window.opener.location.href = 'https://worldskillchallenge.com/#register';
+                  window.opener.location.href = 'https://wsc-test.vercel.app/#register';
                   window.close();
                 } else if (window.parent && window.parent !== window) {
                   // Payment was opened in iframe
-                  window.parent.location.href = 'https://worldskillchallenge.com/#register';
+                  window.parent.location.href = 'https://wsc-test.vercel.app/#register';
                 } else {
                   // Fallback: redirect current window
-                  window.location.href = 'https://worldskillchallenge.com/#register';
+                  window.location.href = 'https://wsc-test.vercel.app/#register';
                 }
               } catch (error) {
                 // If all else fails, redirect current window
-                window.location.href = 'https://worldskillchallenge.com/#register';
+                window.location.href = 'https://wsc-test.vercel.app/#register';
               }
             }}
             whileHover={{ scale: 1.05 }}
@@ -189,18 +189,18 @@ function RegistrationSuccessContent() {
               try {
                 if (window.opener && !window.opener.closed) {
                   // Payment was opened in popup
-                  window.opener.location.href = 'https://worldskillchallenge.com/';
+                  window.opener.location.href = 'https://wsc-test.vercel.app/';
                   window.close();
                 } else if (window.parent && window.parent !== window) {
                   // Payment was opened in iframe
-                  window.parent.location.href = 'https://worldskillchallenge.com/';
+                  window.parent.location.href = 'https://wsc-test.vercel.app/';
                 } else {
                   // Fallback: redirect current window
-                  window.location.href = 'https://worldskillchallenge.com/';
+                  window.location.href = 'https://wsc-test.vercel.app/';
                 }
               } catch (error) {
                 // If all else fails, redirect current window
-                window.location.href = 'https://worldskillchallenge.com/';
+                window.location.href = 'https://wsc-test.vercel.app/';
               }
             }}
             whileHover={{ scale: 1.05 }}

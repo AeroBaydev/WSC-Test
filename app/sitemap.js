@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = "https://worldskillchallenge.com"
+  const baseUrl = "https://wsc-test.vercel.app"
 
   return [
     {

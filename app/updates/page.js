@@ -4,7 +4,7 @@ import Footer from "../components/Footer"
 
 export const metadata = {
   alternates: {
-    canonical: "https://worldskillchallenge.com/updates",
+    canonical: "https://wsc-test.vercel.app/updates",
   },
 }
 

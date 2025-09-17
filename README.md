@@ -2,7 +2,7 @@
 
 A modern, production-ready website for the World Skill Challenge – Crafting Champions of Tomorrow. Built with Next.js App Router, Clerk authentication, MongoDB, Tailwind CSS, and Framer Motion. Includes complete Zoho Forms integration for category-based registrations with webhook processing and duplicate prevention.
 
-**🌐 Live Site**: [https://worldskillchallenge.com](https://worldskillchallenge.com)
+**🌐 Live Site**: [https://wsc-test.vercel.app](https://wsc-test.vercel.app)
 
 ## 🌟 Highlights
 
@@ -127,8 +127,8 @@ RAZORPAY_KEY_ID=rzp_live_xxxxxxxxxxxxx
 RAZORPAY_KEY_SECRET=your_live_razorpay_secret
 RAZORPAY_BASE_URL=https://api.razorpay.com/v1
 RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
-RAZORPAY_SUCCESS_REDIRECT_URL=https://worldskillchallenge.com/registration-success
-ALREADY_REGISTERED_URL=https://worldskillchallenge.com/registration-success?status=already
+RAZORPAY_SUCCESS_REDIRECT_URL=https://wsc-test.vercel.app/registration-success
+ALREADY_REGISTERED_URL=https://wsc-test.vercel.app/registration-success?status=already
 
 # Admin Configuration
 ADMIN_SEED_SECRET=your_admin_secret_key
@@ -189,8 +189,8 @@ const categoryFormBaseUrls = {
 ```
 
 Configure Zoho:
-- Webhook URL: `https://worldskillchallenge.com/api/webhook/zoho-success`
-- Redirect URL: `https://worldskillchallenge.com/registration-success?clerkUserId=${clerkUserId}&category=${category}`
+- Webhook URL: `https://wsc-test.vercel.app/api/webhook/zoho-success`
+- Redirect URL: `https://wsc-test.vercel.app/registration-success?clerkUserId=${clerkUserId}&category=${category}`
 - Hidden fields: `clerkUserId`, `email`, `category` (aliases must match exactly)
 
 ## 🧪 Available Scripts
@@ -277,7 +277,7 @@ To implement this, you would need to:
 
 - **Email**: worldskillchallenge@gmail.com
 - **Phone**: +91 9266300825
-- **Website**: [https://worldskillchallenge.com](https://worldskillchallenge.com)
+- **Website**: [https://wsc-test.vercel.app](https://wsc-test.vercel.app)
 
 ---
 

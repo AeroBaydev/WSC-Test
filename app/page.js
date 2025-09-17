@@ -11,7 +11,7 @@ import Footer from "./components/Footer"
 
 export const metadata = {
   alternates: {
-    canonical: "https://worldskillchallenge.com/",
+    canonical: "https://wsc-test.vercel.app/",
   },
 }
 
@@ -20,12 +20,12 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://worldskillchallenge.com/#organization",
+      "@id": "https://wsc-test.vercel.app/#organization",
       name: "World Skill Challenge",
-      url: "https://worldskillchallenge.com",
+      url: "https://wsc-test.vercel.app",
       logo: {
         "@type": "ImageObject",
-        url: "https://worldskillchallenge.com/images/wsc-logo.png",
+        url: "https://wsc-test.vercel.app/images/wsc-logo.png",
         width: 512,
         height: 512,
       },
@@ -38,7 +38,7 @@ const structuredData = {
     },
     {
       "@type": "Event",
-      "@id": "https://worldskillchallenge.com/#event",
+      "@id": "https://wsc-test.vercel.app/#event",
       name: "World Skill Challenge 2025",
       description:
         "Crafting Champions of Tomorrow. A national and international skill hunt for students across age groups.",
@@ -47,7 +47,7 @@ const structuredData = {
       eventStatus: "https://schema.org/EventScheduled",
       eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
       performer: {
-        "@id": "https://worldskillchallenge.com/#organization",
+        "@id": "https://wsc-test.vercel.app/#organization",
       },
       location: [
         {
@@ -68,7 +68,7 @@ const structuredData = {
         },
       ],
       organizer: {
-        "@id": "https://worldskillchallenge.com/#organization",
+        "@id": "https://wsc-test.vercel.app/#organization",
       },
       offers: [
         {
@@ -77,7 +77,7 @@ const structuredData = {
           price: "0",
           priceCurrency: "INR",
           description: "Research-Based Individual Competition - Price to be announced soon",
-          url: "https://worldskillchallenge.com/#register",
+          url: "https://wsc-test.vercel.app/#register",
           validFrom: "2025-07-01T09:00:00+05:30",
           availability: "https://schema.org/InStock",
         },
@@ -87,7 +87,7 @@ const structuredData = {
           price: "0",
           priceCurrency: "INR",
           description: "STEAM + Kit-Based Team Competition - Price to be announced soon",
-          url: "https://worldskillchallenge.com/#register",
+          url: "https://wsc-test.vercel.app/#register",
           validFrom: "2025-07-01T09:00:00+05:30",
           availability: "https://schema.org/InStock",
         },
@@ -97,7 +97,7 @@ const structuredData = {
           price: "0",
           priceCurrency: "INR",
           description: "Robotics Team Competition - Price to be announced soon",
-          url: "https://worldskillchallenge.com/#register",
+          url: "https://wsc-test.vercel.app/#register",
           validFrom: "2025-07-01T09:00:00+05:30",
           availability: "https://schema.org/InStock",
         },
@@ -107,7 +107,7 @@ const structuredData = {
           price: "0",
           priceCurrency: "INR",
           description: "Gaming - RC Cars + BattleBots - Price to be announced soon",
-          url: "https://worldskillchallenge.com/#register",
+          url: "https://wsc-test.vercel.app/#register",
           validFrom: "2025-07-01T09:00:00+05:30",
           availability: "https://schema.org/InStock",
         },
@@ -116,24 +116,24 @@ const structuredData = {
         "@type": "EducationalAudience",
         educationalRole: "student",
       },
-      image: "https://worldskillchallenge.com/images/wsc-logo.png",
-      url: "https://worldskillchallenge.com",
+      image: "https://wsc-test.vercel.app/images/wsc-logo.png",
+      url: "https://wsc-test.vercel.app",
     },
     {
       "@type": "WebSite",
-      "@id": "https://worldskillchallenge.com/#website",
-      url: "https://worldskillchallenge.com",
+      "@id": "https://wsc-test.vercel.app/#website",
+      url: "https://wsc-test.vercel.app",
       name: "World Skill Challenge 2025",
       description: "National & International Skill Hunt for Young Innovators",
       publisher: {
-        "@id": "https://worldskillchallenge.com/#organization",
+        "@id": "https://wsc-test.vercel.app/#organization",
       },
       potentialAction: [
         {
           "@type": "SearchAction",
           target: {
             "@type": "EntryPoint",
-            urlTemplate: "https://worldskillchallenge.com/?s={search_term_string}",
+            urlTemplate: "https://wsc-test.vercel.app/?s={search_term_string}",
           },
           "query-input": "required name=search_term_string",
         },
