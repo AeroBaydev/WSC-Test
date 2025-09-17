@@ -834,9 +834,17 @@ export default function Register() {
                                   ✓ Already Registered
                                 </div>
                               ) : isPending ? (
-                                <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
-                                  ⏳ Payment Pending - Check your email
-                                </div>
+                                <motion.a
+                                  href={buildZohoFormUrl(tier.title)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                                  aria-label={`Retry registration for ${tier.title}`}
+                                >
+                                  Retry Registration
+                                </motion.a>
                               ) : (
                                 <motion.a
                                   href={buildZohoFormUrl(tier.title)}
@@ -847,7 +855,7 @@ export default function Register() {
                                   className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
                                   aria-label={`Register for ${tier.title}`}
                                 >
-                                  {isFailed ? "Retry Registration" : "Register Now"}
+                                  Register Now
                                 </motion.a>
                               )}
                             </div>
@@ -1021,9 +1029,17 @@ export default function Register() {
                               ✓ Already Registered
                             </div>
                           ) : isPending ? (
-                            <div className="block w-full py-3 px-4 rounded-lg font-semibold text-yellow-700 bg-yellow-50 border border-yellow-200 text-sm text-center">
-                              ⏳ Payment Pending - Check your email
-                            </div>
+                            <motion.a
+                              href={buildZohoFormUrl(tier.title)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                              aria-label={`Retry registration for ${tier.title}`}
+                            >
+                              Retry Registration
+                            </motion.a>
                           ) : (
                             <motion.a
                               href={buildZohoFormUrl(tier.title)}
@@ -1034,7 +1050,7 @@ export default function Register() {
                               className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
                               aria-label={`Register for ${tier.title}`}
                             >
-                              {isFailed ? "Retry Registration" : "Register Now"}
+                              Register Now
                             </motion.a>
                           )}
                         </div>
