@@ -63,18 +63,38 @@ export async function POST(request) {
     // Only persist data for successful payments
     if (isSuccessEvent) {
       // Check if user is already registered in this category (prevent duplicates)
-      const existingRegistration = await CategoryRegistration.findOne({
+      const existingSuccessRegistration = await CategoryRegistration.findOne({
         clerkUserId,
         category,
         paymentStatus: 'success'
       });
 
-      if (existingRegistration) {
+      if (existingSuccessRegistration) {
         console.log('User already registered in this category:', { clerkUserId, category });
         return NextResponse.json({ ok: true, message: 'Already registered' });
       }
 
-      // Create new registration only for successful payments
+      // Check if there's a pending registration from Zoho webhook
+      const pendingRegistration = await CategoryRegistration.findOne({
+        clerkUserId,
+        category,
+        paymentStatus: 'pending'
+      });
+
+      if (pendingRegistration) {
+        // Update pending registration to success
+        console.log('Updating pending registration to success:', pendingRegistration._id);
+        pendingRegistration.paymentStatus = 'success';
+        pendingRegistration.paymentOrderId = paymentId;
+        pendingRegistration.paymentLinkId = paymentLinkId;
+        pendingRegistration.paymentAmount = notes.paymentAmount || undefined;
+        await pendingRegistration.save();
+        
+        console.log('Pending registration updated to success:', pendingRegistration._id);
+        return NextResponse.json({ ok: true, message: 'Pending registration updated to success' });
+      }
+
+      // Create new registration only for successful payments (fallback)
       const registration = await CategoryRegistration.create({
         clerkUserId: clerkUserId || 'unknown',
         category: category || 'unknown',
@@ -89,9 +109,20 @@ export async function POST(request) {
 
       console.log('Registration created successfully:', registration._id);
     } else if (isFailureEvent) {
-      // For failed payments, we don't store anything in database
-      // This ensures only successful payments are tracked
-      console.log('Payment failed, no database entry created:', { clerkUserId, category, event });
+      // For failed payments, mark pending registrations as failed
+      const pendingRegistration = await CategoryRegistration.findOne({
+        clerkUserId,
+        category,
+        paymentStatus: 'pending'
+      });
+
+      if (pendingRegistration) {
+        pendingRegistration.paymentStatus = 'failed';
+        await pendingRegistration.save();
+        console.log('Pending registration marked as failed:', pendingRegistration._id);
+      } else {
+        console.log('Payment failed, no pending registration found:', { clerkUserId, category, event });
+      }
     }
 
     return NextResponse.json({ ok: true });

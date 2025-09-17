@@ -402,7 +402,12 @@ export default function Register() {
       return "failed"
     }
     
-    // For any other status (pending, initiated, etc.), treat as not registered
+    // Check if payment is pending (form submitted but payment not completed)
+    if (reg.paymentStatus === "pending") {
+      return "pending"
+    }
+    
+    // For any other status (initiated, etc.), treat as not registered
     // This allows users to retry if they closed the payment window or payment is still processing
     return "not-registered"
   }

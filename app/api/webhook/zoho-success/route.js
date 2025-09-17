@@ -96,13 +96,56 @@ export async function POST(request) {
       }, { status: 200 });
     }
 
-    // If no successful payment found, don't store anything
-    console.log('Zoho webhook: no successful payment found, ignoring data');
-    // Return 200 OK for Zoho webhook (Zoho expects 200 status for successful webhook processing)
+    // 7. If no successful payment found, create a temporary pending entry
+    // This will be updated to 'success' when Razorpay webhook fires
+    console.log('No successful payment found, creating pending registration for Zoho data');
+    
+    // Check if there's already a pending registration
+    const pendingRegistration = await CategoryRegistration.findOne({
+      clerkUserId,
+      category,
+      paymentStatus: 'pending'
+    });
+
+    if (pendingRegistration) {
+      // Update existing pending registration with Zoho data
+      pendingRegistration.email = email || pendingRegistration.email;
+      pendingRegistration.zohoFormData = payload;
+      if (couponFromForm) {
+        pendingRegistration.zohoFormData = {
+          ...(pendingRegistration.zohoFormData || {}),
+          coupon: couponFromForm,
+        };
+      }
+      await pendingRegistration.save();
+      
+      console.log('Updated pending registration with Zoho data');
+      return NextResponse.json({
+        status: 'success',
+        message: 'Pending registration updated with Zoho data',
+        category,
+        paymentStatus: pendingRegistration.paymentStatus,
+        registrationId: pendingRegistration._id,
+      }, { status: 200 });
+    }
+
+    // Create new pending registration
+    const newRegistration = await CategoryRegistration.create({
+      clerkUserId,
+      category,
+      email: email || 'unknown@example.com',
+      paymentStatus: 'pending',
+      zohoFormData: payload,
+      registeredAt: new Date(),
+    });
+
+    console.log('Created new pending registration with Zoho data:', newRegistration._id);
     return NextResponse.json({
       status: 'success',
-      message: 'Webhook processed successfully - no payment found',
+      message: 'Pending registration created with Zoho data',
       category,
+      paymentStatus: newRegistration.paymentStatus,
+      registrationId: newRegistration._id,
     }, { status: 200 });
   } catch (error) {
     console.error('Webhook error:', error);
