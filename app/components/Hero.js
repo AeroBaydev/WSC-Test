@@ -273,6 +273,100 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
   )
 }
 
+// Nationals full-width video with auto-play on scroll and theme-matched UI
+function NationalsVideoPlayer() {
+  const videoRef = useRef(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Try to autoplay when section comes into view
+            video
+              .play()
+              .then(() => setIsPlaying(true))
+              .catch(() => {
+                // Autoplay might be blocked; keep paused state
+                setIsPlaying(false)
+              })
+          } else {
+            if (!video.paused) {
+              video.pause()
+            }
+            setIsPlaying(false)
+          }
+        })
+      },
+      {
+        threshold: 0.5,
+      }
+    )
+
+    observer.observe(video)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-orange-300 bg-gray-900 group shadow-[0_0_45px_rgba(0,0,0,0.6)]"
+    >
+      <div className="relative w-full aspect-video">
+        <video
+          ref={videoRef}
+          src="/video/wscnationals.mp4"
+          className="w-full h-full object-cover"
+          // Start muted for autoplay; user can enable volume via native controls
+          onLoadedMetadata={() => {
+            if (videoRef.current) {
+              videoRef.current.muted = true
+            }
+          }}
+          loop
+          playsInline
+          controls
+        />
+
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent pointer-events-none"></div>
+
+        {/* Play state pill (matches theme) */}
+        <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
+          <span
+            className={`w-2 h-2 rounded-full ${
+              isPlaying ? "bg-green-400 animate-pulse" : "bg-orange-300"
+            }`}
+          ></span>
+          <span>{isPlaying ? "Playing" : "Paused"}</span>
+        </div>
+
+        {/* Bottom info bar – typography aligned with Regionals section */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <p className="text-sm md:text-base text-orange-200 font-semibold">
+              Nationals Finale • 25th January 2026
+            </p>
+            <p className="text-xs md:text-sm text-orange-100">
+              The Modern School, Faridabad
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function Hero() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null)
   const videoRefs = useRef([])
@@ -415,6 +509,42 @@ export default function Hero() {
               </motion.div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Nationals 2025 Highlight */}
+      <section className="py-24 bg-top bg-repeat relative overflow-hidden" style={{backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%'}}>
+        {/* Background overlay for better text readability */}
+        <div className="absolute inset-0 bg-white/85"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="inline-block mb-6"
+            >
+              <span className="text-orange-500 font-bold text-sm uppercase tracking-wider bg-orange-100 px-4 py-2 rounded-full">
+              Nationals Highlight
+              </span>
+            </motion.div>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
+              WSC Nationals 2025
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Relive the energy and innovation from the National Finale at The Modern School, Faridabad.
+            </p>
+          </motion.div>
+
+          <NationalsVideoPlayer />
         </div>
       </section>
 
