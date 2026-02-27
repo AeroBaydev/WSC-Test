@@ -273,31 +273,28 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
   )
 }
 
-// Nationals full-width video with auto-play on scroll and theme-matched UI
+// Nationals full-width video using YouTube embed with auto-play on scroll
 function NationalsVideoPlayer() {
-  const videoRef = useRef(null)
+  const containerRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const baseUrl =
+    "https://www.youtube.com/embed/5JbkCnb2k7Q?rel=0&modestbranding=1&controls=1&playsinline=1"
+  const [videoUrl, setVideoUrl] = useState(baseUrl)
 
   useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
+    const container = containerRef.current
+    if (!container) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Try to autoplay when section comes into view
-            video
-              .play()
-              .then(() => setIsPlaying(true))
-              .catch(() => {
-                // Autoplay might be blocked; keep paused state
-                setIsPlaying(false)
-              })
+            // Load with autoplay + muted when section comes into view
+            setVideoUrl(`${baseUrl}&autoplay=1&mute=1`)
+            setIsPlaying(true)
           } else {
-            if (!video.paused) {
-              video.pause()
-            }
+            // Stop playback by reloading without autoplay
+            setVideoUrl(baseUrl)
             setIsPlaying(false)
           }
         })
@@ -307,15 +304,16 @@ function NationalsVideoPlayer() {
       }
     )
 
-    observer.observe(video)
+    observer.observe(container)
 
     return () => {
       observer.disconnect()
     }
-  }, [])
+  }, [baseUrl])
 
   return (
     <motion.div
+      ref={containerRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -323,25 +321,15 @@ function NationalsVideoPlayer() {
       className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-orange-300 bg-gray-900 group shadow-[0_0_45px_rgba(0,0,0,0.6)]"
     >
       <div className="relative w-full aspect-video">
-        <video
-          ref={videoRef}
-          src="/video/wscnationals.mp4"
-          className="w-full h-full object-cover"
-          // Start muted for autoplay; user can enable volume via native controls
-          onLoadedMetadata={() => {
-            if (videoRef.current) {
-              videoRef.current.muted = true
-            }
-          }}
-          loop
-          playsInline
-          controls
+        <iframe
+          src={videoUrl}
+          className="w-full h-full"
+          title="WSC Nationals 2025 Highlight"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
         />
 
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent pointer-events-none"></div>
-
-        {/* Play state pill (matches theme) */}
+        {/* Play state pill (matches theme, no dark strip at bottom) */}
         <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
           <span
             className={`w-2 h-2 rounded-full ${
@@ -351,16 +339,10 @@ function NationalsVideoPlayer() {
           <span>{isPlaying ? "Playing" : "Paused"}</span>
         </div>
 
-        {/* Bottom info bar – typography aligned with Regionals section */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
-            <p className="text-sm md:text-base text-orange-200 font-semibold">
-              Nationals Finale • 25th January 2026
-            </p>
-            <p className="text-xs md:text-sm text-orange-100">
-              The Modern School, Faridabad
-            </p>
-          </div>
+        {/* Minimal bottom info text without black shadow */}
+        <div className="absolute bottom-4 left-4 text-xs md:text-sm text-orange-100">
+          <p className="font-semibold">Nationals Finale • 25th January 2026</p>
+          <p>The Modern School, Faridabad</p>
         </div>
       </div>
     </motion.div>
