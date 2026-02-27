@@ -273,28 +273,42 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
   )
 }
 
-// Nationals full-width video using YouTube embed with auto-play on scroll
+// Nationals full-width video using local MP4 with auto-play on scroll
 function NationalsVideoPlayer() {
   const containerRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const baseUrl =
-    "https://www.youtube.com/embed/5JbkCnb2k7Q?rel=0&modestbranding=1&controls=1&playsinline=1"
-  const [videoUrl, setVideoUrl] = useState(baseUrl)
+  const [isMuted, setIsMuted] = useState(true)
+  const [userInteracted, setUserInteracted] = useState(false)
+  const videoRef = useRef(null)
 
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    const video = videoRef.current
+    if (!container || !video) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Load with autoplay + muted when section comes into view
-            setVideoUrl(`${baseUrl}&autoplay=1&mute=1`)
-            setIsPlaying(true)
+            // Try to autoplay when section comes into view
+            video.muted = !userInteracted
+            setIsMuted(!userInteracted)
+            video
+              .play()
+              .then(() => {
+                setIsPlaying(true)
+              })
+              .catch(() => {
+                // Autoplay might be blocked; keep paused state
+                setIsPlaying(false)
+              })
           } else {
-            // Stop playback by reloading without autoplay
-            setVideoUrl(baseUrl)
+            // Pause and mute when out of view
+            if (!video.paused) {
+              video.pause()
+            }
+            video.muted = true
+            setIsMuted(true)
             setIsPlaying(false)
           }
         })
@@ -309,7 +323,27 @@ function NationalsVideoPlayer() {
     return () => {
       observer.disconnect()
     }
-  }, [baseUrl])
+  }, [userInteracted])
+
+  const handleVideoClick = () => {
+    const video = videoRef.current
+    if (!video) return
+
+    // User interaction allows us to unmute
+    setUserInteracted(true)
+    video.muted = false
+    setIsMuted(false)
+
+    if (video.paused) {
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false))
+    } else {
+      video.pause()
+      setIsPlaying(false)
+    }
+  }
 
   return (
     <motion.div
@@ -321,13 +355,16 @@ function NationalsVideoPlayer() {
       className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-orange-300 bg-gray-900 group shadow-[0_0_45px_rgba(0,0,0,0.6)]"
     >
       <div className="relative w-full aspect-video">
-        <iframe
-          src={videoUrl}
-          className="w-full h-full"
-          title="WSC Nationals 2025 Highlight"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        />
+         <video
+           ref={videoRef}
+           src="/video/wscnationals.mp4"
+           className="w-full h-full object-cover"
+           loop
+           playsInline
+           controls
+           muted={isMuted}
+           onClick={handleVideoClick}
+         />
 
         {/* Play state pill (matches theme, no dark strip at bottom) */}
         <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
