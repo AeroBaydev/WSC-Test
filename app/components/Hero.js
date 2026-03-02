@@ -4,6 +4,17 @@ import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import Results from "./Results"
 
+async function attemptPlay(video, { unmuted }) {
+  if (!video) return { ok: false }
+  video.muted = !unmuted
+  try {
+    await video.play()
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, err }
+  }
+}
+
 // Video Player Component
 function VideoPlayer({ videoSrc, title, description, location, date, roundNumber, roundLabel, isActive, onPlay, onPause, allVideoRefs, setVideoRef }) {
   const videoRef = useRef(null)
@@ -273,10 +284,17 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
 }
 
 // Nationals full-width video using local MP4 with auto-play on scroll
-function NationalsVideoPlayer() {
+function NationalsVideoPlayer({ setVideoRef, onAutoPlayStart }) {
   const containerRef = useRef(null)
   const videoRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [needsUserGesture, setNeedsUserGesture] = useState(false)
+
+  useEffect(() => {
+    if (setVideoRef && videoRef.current) {
+      setVideoRef(videoRef.current)
+    }
+  }, [setVideoRef])
 
   useEffect(() => {
     const container = containerRef.current
@@ -285,14 +303,21 @@ function NationalsVideoPlayer() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach(async (entry) => {
           if (entry.isIntersecting) {
-            // Play unmuted when section comes into view
-            video.muted = false
-            video.play().catch(() => {})
+            onAutoPlayStart?.()
+
+            // Autoplay with sound where allowed; fall back to muted autoplay + prompt.
+            const res = await attemptPlay(video, { unmuted: true })
+            if (!res.ok) {
+              await attemptPlay(video, { unmuted: false })
+              setNeedsUserGesture(true)
+            } else {
+              setNeedsUserGesture(false)
+            }
+
             setIsPlaying(true)
           } else {
-            // Pause when scrolled away
             video.pause()
             setIsPlaying(false)
           }
@@ -325,6 +350,7 @@ function NationalsVideoPlayer() {
           src="/video/nationals.mp4"
           className="w-full h-full object-cover"
           playsInline
+          preload="metadata"
           loop
           controls
         />
@@ -337,6 +363,23 @@ function NationalsVideoPlayer() {
           ></span>
           <span>{isPlaying ? "Playing" : "Paused"}</span>
         </div>
+
+        {needsUserGesture && (
+          <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
+            <button
+              onClick={async (e) => {
+                e.stopPropagation()
+                const video = videoRef.current
+                if (!video) return
+                const res = await attemptPlay(video, { unmuted: true })
+                if (res.ok) setNeedsUserGesture(false)
+              }}
+              className="inline-flex items-center gap-2 rounded-full bg-orange-500/95 hover:bg-orange-600 text-white px-4 py-2 text-sm font-semibold shadow-lg backdrop-blur-sm transition-colors"
+            >
+              Enable sound
+            </button>
+          </div>
+        )}
 
         {/* Minimal bottom info text without black shadow */}
         <div className="absolute bottom-4 left-4 text-xs md:text-sm text-orange-100">
@@ -351,9 +394,11 @@ function NationalsVideoPlayer() {
 export default function Hero() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null)
   const videoRefs = useRef([])
+  const nationalsVideoElRef = useRef(null)
   const testimonialsContainerRef = useRef(null)
   const testimonialsVideoRef = useRef(null)
   const [isTestimonialsPlaying, setIsTestimonialsPlaying] = useState(false)
+  const [testimonialsNeedsUserGesture, setTestimonialsNeedsUserGesture] = useState(false)
 
   const videos = [
     {
@@ -398,10 +443,16 @@ export default function Hero() {
     setActiveVideoIndex(index)
     // Pause all other videos
     videoRefs.current.forEach((ref, i) => {
-      if (ref && ref.current && i !== index) {
-        ref.current.pause()
+      if (ref && i !== index && typeof ref.pause === "function") {
+        ref.pause()
       }
     })
+    if (nationalsVideoElRef.current && typeof nationalsVideoElRef.current.pause === "function") {
+      nationalsVideoElRef.current.pause()
+    }
+    if (testimonialsVideoRef.current && typeof testimonialsVideoRef.current.pause === "function") {
+      testimonialsVideoRef.current.pause()
+    }
   }
 
   const handleVideoPause = () => {
@@ -415,11 +466,25 @@ export default function Hero() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        entries.forEach(async (entry) => {
           if (entry.isIntersecting) {
-            // Play unmuted when section comes into view
-            video.muted = false
-            video.play().catch(() => {})
+            // Pause other videos to avoid audio overlap
+            videoRefs.current.forEach((ref) => {
+              if (ref && typeof ref.pause === "function") ref.pause()
+            })
+            if (nationalsVideoElRef.current && typeof nationalsVideoElRef.current.pause === "function") {
+              nationalsVideoElRef.current.pause()
+            }
+
+            // Autoplay with sound where allowed; fall back to muted autoplay + prompt.
+            const res = await attemptPlay(video, { unmuted: true })
+            if (!res.ok) {
+              await attemptPlay(video, { unmuted: false })
+              setTestimonialsNeedsUserGesture(true)
+            } else {
+              setTestimonialsNeedsUserGesture(false)
+            }
+
             setIsTestimonialsPlaying(true)
           } else {
             // Pause when scrolled away
@@ -560,7 +625,20 @@ export default function Hero() {
             </p>
           </motion.div>
 
-          <NationalsVideoPlayer />
+          <NationalsVideoPlayer
+            setVideoRef={(el) => {
+              nationalsVideoElRef.current = el
+            }}
+            onAutoPlayStart={() => {
+              // Pause regional + testimonial videos when nationals starts
+              videoRefs.current.forEach((ref) => {
+                if (ref && typeof ref.pause === "function") ref.pause()
+              })
+              if (testimonialsVideoRef.current && typeof testimonialsVideoRef.current.pause === "function") {
+                testimonialsVideoRef.current.pause()
+              }
+            }}
+          />
         </div>
       </section>
 
@@ -653,7 +731,33 @@ export default function Hero() {
                 className="w-full h-full object-cover"
                 controls
                 playsInline
+                preload="metadata"
               />
+
+              <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
+                <span
+                  className={`w-2 h-2 rounded-full ${isTestimonialsPlaying ? "bg-green-400 animate-pulse" : "bg-orange-300"
+                    }`}
+                ></span>
+                <span>{isTestimonialsPlaying ? "Playing" : "Paused"}</span>
+              </div>
+
+              {testimonialsNeedsUserGesture && (
+                <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
+                  <button
+                    onClick={async (e) => {
+                      e.stopPropagation()
+                      const video = testimonialsVideoRef.current
+                      if (!video) return
+                      const res = await attemptPlay(video, { unmuted: true })
+                      if (res.ok) setTestimonialsNeedsUserGesture(false)
+                    }}
+                    className="inline-flex items-center gap-2 rounded-full bg-orange-500/95 hover:bg-orange-600 text-white px-4 py-2 text-sm font-semibold shadow-lg backdrop-blur-sm transition-colors"
+                  >
+                    Enable sound
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
 
