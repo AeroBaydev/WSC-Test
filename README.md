@@ -54,7 +54,6 @@ WSC/
 ├── app/
 │  ├── api/
 │  │  ├── contact/route.js
-│  │  ├── register/route.js
 │  │  ├── save-user/route.js
 │  │  ├── mark-registered/route.ts
 │  │  └── webhook/zoho-success/route.ts
@@ -129,9 +128,6 @@ RAZORPAY_BASE_URL=https://api.razorpay.com/v1
 RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
 RAZORPAY_SUCCESS_REDIRECT_URL=https://worldskillchallenge.com/registration-success
 ALREADY_REGISTERED_URL=https://worldskillchallenge.com/registration-success?status=already
-
-# Admin Configuration
-ADMIN_SEED_SECRET=your_admin_secret_key
 
 # Optional: Dynamic Coupons
 COUPONS_JSON=[{"code":"NEHA20","discountType":"percent","amount":20,"active":true}]

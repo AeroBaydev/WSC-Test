@@ -34,9 +34,9 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
     const handleFullscreenChange = () => {
       setIsFullscreen(
         document.fullscreenElement === video ||
-          document.webkitFullscreenElement === video ||
-          document.mozFullScreenElement === video ||
-          document.msFullscreenElement === video
+        document.webkitFullscreenElement === video ||
+        document.mozFullScreenElement === video ||
+        document.msFullscreenElement === video
       )
     }
 
@@ -93,7 +93,7 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
     e.stopPropagation()
     const video = videoRef.current
     if (!video) return
-    
+
     if (isPlaying) {
       video.pause()
     } else {
@@ -148,11 +148,10 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
       whileHover={{ y: -8, scale: 1.02 }}
-      className={`group relative bg-white rounded-2xl overflow-hidden shadow-xl border-2 transition-all duration-300 ${
-        isActive 
-          ? "border-orange-500 shadow-2xl shadow-orange-500/20 ring-4 ring-orange-500/10" 
+      className={`group relative bg-white rounded-2xl overflow-hidden shadow-xl border-2 transition-all duration-300 ${isActive
+          ? "border-orange-500 shadow-2xl shadow-orange-500/20 ring-4 ring-orange-500/10"
           : "border-gray-200 hover:border-orange-300 hover:shadow-2xl"
-      }`}
+        }`}
       onMouseEnter={() => {
         setIsHovered(true)
         setShowControls(true)
@@ -172,22 +171,22 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
           playsInline
           onClick={togglePlay}
         />
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-        
+
         {/* Play/Pause Overlay - Only show when not playing or on hover */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center cursor-pointer"
           initial={false}
-          animate={{ 
+          animate={{
             opacity: (isPlaying && !isHovered) ? 0 : (isHovered || !isPlaying ? 1 : 0),
             scale: (isPlaying && !isHovered) ? 0.8 : 1
           }}
           transition={{ duration: 0.2 }}
           onClick={togglePlay}
         >
-          <motion.div 
+          <motion.div
             className="bg-white/95 backdrop-blur-sm rounded-full p-3 shadow-2xl"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
@@ -218,7 +217,7 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
         )}
 
         {/* Video Controls - Only show on hover */}
-        <motion.div 
+        <motion.div
           className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-4"
           initial={false}
           animate={{ opacity: isHovered ? 1 : 0 }}
@@ -273,28 +272,28 @@ function VideoPlayer({ videoSrc, title, description, location, date, roundNumber
   )
 }
 
-// Nationals full-width video using YouTube embed with auto-play on scroll
+// Nationals full-width video using local MP4 with auto-play on scroll
 function NationalsVideoPlayer() {
   const containerRef = useRef(null)
+  const videoRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
-  const baseUrl =
-    "https://www.youtube.com/embed/5JbkCnb2k7Q?rel=0&modestbranding=1&controls=1&playsinline=1"
-  const [videoUrl, setVideoUrl] = useState(baseUrl)
 
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    const video = videoRef.current
+    if (!container || !video) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Load with autoplay + muted when section comes into view
-            setVideoUrl(`${baseUrl}&autoplay=1&mute=1`)
+            // Play unmuted when section comes into view
+            video.muted = false
+            video.play().catch(() => {})
             setIsPlaying(true)
           } else {
-            // Stop playback by reloading without autoplay
-            setVideoUrl(baseUrl)
+            // Pause when scrolled away
+            video.pause()
             setIsPlaying(false)
           }
         })
@@ -309,7 +308,7 @@ function NationalsVideoPlayer() {
     return () => {
       observer.disconnect()
     }
-  }, [baseUrl])
+  }, [])
 
   return (
     <motion.div
@@ -321,20 +320,20 @@ function NationalsVideoPlayer() {
       className="relative w-full max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl border-4 border-orange-300 bg-gray-900 group shadow-[0_0_45px_rgba(0,0,0,0.6)]"
     >
       <div className="relative w-full aspect-video">
-        <iframe
-          src={videoUrl}
-          className="w-full h-full"
-          title="WSC Nationals 2025 Highlight"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
+        <video
+          ref={videoRef}
+          src="/video/nationals.mp4"
+          className="w-full h-full object-cover"
+          playsInline
+          loop
+          controls
         />
 
         {/* Play state pill (matches theme, no dark strip at bottom) */}
         <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 text-white px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm">
           <span
-            className={`w-2 h-2 rounded-full ${
-              isPlaying ? "bg-green-400 animate-pulse" : "bg-orange-300"
-            }`}
+            className={`w-2 h-2 rounded-full ${isPlaying ? "bg-green-400 animate-pulse" : "bg-orange-300"
+              }`}
           ></span>
           <span>{isPlaying ? "Playing" : "Paused"}</span>
         </div>
@@ -352,6 +351,9 @@ function NationalsVideoPlayer() {
 export default function Hero() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(null)
   const videoRefs = useRef([])
+  const testimonialsContainerRef = useRef(null)
+  const testimonialsVideoRef = useRef(null)
+  const [isTestimonialsPlaying, setIsTestimonialsPlaying] = useState(false)
 
   const videos = [
     {
@@ -405,6 +407,38 @@ export default function Hero() {
   const handleVideoPause = () => {
     setActiveVideoIndex(null)
   }
+
+  useEffect(() => {
+    const container = testimonialsContainerRef.current
+    const video = testimonialsVideoRef.current
+    if (!container || !video) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Play unmuted when section comes into view
+            video.muted = false
+            video.play().catch(() => {})
+            setIsTestimonialsPlaying(true)
+          } else {
+            // Pause when scrolled away
+            video.pause()
+            setIsTestimonialsPlaying(false)
+          }
+        })
+      },
+      {
+        threshold: 0.5,
+      }
+    )
+
+    observer.observe(container)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   return (
     <>
@@ -495,7 +529,7 @@ export default function Hero() {
       </section>
 
       {/* Nationals 2025 Highlight */}
-      <section className="py-24 bg-top bg-repeat relative overflow-hidden" style={{backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%'}}>
+      <section className="py-24 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>
         {/* Background overlay for better text readability */}
         <div className="absolute inset-0 bg-white/85"></div>
 
@@ -515,7 +549,7 @@ export default function Hero() {
               className="inline-block mb-6"
             >
               <span className="text-orange-500 font-bold text-sm uppercase tracking-wider bg-orange-100 px-4 py-2 rounded-full">
-              Nationals Highlight
+                Nationals Highlight
               </span>
             </motion.div>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
@@ -531,10 +565,10 @@ export default function Hero() {
       </section>
 
       {/* WSC 2025 Videos Section */}
-      <section className="py-24 bg-top bg-repeat relative overflow-hidden" style={{backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%'}}>
+      <section className="py-24 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>
         {/* Background overlay for better text readability */}
         <div className="absolute inset-0 bg-white/80"></div>
-        
+
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-200/10 rounded-full blur-3xl"></div>
@@ -561,7 +595,7 @@ export default function Hero() {
               </span>
             </motion.div>
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
-              WSC 2025
+              WSC Regional Rounds 2025
             </h2>
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Experience the excitement and energy of World Skill Challenge 2025 through our regional round highlights
@@ -591,6 +625,37 @@ export default function Hero() {
               />
             ))}
           </div>
+
+          {/* Testimonials Video */}
+          <motion.div
+            ref={testimonialsContainerRef}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-16 max-w-6xl mx-auto"
+          >
+            <div className="mb-6 text-center">
+              <span className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-xs font-semibold uppercase tracking-wider">
+                Testimonials
+              </span>
+              <h2 className="mt-4 text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
+                WSC Testimonials 2025
+              </h2>
+              <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Real experiences from schools, students, and educators who joined World Skill Challenge.
+              </p>
+            </div>
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl border-4 border-orange-300 bg-gray-900">
+              <video
+                ref={testimonialsVideoRef}
+                src="/video/testimonial.mp4"
+                className="w-full h-full object-cover"
+                controls
+                playsInline
+              />
+            </div>
+          </motion.div>
 
           {/* Additional Info Section */}
           <motion.div
