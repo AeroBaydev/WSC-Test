@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import Results from "./Results"
+import StatsCounter from "./StatsCounter"
 
 async function attemptPlay(video, { unmuted }) {
   if (!video) return { ok: false }
@@ -592,6 +593,9 @@ export default function Hero() {
           </div>
         </div>
       </section>
+
+      {/* WSC 2025 stats counter - animates from 0 when in view */}
+      <StatsCounter variant="home" />
 
       {/* Nationals 2025 Highlight */}
       <section className="py-24 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>

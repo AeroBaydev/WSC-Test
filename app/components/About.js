@@ -1,6 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import StatsCounter from "./StatsCounter"
 
 export default function About() {
   const ageCategories = [
@@ -72,6 +73,8 @@ export default function About() {
             World Skill Challenge 2025 is the biggest platform for young innovators, designed to ignite creativity, teamwork, and real-world problem-solving. Bringing together the brightest minds, it features a diverse range of competitions – from research-based challenges to STEAM innovation, hands-on robotics, RC car, battle bots, gaming, aeromodelling, and drone flying. Students get the opportunity to showcase their talent, push boundaries of innovation, and compete at national and international levels, making it a true celebration of skills, science, and future-ready learning.
           </p>
         </motion.div>
+
+        <StatsCounter variant="about" />
 
         <motion.div
           initial={{ opacity: 0, y: 50 }}
