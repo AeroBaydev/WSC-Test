@@ -177,27 +177,61 @@ export default function StatsCounter({ variant = "home" }) {
     )
   }
 
-  return (
-    <section
-      ref={sectionRef}
-      className="py-16 sm:py-20 bg-top bg-repeat relative overflow-hidden"
-      style={{ backgroundImage: "url(/images/stagesbg.jpg)", backgroundSize: "50%" }}
-    >
-      <div className="absolute inset-0 bg-white/85" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
-            WSC 2025 participation
+  // Inline below Nationals: same content, reduced padding so gap is small
+  if (variant === "homeBelowNationals") {
+    return (
+      <div
+        ref={sectionRef}
+        className="pt-8 pb-6"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
+            WSC Participation Data 2025
           </h2>
           <Link
             href="/about"
-            className="inline-flex items-center gap-2 rounded-full border-2 border-orange-500 text-orange-600 px-5 py-2.5 text-sm font-semibold hover:bg-orange-500 hover:text-white transition-colors bg-white/80 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-orange-500 text-orange-600 px-4 py-2 text-sm font-semibold hover:bg-orange-500 hover:text-white transition-colors bg-white/80 shadow-sm"
           >
             KNOW MORE
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
+          {STATS.map((stat, i) => (
+            <CounterCard
+              key={stat.label}
+              stat={stat}
+              displayValue={stat.value === 1600 ? studentsCount : stat.value === 65 ? schoolsCount : 0}
+              started={started}
+              tone="light"
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <section
+      ref={sectionRef}
+      className="py-12 sm:py-14 bg-top bg-repeat relative overflow-hidden"
+      style={{ backgroundImage: "url(/images/stagesbg.jpg)", backgroundSize: "50%" }}
+    >
+      <div className="absolute inset-0 bg-white/85" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
+            WSC 2025 participation
+          </h2>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-orange-500 text-orange-600 px-4 py-2 text-sm font-semibold hover:bg-orange-500 hover:text-white transition-colors bg-white/80 shadow-sm"
+          >
+            KNOW MORE
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6">
           {STATS.map((stat, i) => (
             <CounterCard
               key={stat.label}

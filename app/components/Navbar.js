@@ -19,7 +19,6 @@ export default function Navbar() {
     { label: "About", href: "/about" },
     { label: "ExperienceX", href: "/experiencex" },
     { label: "SoarFest", href: "/soarfest" },
-    { label: "Stages", href: "/stages" },
     // { label: "Market Place", href: "/marketplace" },
     { label: "Register", href: "/register" },
     { label: "Contact", href: "/contact" },

@@ -99,7 +99,6 @@ export default function Footer() {
                 {[
                   { name: "About", url: "/about" },
                   { name: "ExperienceX", url: "/experiencex" },
-                  { name: "Stages", url: "/stages" },
                   { name: "Register", url: "/register" },
                   { name: "Contact", url: "/contact" },
                   { name: "FAQ", url: "/faq" },
