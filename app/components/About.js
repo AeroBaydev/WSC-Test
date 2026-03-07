@@ -233,7 +233,7 @@ export default function About() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <div className="relative overflow-hidden">
+          {/* <div className="relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-2xl"></div>
             <div className="relative orange-accent rounded-2xl p-8 md:p-12 text-center card-shadow-lg border-4 border-orange-200">
               <motion.div initial={{ scale: 0.8 }} whileInView={{ scale: 1 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="mb-6">
@@ -258,7 +258,7 @@ export default function About() {
                 </motion.div>
               </div>
             </div>
-          </div>
+          </div> */}
         </motion.div>
 
         <motion.div
