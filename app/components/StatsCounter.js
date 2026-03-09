@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { MapPin, School, Users, ChevronRight } from "lucide-react"
+import { MapPin, School, Users, ChevronRight, Trophy } from "lucide-react"
 
 const STATS = [
   { value: 1600, suffix: "+", label: "STUDENTS", icon: Users, step: 10 },
@@ -160,6 +160,21 @@ export default function StatsCounter({ variant = "home" }) {
             <span className="font-semibold">65+ schools</span> across India participated in World
             Skill Challenge 2025.
           </p>
+          <div className="mt-4 max-w-2xl mx-auto">
+            <div className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-orange-300 bg-gradient-to-r from-orange-50 via-white to-orange-50 px-4 py-3 shadow-sm text-center">
+              <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-orange-500 text-white">
+                <Trophy className="w-5 h-5" />
+              </span>
+              <div className="text-center">
+                <div className="text-sm md:text-base font-bold text-gray-900">
+                  ₹3 Lakh INR cash prize
+                </div>
+                <div className="text-xs md:text-sm text-gray-700 font-semibold">
+                  Distributed to students in WSC Season 2025
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {STATS.map((stat) => (
@@ -185,9 +200,11 @@ export default function StatsCounter({ variant = "home" }) {
         className="pt-8 pb-6"
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
-            WSC Participation Data 2025
-          </h2>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
+              WSC Participation Data 2025
+            </h2>
+          </div>
           <Link
             href="/about"
             className="inline-flex items-center gap-2 rounded-full border-2 border-orange-500 text-orange-600 px-4 py-2 text-sm font-semibold hover:bg-orange-500 hover:text-white transition-colors bg-white/80 shadow-sm"
@@ -206,6 +223,24 @@ export default function StatsCounter({ variant = "home" }) {
               tone="light"
             />
           ))}
+        </div>
+
+        <div className="mt-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="rounded-2xl border-2 border-orange-300 bg-gradient-to-r from-orange-50 via-white to-orange-50 px-5 py-4 shadow-sm flex flex-col items-center text-center gap-3">
+              <span className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-orange-500 text-white">
+                <Trophy className="w-6 h-6" />
+              </span>
+              <div>
+                <div className="text-base md:text-lg font-extrabold text-gray-900">
+                  ₹3 Lakh INR cash prize
+                </div>
+                <div className="text-sm md:text-base text-gray-700 font-semibold">
+                  Distributed to students in WSC Season 2025
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

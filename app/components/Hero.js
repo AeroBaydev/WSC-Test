@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import StatsCounter from "./StatsCounter"
 import RegionalLocations from "./RegionalLocations"
+import ChiefGuestJudgesCarousel from "./ChiefGuestJudgesCarousel"
 
 async function attemptPlay(video, { unmuted }) {
   if (!video) return { ok: false }
@@ -262,7 +263,7 @@ export default function Hero() {
       </section>
 
       {/* Nationals 2025 Highlight + Participation Data (same section, less gap) */}
-      <section className="py-12 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>
+      <section className="pt-14 md:pt-16 pb-10 md:pb-12 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>
         <div className="absolute inset-0 bg-white/85"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
@@ -307,7 +308,7 @@ export default function Hero() {
       </section>
 
       {/* Regional Locations – same heading style as Nationals */}
-      <section className="py-12 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>
+      <section className="pt-10 md:pt-12 pb-14 md:pb-16 bg-top bg-repeat relative overflow-hidden" style={{ backgroundImage: 'url(/images/stagesbg.jpg)', backgroundSize: '50%' }}>
         <div className="absolute inset-0 bg-white/80"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
@@ -325,11 +326,11 @@ export default function Hero() {
               className="inline-block mb-4"
             >
               <span className="text-orange-500 font-bold text-sm uppercase tracking-wider bg-orange-100 px-4 py-2 rounded-full">
-                Regional Locations
+                Regional Highlights
               </span>
             </motion.div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">
-              WSC Regional Locations 2025
+              WSC Regional 2025
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Regional rounds has been conducted across multiple cities in India
@@ -345,7 +346,7 @@ export default function Hero() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-10 max-w-6xl mx-auto"
+            className="mt-12 max-w-6xl mx-auto"
           >
             <div className="text-center mb-6">
               <span className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-xs font-semibold uppercase tracking-wider">
@@ -393,6 +394,8 @@ export default function Hero() {
                 </div>
               )}
             </div>
+
+            <ChiefGuestJudgesCarousel />
           </motion.div>
         </div>
       </section>
