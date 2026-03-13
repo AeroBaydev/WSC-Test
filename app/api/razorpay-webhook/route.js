@@ -59,7 +59,8 @@ export async function POST(request) {
           reg.transactionId = paymentId || reg.transactionId;
           reg.paymentOrderId = paymentId || reg.paymentOrderId;
           await reg.save();
-          if (isSuccessEvent && !reg.zohoSheetSyncedAt) {
+          // Only sync sheet on final payment_link.paid event
+          if (isSuccessEvent && !reg.zohoSheetSyncedAt && event === 'payment_link.paid') {
             try {
               const syncRes = await syncRegistrationToZohoSheet(reg);
               if (syncRes?.ok) {
@@ -124,9 +125,9 @@ export async function POST(request) {
         await registration.save();
       }
 
-      // Sync to Zoho Sheet once (best effort)
+      // Sync to Zoho Sheet once (best effort), only on final payment_link.paid event
       try {
-        if (!registration.zohoSheetSyncedAt) {
+        if (!registration.zohoSheetSyncedAt && event === 'payment_link.paid') {
           const syncRes = await syncRegistrationToZohoSheet(registration);
           console.log('[razorpay-webhook] Zoho sync:', syncRes?.ok ? 'ok' : syncRes?.skipped ? 'skipped' : syncRes?.error);
           if (syncRes?.ok) {
