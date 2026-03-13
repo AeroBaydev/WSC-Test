@@ -128,7 +128,7 @@ export async function POST(request) {
       try {
         if (!registration.zohoSheetSyncedAt) {
           const syncRes = await syncRegistrationToZohoSheet(registration);
-          console.log('[razorpay-webhook] Zoho sync:', syncRes?.ok ? 'ok' : syncRes?.skipped ? 'skipped (no URL)' : syncRes?.error);
+          console.log('[razorpay-webhook] Zoho sync:', syncRes?.ok ? 'ok' : syncRes?.skipped ? 'skipped' : syncRes?.error);
           if (syncRes?.ok) {
             registration.zohoSheetSyncedAt = new Date();
             registration.zohoSheetLastError = undefined;
