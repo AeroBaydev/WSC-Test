@@ -3,6 +3,8 @@ import { auth } from '@clerk/nextjs/server';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     // Get authenticated user

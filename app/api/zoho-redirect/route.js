@@ -4,6 +4,7 @@ import { validateAndPriceWithCoupon } from '@/lib/coupon.js';
 
 export const runtime = 'nodejs';
 export const preferredRegion = ['bom1'];
+export const dynamic = 'force-dynamic';
 
 // This endpoint is the Redirect URL target from Zoho Form.
 // Expecting query params: clerkUserId, category, email, coupon (optional)

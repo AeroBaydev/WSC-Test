@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { Suspense, useEffect, useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs"
@@ -14,7 +14,7 @@ const AGE_CATEGORIES = [
 const TERMS_TEXT =
   "I confirm that I have read and agree to the World Skill Challenge Terms & Conditions. I understand that all submissions must be original and may be used for promotional purposes. I acknowledge that participation fees are non-refundable, the decisions of the judges are final and binding, and all participants are required to adhere to the prescribed safety and conduct guidelines."
 
-export default function RegisterFormPage() {
+function RegisterFormContent() {
   const searchParams = useSearchParams()
   const category = searchParams.get("category") || ""
   const router = useRouter()
@@ -393,3 +393,14 @@ export default function RegisterFormPage() {
   )
 }
 
+export default function RegisterFormPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    }>
+      <RegisterFormContent />
+    </Suspense>
+  )
+}
