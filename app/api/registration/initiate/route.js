@@ -185,6 +185,7 @@ export async function POST(request) {
     registration.paymentLinkId = data?.id || registration.paymentLinkId
     registration.paymentAmount = String(finalPricePaise)
     await registration.save()
+    console.log('[registration/initiate] saved', category, 'paymentLinkId:', registration.paymentLinkId, 'hasFormData:', !!(registration.formData && Object.keys(registration.formData).length > 0))
 
     return NextResponse.json({
       ok: true,

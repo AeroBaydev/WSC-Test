@@ -33,10 +33,12 @@ export async function POST(request) {
     await dbConnect();
 
     const event = payload.event;
-    const paymentLinkEntity = payload.payload?.payment_link?.entity;
-    const paymentEntity = payload.payload?.payment?.entity;
+    // Razorpay: payload can be payload.payload (nested) or payload directly
+    const inner = payload.payload || payload;
+    const paymentLinkEntity = inner?.payment_link?.entity || inner?.payment_link;
+    const paymentEntity = inner?.payment?.entity || inner?.payment;
 
-    // For payment_link.paid: notes are on payment_link entity (we put them there when creating the link)
+    // For payment_link.paid: notes are on payment_link entity
     // For payment.captured: notes may be on payment entity
     const notes = paymentLinkEntity?.notes || paymentEntity?.notes || {};
     const paymentId = paymentEntity?.id;
@@ -93,8 +95,11 @@ export async function POST(request) {
         }).sort({ createdAt: -1 });
       }
 
+      const hasFormData = registration ? !!(registration.formData && Object.keys(registration.formData || {}).length > 0) : false;
+      console.log('[razorpay-webhook]', event, 'paymentLinkId:', paymentLinkId, 'found:', !!registration, 'hasFormData:', hasFormData);
+
       if (!registration) {
-        // Create a new record on success if none exists
+        // Create a new record on success if none exists (no formData - we only have notes)
         registration = await CategoryRegistration.create({
           clerkUserId: clerkUserId || 'unknown',
           category: category || 'unknown',
@@ -123,6 +128,7 @@ export async function POST(request) {
       try {
         if (!registration.zohoSheetSyncedAt) {
           const syncRes = await syncRegistrationToZohoSheet(registration);
+          console.log('[razorpay-webhook] Zoho sync:', syncRes?.ok ? 'ok' : syncRes?.skipped ? 'skipped (no URL)' : syncRes?.error);
           if (syncRes?.ok) {
             registration.zohoSheetSyncedAt = new Date();
             registration.zohoSheetLastError = undefined;
