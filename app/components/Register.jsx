@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import { useState, useEffect, useMemo } from "react"
 import { useUser, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
+import Link from "next/link"
 
 export default function Register() {
   const { user } = useUser()
@@ -329,35 +330,8 @@ export default function Register() {
     },
   ]
 
-  const categoryFormBaseUrls = {
-    "STARS & BEYOND": "https://zfrmz.in/uceTMsCZhDwKLXaBgRFp",
-    "IDEA TANK": "https://zfrmz.in/Ec4tst5jEYqPejUFbXWc",
-    "MYSTERY MAKERS": "https://zfrmz.in/N2uZa2uydmyoLnNTJ7eB",
-    "TECH FOR GOOD": "https://zfrmz.in/x2bBTpLfQ5aQn7cUdtWQ",
-    "TECH THROTTLE -> RC CAR": "https://zfrmz.in/j0AQqkIeK5jeiFXAgpLx",
-    "TECH THROTTLE -> BATTLEBOT": "https://zfrmz.in/Rz5KfK3i7ERghE0qiXCS",
-    "TECH THROTTLE -> BATTLEBOT: FOOTBALL EDITION": "https://zfrmz.in/3p1wjytUNng82z29zsfp",
-    "ESPORTS SHOWDOWN": "https://zfrmz.in/f0z9a1DWTenRjUEpvL3A",
-    "Wing-shot Championship": "https://zfrmz.in/8r1qtBCU6nTf4PtgmKNc",
-    "RocketMania": "https://zfrmz.in/wdUv9AqpQ1E5jkEQYldV",
-    "DroneX Kids": "https://zfrmz.in/3bKeY8w0GkXZGOKoh3iU",
-    "Wing Warriors": "https://zfrmz.in/AbvURV2DGcL1QlVx1yHo",
-    "Throttle Titans": "https://zfrmz.in/UQFJ4SIZwTjDjRu7lnmW",
-    "DroneX": "https://zfrmz.in/PxfxhCE9pqvCQwZgSzlj",
-  }
-
-  const buildZohoFormUrl = (categoryTitle) => {
-    const baseUrl = categoryFormBaseUrls[categoryTitle]
-    if (!baseUrl || !user) return "#"
-    try {
-      const url = new URL(baseUrl)
-      url.searchParams.set("clerkUserId", user.id)
-      url.searchParams.set("email", user.primaryEmailAddress?.emailAddress || "")
-      url.searchParams.set("category", categoryTitle)
-      return url.toString()
-    } catch (e) {
-      return "#"
-    }
+  const buildInternalFormUrl = (categoryTitle) => {
+    return `/register/form?category=${encodeURIComponent(categoryTitle)}`
   }
 
   const normalizeStatus = (status) => {
@@ -831,17 +805,15 @@ export default function Register() {
                                   ⏳ Payment Pending - Check your email
                                 </div>
                               ) : (
-                                <motion.a
-                                  href={buildZohoFormUrl(tier.title)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                                  aria-label={`Register for ${tier.title}`}
-                                >
-                                  {isFailed ? "Retry Registration" : "Register Now"}
-                                </motion.a>
+                                <Link href={buildInternalFormUrl(tier.title)} aria-label={`Register for ${tier.title}`}>
+                                  <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                                  >
+                                    {isFailed ? "Retry Registration" : "Register Now"}
+                                  </motion.div>
+                                </Link>
                               )}
                             </div>
                           </motion.div>
@@ -1018,17 +990,15 @@ export default function Register() {
                               ⏳ Payment Pending - Check your email
                             </div>
                           ) : (
-                            <motion.a
-                              href={buildZohoFormUrl(tier.title)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
-                              aria-label={`Register for ${tier.title}`}
-                            >
-                              {isFailed ? "Retry Registration" : "Register Now"}
-                            </motion.a>
+                            <Link href={buildInternalFormUrl(tier.title)} aria-label={`Register for ${tier.title}`}>
+                              <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`block w-full py-3 px-4 rounded-lg font-semibold text-white bg-gradient-to-r ${tier.color} hover:opacity-90 transition-opacity text-sm text-center`}
+                              >
+                                {isFailed ? "Retry Registration" : "Register Now"}
+                              </motion.div>
+                            </Link>
                           )}
                         </div>
                       </motion.div>

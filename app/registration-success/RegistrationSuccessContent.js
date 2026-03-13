@@ -26,42 +26,55 @@ export default function RegistrationSuccessContent() {
       }
 
       try {
-        const response = await fetch('/api/mark-registered', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            clerkUserId,
-            category,
-          }),
-        })
+        // Poll our DB status (webhook may take a few seconds)
+        let attempts = 0
+        const maxAttempts = 12
+        while (attempts < maxAttempts) {
+          attempts += 1
+          const response = await fetch(`/api/registration/status?category=${encodeURIComponent(category)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          })
+          const data = await response.json()
 
-        const data = await response.json()
+          const paymentStatus = data?.registration?.paymentStatus
+          if (paymentStatus === 'success' || paymentStatus === 'paid' || paymentStatus === 'completed') {
+            setStatus('success')
+            setMessage('Payment successful! Registration confirmed.')
 
-        if (data.success) {
-          setStatus('success')
-          setMessage('Registration confirmed successfully!')
-          
-          // If in popup, auto-close after 3 seconds
-          if (isInPopup) {
+            const registerUrl = `${window.location.origin}/register`
+            // Auto-redirect to register page after 6 seconds
             setTimeout(() => {
               try {
-                if (window.opener && !window.opener.closed) {
-                  window.opener.location.href = 'https://worldskillchallenge.com/#register';
-                  window.close();
-                } else if (window.parent && window.parent !== window) {
-                  window.parent.location.href = 'https://worldskillchallenge.com/#register';
+                if (isInPopup && window.opener && !window.opener.closed) {
+                  window.opener.location.href = registerUrl
+                  window.close()
+                } else if (isInPopup && window.parent !== window) {
+                  window.parent.location.href = registerUrl
+                } else {
+                  window.location.href = registerUrl
                 }
               } catch (error) {
-                window.location.href = 'https://worldskillchallenge.com/#register';
+                window.location.href = registerUrl
               }
-            }, 3000);
+            }, 6000)
+            return
           }
-        } else {
-          setStatus('already-registered')
-          setMessage(data.message || 'Already registered in this category')
+
+          if (paymentStatus === 'failed' || paymentStatus === 'cancelled') {
+            setStatus('error')
+            setMessage('Payment failed or was cancelled. Please try again from the register page.')
+            return
+          }
+
+          // Still pending/initiated or webhook not received yet
+          setStatus('loading')
+          setMessage('Waiting for payment confirmation...')
+          await new Promise((r) => setTimeout(r, 2500))
         }
+
+        setStatus('error')
+        setMessage('Payment confirmation is taking longer than expected. If your payment was successful, please wait a bit and refresh this page.')
       } catch (error) {
         console.error('Error confirming registration:', error)
         setStatus('error')
@@ -146,6 +159,7 @@ export default function RegistrationSuccessContent() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8"
           >
+            <p className="text-green-700 font-medium mb-4">You will be redirected to the Register page in 6 seconds...</p>
             <h3 className="text-lg font-semibold text-green-800 mb-4">Registration Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
               <div>
@@ -189,17 +203,18 @@ export default function RegistrationSuccessContent() {
         <div className="space-y-4">
           <motion.button
             onClick={() => {
+              const url = `${window.location.origin}/register`
               try {
                 if (window.opener && !window.opener.closed) {
-                  window.opener.location.href = 'https://worldskillchallenge.com/#register';
-                  window.close();
+                  window.opener.location.href = url
+                  window.close()
                 } else if (window.parent && window.parent !== window) {
-                  window.parent.location.href = 'https://worldskillchallenge.com/#register';
+                  window.parent.location.href = url
                 } else {
-                  window.location.href = 'https://worldskillchallenge.com/#register';
+                  window.location.href = url
                 }
               } catch (error) {
-                window.location.href = 'https://worldskillchallenge.com/#register';
+                window.location.href = url
               }
             }}
             whileHover={{ scale: 1.05 }}
@@ -211,17 +226,18 @@ export default function RegistrationSuccessContent() {
 
           <motion.button
             onClick={() => {
+              const url = `${window.location.origin}/`
               try {
                 if (window.opener && !window.opener.closed) {
-                  window.opener.location.href = 'https://worldskillchallenge.com/';
-                  window.close();
+                  window.opener.location.href = url
+                  window.close()
                 } else if (window.parent && window.parent !== window) {
-                  window.parent.location.href = 'https://worldskillchallenge.com/';
+                  window.parent.location.href = url
                 } else {
-                  window.location.href = 'https://worldskillchallenge.com/';
+                  window.location.href = url
                 }
               } catch (error) {
-                window.location.href = 'https://worldskillchallenge.com/';
+                window.location.href = url
               }
             }}
             whileHover={{ scale: 1.05 }}

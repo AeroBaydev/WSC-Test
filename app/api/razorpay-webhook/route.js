@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
 import dbConnect from '@/lib/dbConnect.js';
 import CategoryRegistration from '@/lib/categoryRegistrationModel.js';
+import { syncRegistrationToZohoSheet } from '@/lib/zohoSheetSync.js';
 
 export const runtime = 'nodejs';
 export const preferredRegion = ['bom1'];
@@ -32,13 +33,14 @@ export async function POST(request) {
     await dbConnect();
 
     const event = payload.event;
-    const entity = payload.payload?.payment?.entity || payload.payload?.payment_link?.entity;
+    const paymentLinkEntity = payload.payload?.payment_link?.entity;
+    const paymentEntity = payload.payload?.payment?.entity;
 
-    // Extract traced fields
-    let paymentStatus = 'pending';
-    let paymentId = entity?.id;
-    let paymentLinkId = payload.payload?.payment_link?.entity?.id || entity?.payment_link_id;
-    let notes = entity?.notes || {};
+    // For payment_link.paid: notes are on payment_link entity (we put them there when creating the link)
+    // For payment.captured: notes may be on payment entity
+    const notes = paymentLinkEntity?.notes || paymentEntity?.notes || {};
+    const paymentId = paymentEntity?.id;
+    const paymentLinkId = paymentLinkEntity?.id || paymentEntity?.payment_link_id;
 
     const isSuccessEvent = (event === 'payment.captured' || event === 'payment_link.paid');
     const isFailureEvent = (event === 'payment.failed' || event === 'payment_link.cancelled');
@@ -47,13 +49,23 @@ export async function POST(request) {
     const category = notes.category;
 
     if (!clerkUserId || !category) {
-      // Try fallback using payment_link id lookup
+      // Fallback: find by paymentLinkId and update (notes missing e.g. from payment entity)
       if (paymentLinkId) {
         const reg = await CategoryRegistration.findOne({ paymentLinkId });
         if (reg) {
-          reg.paymentStatus = paymentStatus;
+          reg.paymentStatus = isSuccessEvent ? 'success' : (isFailureEvent ? 'failed' : reg.paymentStatus);
           reg.transactionId = paymentId || reg.transactionId;
+          reg.paymentOrderId = paymentId || reg.paymentOrderId;
           await reg.save();
+          if (isSuccessEvent && !reg.zohoSheetSyncedAt) {
+            try {
+              const syncRes = await syncRegistrationToZohoSheet(reg);
+              if (syncRes?.ok) {
+                reg.zohoSheetSyncedAt = new Date();
+                await reg.save();
+              }
+            } catch (_) {}
+          }
           return NextResponse.json({ ok: true });
         }
       }
@@ -98,8 +110,37 @@ export async function POST(request) {
         registration.paymentStatus = 'success';
         registration.paymentOrderId = paymentId || registration.paymentOrderId;
         registration.paymentLinkId = paymentLinkId || registration.paymentLinkId;
+        // Store definitive payment identifiers on success
+        registration.transactionId = paymentId || registration.transactionId;
+        if (notes?.paymentAmount && !registration.paymentAmount) {
+          registration.paymentAmount = String(notes.paymentAmount);
+        }
         registration.registeredAt = registration.registeredAt || new Date();
         await registration.save();
+      }
+
+      // Sync to Zoho Sheet once (best effort)
+      try {
+        if (!registration.zohoSheetSyncedAt) {
+          const syncRes = await syncRegistrationToZohoSheet(registration);
+          if (syncRes?.ok) {
+            registration.zohoSheetSyncedAt = new Date();
+            registration.zohoSheetLastError = undefined;
+            await registration.save();
+          } else if (syncRes?.skipped) {
+            // do not mark error if integration not configured
+          } else {
+            registration.zohoSheetLastError = String(syncRes?.error || 'Zoho sheet sync failed');
+            await registration.save();
+          }
+        }
+      } catch (e) {
+        try {
+          registration.zohoSheetLastError = String(e?.message || e);
+          await registration.save();
+        } catch (_) {
+          // ignore
+        }
       }
     } else if (isFailureEvent && paymentLinkId) {
       // Optional: mark existing initiated/pending record as failed; do NOT create new
